@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'; //STYLES
 
-//import DayPicker from '../../general_components/form_components/date-picker/date-piker';
+import DayPicker from '../../general_components/form_components/date-picker/date-piker';
 import moment from 'moment';
 
 import Selects from '../../general_components/form_components/selects/select';
@@ -17,6 +17,7 @@ import { GridOptions } from "ag-grid"; */
 import MyModal from '../../general_components/form_components/modal/modal';
 
 
+
 const CuerpoModal = styled.div`
     padding-bottom: 10px;
     padding-top: 20px;    
@@ -24,8 +25,15 @@ const CuerpoModal = styled.div`
     padding-right: 10px;
     margin-left: 1%;
     margin-right: 20px;
-    height: 400px;
-    width: 730px;
+    height: 300px;
+    width: 700px;
+`;
+
+const ContenedorBotonAdd = styled.div`
+padding-top: 20px;
+@media (max-width: 991px) {
+  padding: 0px;
+}
 `;
 
 class visualizarClub extends React.Component{
@@ -131,16 +139,19 @@ class visualizarClub extends React.Component{
                 </HeaderModal>
                 <CuerpoModal>
                     <Row>
-                        <Container className='col-md-8' >
-                            <div className="btn-group pull-left">
+                        <Container className='col-md-4' >
+                            
                                 <Label>Codigo:</Label>
                                 <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
-                            </div>
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Fecha:</Label>
                             <InputText name='fecha' value={this.state.fecha} type="date" className='form-control input-sm'  onChange={this.changeValues} />
                         </Container>
+                        <Container className='col-md-4' >
+                            <Label>Estado:</Label>
+                            <Selects name="estado" value={this.state.estado} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                         </Container> 
                     </Row>
                     <Row>
                         <Container className='col-md-4'>
@@ -157,28 +168,46 @@ class visualizarClub extends React.Component{
                         </Container>
                     </Row>
                     <Row>
-                        <Fieldset className='col-md-12'>
-                            <Legend>Horario</Legend>
-                            <Container className='col-md-6' >
-                                <Label>Dias:</Label>
-                                <InputText name='dias' value={this.state.dias} type="text" className='form-control input-sm' placeholder='Lunes,Martes,Miercoles' onChange={this.changeValues} />
-                            </Container>
-                            <Container className='col-md-3' > 
-                                <Label>Desde:</Label>
-                                <InputText name='desde' value={this.state.desde} type="time" className='form-control input-sm' placeholder='09:00' onChange={this.changeValues} />
-                            </Container>
-                            <Container className='col-md-3' > 
-                                <Label>Hasta:</Label>
-                                <InputText name='hasta' value={this.state.hasta} type="time" className='form-control input-sm' placeholder='11:00' onChange={this.changeValues} />
-                            </Container>
-                        </Fieldset>
-                    </Row>
-                   <Row>
-                        <Fieldset className='col-md-12'>
-                            <Legend>Punto Satelite</Legend>
-                            <AgGridRender altura='100px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
-                        </Fieldset>
+                        <Container className='col-md-12' >
+                            <Fieldset className='col-md-12'>
+                                <Legend>Punto Satelite</Legend>
+                                <AgGridRender altura='100px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                            </Fieldset>
+                        </Container>
                    </Row>
+
+                    <Row>
+                        <Container className='col-md-12' >
+                            <Fieldset className='col-md-12'>
+                                <Legend>Horario</Legend>
+                                <Container className='col-md-5' >
+                                    <Label>Dias:</Label>
+                                    <InputText name='dias' value={this.state.dias} type="text" className='form-control input-sm' placeholder='Lunes,Martes,Miercoles' onChange={this.changeValues} />
+                                </Container>
+                                <Container className='col-md-3' > 
+                                    <Label>Desde:</Label>
+                                    <InputText name='desde' value={this.state.desde} type="time" className='form-control input-sm' placeholder='09:00' onChange={this.changeValues} />
+                                </Container>
+                                <Container className='col-md-3' > 
+                                    <Label>Hasta:</Label>
+                                    <InputText name='hasta' value={this.state.hasta} type="time" className='form-control input-sm' placeholder='11:00' onChange={this.changeValues} />
+                                </Container>
+                                <Container className='col-md-1' > 
+                                    <ContenedorBotonAdd>
+                                        <button type="button" className='btn btn-success btn-sm'><i className="fa fa-plus" onClick={this.addHorario}/*8disabled={submitting}*/></i></button>
+                                    </ContenedorBotonAdd>
+                                </Container>
+                            </Fieldset>
+                        </Container>
+                    </Row>
+                   
+                    <Row>
+                        <Container className='col-md-12' > 
+                            <Label>Asignacion:</Label>
+                            <AgGridRender altura='100px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                    </Container>
+                   </Row>
+
                    <Row>
                         <Container className='col-md-12' >
                             <Label>Observacion:</Label>
