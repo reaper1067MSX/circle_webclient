@@ -1,12 +1,12 @@
 import React from 'react';
 //import styled from 'styled-components'; //STYLES
 
-//import Selects from '../../general_components/form_components/selects/select';
+import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar*/ } from '../../general_components/form_components/container';
 import { Label, InputText, Fieldset, Legend, TextArea, Fieldset1, Legend1 } from '../../general_components/form_components/controles';
 
-//import DayPicker from '../../general_components/form_components/date-picker/date-piker';
-//import moment from 'moment';
+import DayPicker from '../../general_components/form_components/date-picker/date-piker';
+import moment from 'moment';
 
 //GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
@@ -86,21 +86,31 @@ export default class registroBeneficiario extends React.Component{
             </HeaderForm>
             <CuerpoForm>
                 <Row>
+                    <Container className='col-md-3 col-md-push-8' >
+                        <Label>Estado:</Label>
+                    </Container>
+                    <Container className='col-md-3 col-md-push-6' >
+                        <Selects name="estado" value={this.state.estado} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                    </Container>
                 <Fieldset1 className='col-md-12'>
                     <Legend1>REGISTRO </Legend1>
                
                         <Row>
-                            <Container className='col-md-8' >
-                                <div className="btn-group pull-left">
+                            <Container className='col-md-4' >
+                                    <Label>Cédula:</Label>
+                                    <InputText name='cedula' value={this.state.cedula} type="number" className='form-control input-sm' placeholder='Cédula' onChange={this.changeValues} />
+                            </Container>
+                            <Container className='col-md-4' >
+                               
                                     <Label>Codigo Apadrinado:</Label>
                                     <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
-                                </div>
+                                
                             </Container>
                             <Container className='col-md-4' >
                                 
                                     <Label>Fecha:</Label>
-                                    <InputText name='fecha' value={this.state.fecha} type="date" className='form-control input-sm'  onChange={this.changeValues} />
-
+                                    <DayPicker id="fecha_creacion" selected={this.state.fecha_creacion} onChange={this.ChangeDateNacimiento} />
+                        
                             </Container>
                         </Row>
                         <Row>
@@ -114,8 +124,8 @@ export default class registroBeneficiario extends React.Component{
                             </Container>
                             <Container className='col-md-4' >
                                 <Label>Fecha Nacimiento:</Label>
-                                <InputText name='fechaNacimiento' value={this.state.fechaNacimiento} type="date" className='form-control input-sm' onChange={this.changeValues} />
-                            </Container> 
+                                <DayPicker id="fecha_nacimiento" selected={this.state.fecha_nacimiento} onChange={this.ChangeDateNacimiento} />
+                         </Container> 
                         </Row>
                         <Row>
                             <Container className='col-md-12' >
