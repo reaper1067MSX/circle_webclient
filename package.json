@@ -1,0 +1,29 @@
+{
+  "name": "circle_webclient",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "ag-grid": "^12.0.2",
+    "ag-grid-react": "^12.0.0",
+    "axios": "^0.16.2",
+    "browserify": "^14.5.0",
+    "history": "^4.6.3",
+    "lodash": "^4.17.4",
+    "moment": "^2.20.0",
+    "prop-types": "^15.6.0",
+    "react": "^15.5.4",
+    "react-datepicker": "^0.64.0",
+    "react-dom": "^15.5.4",
+    "react-responsive-modal": "^2.0.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.0.17",
+    "react-select": "^1.1.0",
+    "styled-components": "^2.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
