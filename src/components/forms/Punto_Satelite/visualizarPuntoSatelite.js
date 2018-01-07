@@ -5,6 +5,8 @@ import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar,*/ HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
 import { Label, InputText, Fieldset,Legend } from '../../general_components/form_components/controles';
 
+import DayPicker from '../../general_components/form_components/date-picker/date-piker';
+import moment from 'moment';
 
 //GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
@@ -119,18 +121,20 @@ class visualizarPuntoSatelite extends React.Component{
                     <TituloForm>Registro Punto Satelite</TituloForm>
                 </HeaderModal>
                 <CuerpoModal>
-                    <Row>
-                            <Container className='col-md-7' >
-                                <div className="btn-group pull-left">
-                                    <Label>Codigo Apadrinado:</Label>
-                                    <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
-                                </div>
-                            </Container>
-                            <Container className='col-md-5' >
-                                    <Label>Fecha:</Label>
-                                    <InputText name='fecha' value={this.state.fecha} type="date" className='form-control input-sm'  onChange={this.changeValues} />
-                            </Container>
-                    </Row>
+                <Row>
+                    <Container className='col-md-4' >
+                        <Label>Codigo:</Label>
+                        <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
+                    </Container>
+                    <Container className='col-md-3' >
+                        <Label>Estado:</Label>
+                        <Selects name="estado" value={this.state.estado} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                    </Container>
+                    <Container className='col-md-5' >
+                        <Label>Fecha:</Label>
+                        <DayPicker id="fecha_creacion" selected={this.state.fecha_creacion} onChange={this.ChangeDateNacimiento} />
+                    </Container>
+                </Row>
                     <Row>
                         <Container className='col-md-7' > 
                             <Label>Nombre:</Label>
@@ -145,21 +149,23 @@ class visualizarPuntoSatelite extends React.Component{
                                     <InputText name='telefono' value={this.state.latitud} type="text" className='form-control input-sm' placeholder='Telefono' onChange={this.changeValues} />
                                 </Container>
                             </Row>
-                            <Fieldset className='col-md-7'>
-                                <Legend>Direccion</Legend>
-                                    <Label>Calle Principal:</Label>
-                                    <InputText name='calle' value={this.state.calle} type="text" className='form-control input-sm' placeholder='Calle Principal' onChange={this.changeValues} />
-                                    <Row>
-                                        <Container className='col-md-7' > 
-                                            <Label>Longitud:</Label>
-                                            <InputText name='longitud' value={this.state.longitud} type="text" className='form-control input-sm' placeholder='Longitud' onChange={this.changeValues} />
-                                        </Container>
-                                        <Container className='col-md-5' > 
-                                            <Label>Latitud:</Label>
-                                            <InputText name='latitud' value={this.state.latitud} type="text" className='form-control input-sm' placeholder='Latitud' onChange={this.changeValues} />
-                                        </Container>
-                                    </Row>
-                            </Fieldset>
+                            <Row>
+                                <Container className='col-md-12' > 
+                                    <Label>Dirección:</Label>
+                                    <InputText name='direccion' value={this.state.direccion} type="text" className='form-control input-sm' placeholder='Dirección' onChange={this.changeValues} />    
+                                </Container>
+                            </Row>
+                           <Row>
+                                 <Container className='col-md-7' > 
+                                        <Label>Longitud:</Label>
+                                        <InputText name='longitud' value={this.state.longitud} type="text" className='form-control input-sm' placeholder='Longitud' onChange={this.changeValues} />
+                                    </Container>
+                                    <Container className='col-md-5' > 
+                                        <Label>Latitud:</Label>
+                                        <InputText name='latitud' value={this.state.latitud} type="text" className='form-control input-sm' placeholder='Latitud' onChange={this.changeValues} />
+                                    </Container>
+                            </Row>
+     
                             <Row>
                                 <Container className='col-md-8' > 
                                     <Label>Responsable:</Label>
@@ -172,22 +178,7 @@ class visualizarPuntoSatelite extends React.Component{
                             </Row>
                         </Container>
                         <Container className='col-md-5'>
-                        <Content/>
-                            
-
-                            <Fieldset className='col-md-7'>
-                                <Legend>Horario</Legend>
-                                    <Row>
-                                        <Container className='col-md-7' > 
-                                            <Label>Desde:</Label>
-                                            <InputText name='desde' value={this.state.desde} type="text" className='form-control input-sm' placeholder='Desde' onChange={this.changeValues} />
-                                        </Container>
-                                        <Container className='col-md-5' > 
-                                            <Label>Hasta:</Label>
-                                            <InputText name='hasta' value={this.state.hasta} type="text" className='form-control input-sm' placeholder='Hasta' onChange={this.changeValues} />
-                                        </Container>
-                                    </Row>
-                            </Fieldset>
+                            <Content/>
                         </Container>
                     </Row>
                     <Row>
