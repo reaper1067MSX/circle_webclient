@@ -1,9 +1,13 @@
 import React from 'react';
-//import styled from 'styled-components'; //STYLES
+import styled from 'styled-components'; //STYLES
 
 import Selects from '../../general_components/form_components/selects/select';
-import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar,*/ HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
+import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar,*/ HeaderModal } from '../../general_components/form_components/container';
 import { Label, InputText } from '../../general_components/form_components/controles';
+
+import DayPicker from '../../general_components/form_components/date-picker/date-piker';
+import moment from 'moment';
+
 
 //GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
@@ -14,6 +18,17 @@ import MyModal from '../../general_components/form_components/modal/modal';
 //Axios
 import  global_axios  from '../../../funciones_globales/interaccion_api';
 //import { getItemDatosSesion } from '../../../funciones_globales/manejosesion';
+
+const CuerpoModal = styled.div`
+    padding-bottom: 10px;
+    padding-top: 20px;    
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 1%;
+    margin-right: 20px;
+    height: 150px;
+    width: 600px;
+`;
 
 class visualizarParametros extends React.Component{
 
@@ -107,11 +122,17 @@ class visualizarParametros extends React.Component{
                     <TituloForm>Registro Parametros</TituloForm>
                 </HeaderModal>
                 <CuerpoModal>
-                    <Row>
-                        <Container className='col-md-4' >
+                <Row>
+                        <Container className='col-md-4 ' >
                                 <Label>Codigo:</Label>
                                 <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
                         </Container>
+                        <Container className='col-md-4 col-md-offset-4' >
+                                <Label>Fecha:</Label>
+                                <DayPicker id="fecha_creacion" selected={this.state.fecha_creacion} onChange={this.ChangeDateNacimiento} />
+                        </Container>
+                    </Row>
+                    <Row>  
                         <Container className='col-md-4'>
                             <Label>Nombre:</Label>
                             <InputText name='nombre' value={this.state.nombre} type="text" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
@@ -120,12 +141,12 @@ class visualizarParametros extends React.Component{
                             <Label>Tipo:</Label>
                             <Selects name="tipo" value={this.state.tipo} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
                         </Container>
-                    </Row>
-                    <Row>
-                        <Container className='col-md-12'>
-                            <br />
+                        <Container className='col-md-4' >
+                            <Label>Estado:</Label>
+                            <Selects name="estado" value={this.state.estado} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
                         </Container>
                     </Row>
+        
                     <Row>
                         <Container className='col-md-12'>
                             <div className="btn-group pull-right">
