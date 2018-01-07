@@ -69,6 +69,11 @@ class NavBar extends React.Component{
                                         </Link>
                                     </li>
                                     <li>
+                                        <Link to={'/registroClub'}> 
+                                            <span className="glyphicon glyphicon-chevron-right"></span> Registrar
+                                        </Link>
+                                    </li>
+                                    <li>
                                         <span className="glyphicon glyphicon-chevron-right"></span> Asignar Co-Facilitadores a Club
                                     </li>
                                 </ul>
