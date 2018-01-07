@@ -1,7 +1,7 @@
 import React from 'react';
 //import styled from 'styled-components'; //STYLES
 
-//import Selects from '../../general_components/form_components/selects/select';
+import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar,*/ HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
 import { Label, InputText, TextArea } from '../../general_components/form_components/controles';
 
@@ -116,16 +116,18 @@ class visualizarCoFacilitador extends React.Component{
                 </HeaderModal>
                 <CuerpoModal>
                     <Row>
-                        <Container className='col-md-8' >
-                            <div className="btn-group pull-left">
+                        <Container className='col-md-4' >
+                            <Label>Cédula:</Label>
+                            <InputText name='cedula' value={this.state.cedula} type="number" className='form-control input-sm' placeholder='Cédula' onChange={this.changeValues} />
+                        </Container>
+                        <Container className='col-md-4' >
                                 <Label>Codigo Apadrinado:</Label>
                                 <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
-                            </div>
-                       </Container>
+                        </Container>
                        <Container className='col-md-4' >
                                     <Label>Fecha:</Label>
-                                    <InputText name='fecha' value={this.state.fecha} type="date" className='form-control input-sm'  onChange={this.changeValues} />
-                            </Container>
+                                    <DayPicker id="fecha_creacion" selected={this.state.fecha_creacion} onChange={this.ChangeDateNacimiento} />
+                        </Container>
                     </Row>
                     <Row>
                         <Container className='col-md-4' >
@@ -145,6 +147,16 @@ class visualizarCoFacilitador extends React.Component{
                         <Container className='col-md-12' >
                             <Label>Observaciones:</Label>
                             <TextArea name='observaciones' placeholder='Observaciones'></TextArea>
+                        </Container>
+                    </Row>
+                    <Row>
+                        <Container className='col-md-3' >
+                            <Label>Estado:</Label>
+                            <Selects name="estado" value={this.state.estado} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                        </Container>
+                        <Container className='col-md-9' >
+                            <Label>Motivo:</Label>
+                            <InputText name='motivo' value={this.state.motivo} type="string" className='form-control input-sm' placeholder='Motivo' onChange={this.changeValues} />
                         </Container>
                     </Row>
 
