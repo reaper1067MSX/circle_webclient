@@ -198,9 +198,8 @@ export default class registroBeneficiario extends React.Component{
                             </Container>
                             <Container className='col-md-12'>
                                 <div className="btn-group pull-right">
-                                    <Label></Label>
                                     <button type="submit" className='btn btn-primary btn-sm' onClick={this.showModal}>
-                                    <i className="fa fa-check-circle fa-lg"></i> Asignar
+                                        <i className="fa fa-check-circle fa-lg"></i> Asignar
                                     </button>
                                 </div>
                             </Container>
@@ -212,7 +211,7 @@ export default class registroBeneficiario extends React.Component{
                     <div className="btn-group pull-right">
                         <button type="submit" className='btn btn-secondary btn-sm'>
                             <i className="fa fa-trash-o fa-lg"></i> Limpiar
-                    </button>
+                        </button>
                     </div>
                     <div className="btn-group pull-right">
                         <button type="submit" className='btn btn-primary btn-sm'>

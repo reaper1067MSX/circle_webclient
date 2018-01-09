@@ -24,46 +24,94 @@ export default class registroClub extends React.Component{
     constructor() { //Permite pasar valores al componente
         super();
         this.state = {
-            buscar: "",
             codigo:"",
-            nombres: "",
-            apellidos: "",
-            punto_satelite: "",
-            programa: "",
-            estado: "",
-            options_users: [],
+            fecha:"",
+            options_estado_sel: [],
+            nombre: "",
+            desde:"",
+            hasta:"",
+            observacion:"",
+            options_estrategia_sel:[],
+            options_programa_sel:[],
+            options_dia:[{ value: 0, label: 'Lunes' },
+                        { value: 1, label: 'Martes' },
+                        { value: 2, label: 'Miercoles' },
+                        { value: 3, label: 'Jueves' },
+                        { value: 4, label: 'Viernes' },
+                        { value: 5, label: 'Sabado' },
+                        { value: 6, label: 'Domingo' }],
+            
 
 
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
 
-             //Grid
-             data: [],
-             columnDefs: [{
-                             header: "Codigo",
-                             field: "DescripcionPago",
-                             width: 150,
-                             type: "string"
-                         },
-                         {
-                             header: "Programa",
-                             field: "Banco",
-                             width: 150,
-                             type: "string"
-                         },
-                         {
-                             header: "Punto Satelite",
-                             field: "Cuenta",
-                             width: 150,
-                             type: "string"
-                         },
-                         {
-                             header: "Horario.",
-                             field: "Cheque",
-                             width: 150,
-                             type: "num_entero"
-                         }]
-         };
+              //Grid
+            grid_Satelite: [],
+            grid_Asignacion:[],
+            columnDefs_Satelite: [{     header: "",
+                                        width: 30,
+                                        checkboxSelection: true,
+                                        suppressSorting: true,
+                                        suppressMenu: true,
+                                        suppressFilter: true,
+                                        pinned: true
+                                    },
+                                    {   header: "Codigo",
+                                        field: "Codigo",
+                                        width: 150,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Nombre",
+                                        field: "Nombre",
+                                        width: 150,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Tipo",
+                                        field: "Tipo",
+                                        width: 150,
+                                        type: "string",
+                                    }
+            ],
+            columnDefs_Asignacion: [{  header: "N°",
+                            field: "Secuencia",
+                            width: 50,
+                            type: "string"
+                        },
+                        {
+                            header: "Club",
+                            field: "Club",
+                            width: 150,
+                            type: "string"
+                        },
+                        {
+                            header: "Punto Satélite",
+                            field: "Punto Satélite",
+                            width: 150,
+                            type: "string",
+                        },
+                        {
+                            header: "Dia",
+                            field: "Dia",
+                            width: 100,
+                            type: "string"
+                        },
+                        {
+                            header: "Desde",
+                            field: "Desde",
+                            width: 100,
+                            type: "string"
+                        },
+                        {
+                            header: "Hasta",
+                            field: "Hasta",
+                            width: 100,
+                            type: "string"
+                        },
+            ]
+            };
  
          //GRID
          this.gridOptions = {
@@ -103,7 +151,7 @@ export default class registroClub extends React.Component{
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Estado:</Label>
-                            <Selects name="estado" value={this.state.estado} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                            <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
                          </Container> 
                     </Row>
                     <Row>
@@ -112,19 +160,19 @@ export default class registroClub extends React.Component{
                             <InputText name='nombre' value={this.state.nombre} type="text" className='form-control input-sm' placeholder='Nombre' onChange={this.changeValues} />
                          </Container>
                          <Container className='col-md-4'>
-                            <Label>Estratejia:</Label>
-                            <Selects name="estratejia" value={this.state.estratejia} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                            <Label>Estrategia:</Label>
+                            <Selects name="options_estrategia_sel" value={this.state.options_estrategia_sel} onChange={(value) => { this.setState({ options_estrategia_sel: value }) }} options={this.state.options_estrategia} />
                         </Container>
                          <Container className='col-md-4'>  
                             <Label>Programa:</Label>
-                            <Selects name="programa" value={this.state.programa} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                            <Selects name="options_programa_sel" value={this.state.options_programa_sel} onChange={(value) => { this.setState({ options_programa_sel: value }) }} options={this.state.options_programa} />
                         </Container>
                     </Row>
                     <Row>
                         <Container className='col-md-12' >
                             <Fieldset className='col-md-12'>
-                                <Legend>Punto Satelite</Legend>
-                                <AgGridRender altura='100px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                                <Legend>Punto Satélite</Legend>
+                                <AgGridRender altura='100px' data={this.state.grid_Satelite} columnas={this.state.columnDefs_Satelite} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                             </Fieldset>
                         </Container>
                    </Row>
@@ -134,8 +182,8 @@ export default class registroClub extends React.Component{
                             <Fieldset className='col-md-12'>
                                 <Legend>Horario</Legend>
                                 <Container className='col-md-5' >
-                                    <Label>Dias:</Label>
-                                    <InputText name='dias' value={this.state.dias} type="text" className='form-control input-sm' placeholder='Lunes,Martes,Miercoles' onChange={this.changeValues} />
+                                    <Label>Día:</Label>
+                                    <Selects name="options_dia_sel" value={this.state.options_dia_sel} onChange={(value) => { this.setState({ options_dia_sel: value }) }} options={this.state.options_dia} />
                                 </Container>
                                 <Container className='col-md-3' > 
                                     <Label>Desde:</Label>
@@ -156,15 +204,17 @@ export default class registroClub extends React.Component{
                    
                     <Row>
                         <Container className='col-md-12' > 
-                            <Label>Asignacion:</Label>
-                            <AgGridRender altura='100px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                            <Fieldset className='col-md-12'>
+                                    <Legend>Asignación</Legend>
+                                        <AgGridRender altura='100px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                            </Fieldset>
                     </Container>
                    </Row>
 
                    <Row>
                         <Container className='col-md-12' >
-                            <Label>Observacion:</Label>
-                            <TextArea name='observacion' placeholder='Observacion'></TextArea>
+                            <Label>Observación:</Label>
+                            <TextArea name='observacion'value={this.state.observacion} placeholder='Observacion' onChange={this.changeValues}></TextArea>
                         </Container>
                         </Row>
                     <Row>
@@ -224,12 +274,9 @@ export default class registroClub extends React.Component{
 
     //Realiza todas estas operaciones al renderizar el form
     componentDidMount() {
-        var options = [{ value: 0, label: 'YORK' },
-        { value: 1, label: 'Amadeus' },
-        { value: 2, label: 'Landa' },
-        { value: 3, label: 'FORK' }]
+        //var options = 
 
-        this.setState({ options_users: options })
+        //this.setState({ options_dia: options })
     }
 
     
