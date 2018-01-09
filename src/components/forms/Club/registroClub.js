@@ -12,7 +12,7 @@ import moment from 'moment';
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
 
 
-import { getItemDatosSesion } from '../../../funciones_globales/manejosesion';
+import { getItemDatosSesion, delDatosSesion } from '../../../funciones_globales/manejosesion';
 
 
 const ContenedorBotonAdd = styled.div`
@@ -56,7 +56,7 @@ export default class registroClub extends React.Component{
               //Grid
             grid_Satelite: [],
             grid_Asignacion:[],
-            columnDefs_Satelite: [{     header: "",
+            columnDefs_Satelite:[ {     header: "",
                                         width: 30,
                                         checkboxSelection: true,
                                         suppressSorting: true,
@@ -81,43 +81,42 @@ export default class registroClub extends React.Component{
                                         width: 150,
                                         type: "string",
                                     }
-            ],
-            columnDefs_Asignacion: [{  header: "N°",
-                            field: "Secuencia",
-                            width: 50,
-                            type: "string"
-                        },
-                        {
-                            header: "Club",
-                            field: "Club",
-                            width: 150,
-                            type: "string"
-                        },
-                        {
-                            header: "Punto Satélite",
-                            field: "Punto Satélite",
-                            width: 150,
-                            type: "string",
-                        },
-                        {
-                            header: "Dia",
-                            field: "Dia",
-                            width: 100,
-                            type: "string"
-                        },
-                        {
-                            header: "Desde",
-                            field: "Desde",
-                            width: 100,
-                            type: "string"
-                        },
-                        {
-                            header: "Hasta",
-                            field: "Hasta",
-                            width: 100,
-                            type: "string"
-                        },
-            ]
+                                ],
+            columnDefs_Asignacion: [{   header: "N°",
+                                        field: "Secuencia",
+                                        width: 50,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Club",
+                                        field: "Club",
+                                        width: 150,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Punto Satélite",
+                                        field: "Punto Satélite",
+                                        width: 150,
+                                        type: "string",
+                                    },
+                                    {
+                                        header: "Dia",
+                                        field: "Dia",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Desde",
+                                        field: "Desde",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Hasta",
+                                        field: "Hasta",
+                                        width: 100,
+                                        type: "string"
+                                    }]
             };
  
          //GRID
@@ -137,6 +136,11 @@ export default class registroClub extends React.Component{
         //GRID
         this.onGridReady = this.onGridReady.bind(this);
 
+    }
+
+    guardarClub(){
+        console.log("EliminarClub")
+        delDatosSesion('localidad');
     }
 
     render() {
@@ -227,12 +231,12 @@ export default class registroClub extends React.Component{
                     <Row>
                         <Container className='col-md-12'>
                             <div className="btn-group pull-right">
-                                <button type="submit" className='btn btn-secondary btn-sm'>
+                                <button type="button" className='btn btn-secondary btn-sm'>
                                     <i className="fa fa-trash-o fa-lg"></i> Limpiar
                                 </button>
                             </div>
                             <div className="btn-group pull-right">
-                                <button type="submit" className='btn btn-primary btn-sm'>
+                                <button type="button" className='btn btn-primary btn-sm' onClick={this.guardarClub}>
                                     <i className="fa fa-floppy-o fa-lg"></i> Guardar
                                 </button>
                             </div>
@@ -282,8 +286,7 @@ export default class registroClub extends React.Component{
     //Realiza todas estas operaciones al renderizar el form
     componentDidMount() {
         //var options = 
-        //console.log("LOCALIDAD: ",getItemDatosSesion('localidad'));
-        //this.setState({ options_dia: options })
+        console.log("LOCALIDAD: ",getItemDatosSesion('localidad'));
     }
 
     
