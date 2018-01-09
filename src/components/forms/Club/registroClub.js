@@ -12,6 +12,9 @@ import moment from 'moment';
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
 
 
+import { getItemDatosSesion } from '../../../funciones_globales/manejosesion';
+
+
 const ContenedorBotonAdd = styled.div`
 padding-top: 20px;
 @media (max-width: 991px) {
@@ -26,13 +29,17 @@ export default class registroClub extends React.Component{
         this.state = {
             codigo:"",
             fecha:"",
-            options_estado_sel: [],
             nombre: "",
             desde:"",
             hasta:"",
             observacion:"",
-            options_estrategia_sel:[],
-            options_programa_sel:[],
+            //SELECTS
+            options_estado: [],
+            options_estado_sel: '',
+            options_estrategia_sel:'',
+            options_estrategia: [],
+            options_programa_sel:'',
+            options_programa: [],
             options_dia:[{ value: 0, label: 'Lunes' },
                         { value: 1, label: 'Martes' },
                         { value: 2, label: 'Miercoles' },
@@ -275,7 +282,7 @@ export default class registroClub extends React.Component{
     //Realiza todas estas operaciones al renderizar el form
     componentDidMount() {
         //var options = 
-
+        //console.log("LOCALIDAD: ",getItemDatosSesion('localidad'));
         //this.setState({ options_dia: options })
     }
 
