@@ -148,7 +148,6 @@ export default class registroClub extends React.Component{
             <CuerpoForm>
                     <Row>
                         <Container className='col-md-4' >
-                            
                                 <Label>Codigo:</Label>
                                 <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
                         </Container>

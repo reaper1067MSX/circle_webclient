@@ -12,6 +12,8 @@ import visualizarCoFacilitador from './forms/CoFacilitador/visualizarCoFacilitad
 import asignarClub from './forms/CoFacilitador/asignarClub';
 import visualizarBeneficiario from './forms/Beneficiario/visualizarBeneficiario';
 import registroBeneficiario from './forms/Beneficiario/registroBeneficiario';
+import inscribirBeneficiario from './forms/Beneficiario/inscribirBeneficiario';
+
 import visualizarParametros from './forms/Parametros/visualizarParametros';
 
 import NavBar from './general_components/form_components/menu/NavBar';
@@ -42,7 +44,8 @@ class App extends Component {
               <Route path='/visualizarcofacilitador' component={visualizarCoFacilitador} />  
               <Route path='/asignarclub' component={asignarClub} />            
               <Route path='/visualizarbeneficiario' component={visualizarBeneficiario} />  
-              <Route path='/registrobeneficiario' component={registroBeneficiario} />            
+              <Route path='/registrobeneficiario' component={registroBeneficiario} />
+              <Route path='/inscribirbeneficiario' component={inscribirBeneficiario} />            
               <Route path='/visualizarparametros' component={visualizarParametros} />               
               
                                               

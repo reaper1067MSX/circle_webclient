@@ -35,10 +35,18 @@ class visualizarParametros extends React.Component{
     constructor() { //Permite pasar valores al componente
         super();
         this.state = {
-            buscar: "",
             codigo: "",
-            nombre: "",
-            tipo: "",
+            fecha_creacion:"",
+            descripcion: "",
+            //SELECTS
+            options_estado: [],
+            options_estado_sel: '',
+            options_depen: [],
+            options_depen_sel: '',
+            options_tipo:[  { value: "O", label: 'Objetivo Estratégico' },
+                            { value: "P", label: 'Programa' },
+                            { value: "L", label: 'Localidad' }],
+            options_tipo_sel: '',
 
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
@@ -46,13 +54,13 @@ class visualizarParametros extends React.Component{
             //Grid
             data: [],
             columnDefs: [{
-                header: "Codigo",
+                header: "Código",
                 field: "Codigo",
                 width: 150,
                 type: "string"
             },
             {
-                header: "Nombre",
+                header: "Descripción",
                 field: "Descripcion",
                 width: 150,
                 type: "string"
@@ -127,23 +135,27 @@ class visualizarParametros extends React.Component{
                                 <Label>Codigo:</Label>
                                 <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
                         </Container>
-                        <Container className='col-md-4 col-md-offset-4' >
+                        <Container className='col-md-4' >
                                 <Label>Fecha:</Label>
                                 <DayPicker id="fecha_creacion" selected={this.state.fecha_creacion} onChange={this.ChangeDateNacimiento} />
+                        </Container>
+                        <Container className='col-md-4' >
+                            <Label>Estado:</Label>
+                            <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
                         </Container>
                     </Row>
                     <Row>  
                         <Container className='col-md-4'>
-                            <Label>Nombre:</Label>
-                            <InputText name='nombre' value={this.state.nombre} type="text" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
+                            <Label>Descripción:</Label>
+                            <InputText name='descripcion' value={this.state.descripcion} type="text" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4'>
                             <Label>Tipo:</Label>
-                            <Selects name="tipo" value={this.state.tipo} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                            <Selects name="options_tipo_sel" value={this.state.options_tipo_sel} onChange={(value) => { this.setState({ options_tipo_sel: value }) }} options={this.state.options_tipo} />
                         </Container>
                         <Container className='col-md-4' >
-                            <Label>Estado:</Label>
-                            <Selects name="estado" value={this.state.estado} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                                <Label>Dependencia:</Label>
+                                <Selects name="options_depen_sel" value={this.state.options_depen_sel} disabled={this.state.options_tipo_sel.value !== 'P'?true:false} onChange={(value) => { this.setState({ options_depen_sel: value }) }} options={this.state.options_depen} />
                         </Container>
                     </Row>
         
