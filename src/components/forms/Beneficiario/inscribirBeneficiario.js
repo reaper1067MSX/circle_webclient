@@ -109,7 +109,7 @@ export default class registroBeneficiario extends React.Component{
                         <Label>Estado:</Label>
                     </Container>
                     <Container className='col-md-3 col-md-push-6' >
-                        <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ progoptions_estado_selrama: value }) }} options={this.state.options_estado} />
+                        <Selects name="options_estado_sel" value={this.state.options_estado_sel}  onChange={(value) => { this.setState({ progoptions_estado_selrama: value }) }} options={this.state.options_estado} />
                     </Container>
                 <Fieldset1 className='col-md-12'>
                     <Legend1>REGISTRO </Legend1>
