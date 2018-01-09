@@ -16,6 +16,10 @@ export const setDatosSesion = (item, sesion_data) => {
     sessionStorage.setItem(item, sesion_data);        
 }
 
+export const delDatosSesion = (item) => {
+    sessionStorage.removeItem(item)
+}
+
 export const getItemParametros = (arr_parametros, key_item) => {
     let valor_item;
     console.log(arr_parametros[0].parametro)

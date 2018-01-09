@@ -70,9 +70,9 @@ const A2 = styled.a`
     margin-top: -5px;
     padding-bottom: 5px;
     color: #c5c5c5;
-  `;
+`;
 
-  const Footer = styled.div`
+const Footer = styled.div`
   border-radius: 6px;
   background-color: rgba(144, 31, 97, 0.85);
   text-decoration: none;
