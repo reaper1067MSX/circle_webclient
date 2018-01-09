@@ -27,7 +27,7 @@ export default class BotonModificarRenderer extends Component {
     }
 
     invokeParentMethod() {
-        this.props.context.componentParent.methodFromParent(this.props.node.id, this.props.node.data)
+        this.props.context.componentParent.methodModifyFromParent(this.props.node.id, this.props.node.data)
     }
 
     

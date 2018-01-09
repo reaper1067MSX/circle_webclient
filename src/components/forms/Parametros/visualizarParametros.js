@@ -8,7 +8,6 @@ import { Label, InputText } from '../../general_components/form_components/contr
 import DayPicker from '../../general_components/form_components/date-picker/date-piker';
 import moment from 'moment';
 
-
 //GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
 
@@ -17,7 +16,12 @@ import MyModal from '../../general_components/form_components/modal/modal';
 
 //Axios
 import  global_axios  from '../../../funciones_globales/interaccion_api';
-//import { getItemDatosSesion } from '../../../funciones_globales/manejosesion';
+
+import { cargarCatalogos, cargarCatalogosGenerico } from '../../../funciones_globales/catalogos';
+import { get_FechaLocalActual } from '../../../funciones_globales/utils';
+import { fomatearFechaMoment_a_String } from '../../../funciones_globales/format';
+
+
 
 const CuerpoModal = styled.div`
     padding-bottom: 10px;
@@ -36,42 +40,52 @@ class visualizarParametros extends React.Component{
         super();
         this.state = {
             codigo: "",
-            fecha_creacion:"",
+            fecha_creacion: moment(get_FechaLocalActual(),'DD/MM/YYYY'),
             descripcion: "",
             //SELECTS
             options_estado: [],
             options_estado_sel: '',
             options_depen: [],
             options_depen_sel: '',
-            options_tipo:[  { value: "O", label: 'Objetivo Estratégico' },
-                            { value: "P", label: 'Programa' },
-                            { value: "L", label: 'Localidad' }],
+            options_tipo:[],
             options_tipo_sel: '',
 
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
 
             //Grid
-            data: [],
+            gridParametros: [],
             columnDefs: [{
-                header: "Código",
-                field: "Codigo",
-                width: 150,
-                type: "string"
-            },
-            {
-                header: "Descripción",
-                field: "Descripcion",
-                width: 150,
-                type: "string"
-            },
-            {
-                header: "Tipo",
-                field: "Tipo",
-                width: 150,
-                type: "string",
-            }
-            ],
+                            header: "Código",
+                            field: "Codigo",
+                            width: 150,
+                            type: "string"
+                        },
+                        {
+                            header: "Descripción",
+                            field: "Descripcion",
+                            width: 150,
+                            type: "string"
+                        },
+                        {
+                            header: "Tipo",
+                            field: "Tipo",
+                            width: 150,
+                            type: "string",
+                        },
+                        {
+                            header: "",
+                            field: "modificar",
+                            width: 40,
+                            type: "boton_modi"
+                        },
+                        {
+                            header: "",
+                            field: "eliminar",
+                            width: 40,
+                            type: "boton_elim"
+                        }
+                        ],
         };
 
         //GRID
@@ -87,6 +101,9 @@ class visualizarParametros extends React.Component{
 
         //Funciones binds
         this.changeValues = this.changeValues.bind(this);
+        this.eliminarParametro = this.eliminarParametro.bind(this);
+        this.methodModifyFromParent = this.methodModifyFromParent.bind(this);
+        this.guardarParametro = this.guardarParametro.bind(this);
 
         //Modals
         this.showModal = this.showModal.bind(this); //SWITCH OPEN/CLOSE
@@ -95,6 +112,41 @@ class visualizarParametros extends React.Component{
         //GRID
         this.onGridReady = this.onGridReady.bind(this);
 
+    }
+
+    //ACTION PARA ELIMINAR
+    methodFromParent(id ,datos_fila){
+        var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
+        
+        if (mensaje){
+            this.eliminarParametro(id, datos_fila ) 
+        }
+    }
+
+    eliminarParametro(id ){
+        this.setState(
+            {gridParametros: this.immutableDelete(this.state.gridParametros, id)}
+        )
+
+    }
+
+    //ACTION PARA MODIFICAR
+    methodModifyFromParent(id, datos_fila){
+        console.log(datos_fila)
+        this.setState({codigo: datos_fila.Codigo});
+        this.showModal(datos_fila);
+        
+    }
+
+    //Adicionar un elimento en un ARRAY INMUTABLE
+    immutablePush(array, newItem){
+        return [ ...array, newItem ];  
+    }
+
+    //Eliminar un registro especifico del ARAAY
+    immutableDelete (arr, index) {
+        var i = parseInt(index, 10);
+        return arr.slice(0,i).concat(arr.slice(i+1));
     }
 
     render() {
@@ -106,7 +158,7 @@ class visualizarParametros extends React.Component{
             <CuerpoForm>
                 <Row>
                     <Container className='col-md-12'>
-                        <AgGridRender altura='250px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                        <AgGridRender altura='250px' data={this.state.gridParametros} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
@@ -133,11 +185,11 @@ class visualizarParametros extends React.Component{
                 <Row>
                         <Container className='col-md-4 ' >
                                 <Label>Codigo:</Label>
-                                <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
+                                <InputText name='codigo' value={this.state.codigo} type="text" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
                                 <Label>Fecha:</Label>
-                                <DayPicker id="fecha_creacion" selected={this.state.fecha_creacion} onChange={this.ChangeDateNacimiento} />
+                                <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Estado:</Label>
@@ -155,19 +207,19 @@ class visualizarParametros extends React.Component{
                         </Container>
                         <Container className='col-md-4' >
                                 <Label>Dependencia:</Label>
-                                <Selects name="options_depen_sel" value={this.state.options_depen_sel} disabled={this.state.options_tipo_sel.value !== 'P'?true:false} onChange={(value) => { this.setState({ options_depen_sel: value }) }} options={this.state.options_depen} />
+                                <Selects name="options_depen_sel" value={this.state.options_depen_sel} disabled={this.desactivarDep()} onChange={(value) => { this.setState({ options_depen_sel: value }) }} options={this.state.options_depen} />
                         </Container>
                     </Row>
         
                     <Row>
                         <Container className='col-md-12'>
                             <div className="btn-group pull-right">
-                                <button type="submit" className='btn btn-secondary btn-sm'>
+                                <button type="button" className='btn btn-secondary btn-sm'>
                                     <i className="fa fa-trash-o fa-lg"></i> Limpiar
                             </button>
                             </div>
                             <div className="btn-group pull-right">
-                                <button type="submit" className='btn btn-primary btn-sm'>
+                                <button type="button" className='btn btn-primary btn-sm' onClick={this.guardarParametro}>
                                     <i className="fa fa-floppy-o fa-lg"></i> Guardar
                             </button>
                             </div>
@@ -191,12 +243,23 @@ class visualizarParametros extends React.Component{
 
     //Functions modal
     //Abrir/cerrar
-    showModal(event) {
-        this.setState({ isShowingModal: !this.state.isShowingModal })
+    showModal() {
+        this.setState({ isShowingModal: !this.state.isShowingModal });
+        //console.log("FECHA ACTUAL: ", this.fecha_creacion);
     }
 
     onClose(event) {
         this.setState({ isShowingModal: false });
+    }
+
+    desactivarDep(){
+        if(this.state.options_tipo_sel === null){
+            return true;
+        }else if(this.state.options_tipo_sel.value === 'P'){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     //Functions
@@ -212,15 +275,81 @@ class visualizarParametros extends React.Component{
         });
     }
 
+    guardarParametro(){
+        //VALIDACION DE CAMPS REQUERIDOS
+
+        //Asignacion a guardar
+        var data = {};
+
+        data.codigo = this.state.codigo;
+        data.descripcion = this.state.descripcion;
+        data.options_tipo_sel = this.state.options_tipo_sel.value;
+        data.fecha_creacion = moment(this.state.fecha_creacion).format('L');
+        data.options_estado_sel = this.state.options_estado_sel.value;
+
+        if(this.state.options_depen_sel!==""){
+            data.options_depen = this.state.options_depen_sel;
+        }else{
+            data.options_depen = "";
+        }
+        
+        //Request
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'POST',
+            url: '/parametros',
+            data
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            alert(response.data.msg);
+
+            //Actualizacion del grid luego de guardar
+
+            //Proceso Adquirir Registros GRID
+            let config_request = {
+                method: 'GET',
+                url: '/parametros?estado=A'
+            }
+        
+            global_axios(config_request)
+            .then((response)=>{
+                console.log("DATA respondida en request paramentros: ",response.data)
+                this.setState({gridParametros: response.data})
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+
+
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
     //Realiza todas estas operaciones al renderizar el form
     componentDidMount() {
-        var options = [{ value: 0, label: 'Programa' },
-        { value: 1, label: 'Objetivo Estrategico' },
-        { value: 2, label: 'Localidad' }]
-
-        this.setState({ options_users: options })
         
-        //Proceso Adquirir clave
+        Promise.all([
+            cargarCatalogos('TIPOPARAM'), cargarCatalogos('GENESTADO'), cargarCatalogosGenerico('/parametros?tipo=O')
+
+        ])
+        .then(([result_tipoParametros, result_genEstado, resul_dependencia]) => {
+          this.setState(
+            { options_tipo: result_tipoParametros,  options_estado: result_genEstado, options_depen: resul_dependencia
+                 
+            })
+            
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+        //Proceso Adquirir Registros GRID
         let config_request = {
             method: 'GET',
             url: '/parametros?estado=A'
@@ -229,8 +358,13 @@ class visualizarParametros extends React.Component{
         global_axios(config_request)
         .then((response)=>{
             console.log("DATA respondida en request paramentros: ",response.data)
-            this.setState({data: response.data})
+            this.setState({gridParametros: response.data})
         })
+        .catch(err => {
+            console.log(err);
+        });
+
+        //console.log();
         
     }
 

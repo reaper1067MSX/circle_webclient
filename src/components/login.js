@@ -155,9 +155,7 @@ export default class Login extends React.Component{
             setDatosSesion('usuario', sesion_data.usuario);            
             setDatosSesion('token', sesion_data.token);
             setDatosSesion('tiempoSesion', tiempoSesion); 
-            //Datos Prueba
-            setDatosSesion('localidad_cod', this.state.options_localidad_sel.value);
-            setDatosSesion('localidad', this.state.options_localidad_sel.label); 
+            setDatosSesion('localidad', this.state.options_localidad_sel.value); 
  
             //let token = getItemDatosSesion('token');
             //global_axios.defaults.headers.common['x-access-token'] = token;

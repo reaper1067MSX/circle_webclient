@@ -1,3 +1,6 @@
+import moment from 'moment';
+import 'moment/locale/es';
+
 export const completar_String = (cadena, char_relleno, tam_final) => {
     let tam_actual = cadena.toString().length;    
     let veces_repetir = tam_final - tam_actual;
@@ -30,4 +33,9 @@ export const formatearLabel = (label) => {
 export const formatearNumeroEntero = (valor) => {
     valor = parseInt(valor, 10);        
     return valor;
+}
+
+export const fomatearFechaMoment_a_String = (fechaMoment) => {
+    moment.locale('es');
+    return moment(fechaMoment).format('L');
 }

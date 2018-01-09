@@ -75,7 +75,6 @@ export default class visualizarBeneficiario extends React.Component{
                                 width: 40,
                                 type: "boton_elim"
                             }
-                            
                         ],
         };
 
