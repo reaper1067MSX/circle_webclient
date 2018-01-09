@@ -102,7 +102,16 @@ export default class Login extends React.Component{
         super(props);
         this.state = {
             usuario: '',
-            contrasena: ''
+            contrasena: '',
+            options_localidad:[{ value: 'OC', label: 'Oficina central' },
+                        { value: 'OCC0', label: 'Centro Comunitario 0 - Durán' },
+                        { value: 'OCC2', label: 'Centro Comunitario 2 - Phelan' },
+                        { value: 'OCC3', label: 'Centro Comunitario 3 - BUDS' },
+                        { value: 'OCC5', label: 'Centro Comunitario 5 - Flor de Bastión' },
+                        { value: 'OCC6', label: 'Centro Comunitario 6 - Estrella de Belén' },
+                        { value: 'HEE', label: 'Centro Hacia El Empleo' }],
+            options_localidad_sel:undefined
+            
         }
         //Funciones binds
         this.changeValues = this.changeValues.bind(this);
@@ -146,7 +155,10 @@ export default class Login extends React.Component{
             setDatosSesion('usuario', sesion_data.usuario);            
             setDatosSesion('token', sesion_data.token);
             setDatosSesion('tiempoSesion', tiempoSesion); 
-            
+            //Datos Prueba
+            setDatosSesion('localidad_cod', this.state.options_localidad_sel.value);
+            setDatosSesion('localidad', this.state.options_localidad_sel.label); 
+ 
             //let token = getItemDatosSesion('token');
             //global_axios.defaults.headers.common['x-access-token'] = token;
             
@@ -195,7 +207,7 @@ export default class Login extends React.Component{
                                     <A2 href="#" data-toggle="modal" data-target="#modal_cambiar_clave" id="texto_cambiar_clave">Cambie su contraseña</A2>
                        
                                     <div className="form-group">
-                                        <Selects name="localidad"  className="form-control myselect" value={this.state.localidad} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                                        <Selects name="options_localidad_sel" value={this.state.options_localidad_sel} onChange={(value) => { this.setState({ options_localidad_sel: value }) }} options={this.state.options_localidad} />
                                     </div>
                                     
                                     <Button data-ripple type="submit" onClick={this.login}>Acceder</Button>
