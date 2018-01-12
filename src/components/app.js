@@ -6,12 +6,11 @@ import { Route, Switch } from 'react-router-dom';
 //import Home from './forms/Home/Home'; <Route exact path='/' component={Home} />
 
 import visualizarClub from './forms/Club/visualizarClub';
-import registroClub from './forms/Club/registroClub';
+import asignarPSClub from './forms/Club/asignarPSClub';
 import visualizarPuntoSatelite from './forms/Punto_Satelite/visualizarPuntoSatelite';
 import visualizarCoFacilitador from './forms/CoFacilitador/visualizarCoFacilitador';
 import asignarClub from './forms/CoFacilitador/asignarClub';
 import visualizarBeneficiario from './forms/Beneficiario/visualizarBeneficiario';
-import registroBeneficiario from './forms/Beneficiario/registroBeneficiario';
 import inscribirBeneficiario from './forms/Beneficiario/inscribirBeneficiario';
 
 import visualizarParametros from './forms/Parametros/visualizarParametros';
@@ -39,12 +38,11 @@ class App extends Component {
             <Switch>
               
               <Route path='/visualizarclub' component={visualizarClub} />
-              <Route path='/registroclub' component={registroClub} />
+              <Route path='/asignarpsclub' component={asignarPSClub} />
               <Route path='/visualizarpuntosatelite' component={visualizarPuntoSatelite} />   
               <Route path='/visualizarcofacilitador' component={visualizarCoFacilitador} />  
               <Route path='/asignarclub' component={asignarClub} />            
               <Route path='/visualizarbeneficiario' component={visualizarBeneficiario} />  
-              <Route path='/registrobeneficiario' component={registroBeneficiario} />
               <Route path='/inscribirbeneficiario' component={inscribirBeneficiario} />            
               <Route path='/visualizarparametros' component={visualizarParametros} />               
               

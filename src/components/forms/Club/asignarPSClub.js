@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'; //STYLES
 
+import ReactSelectAsync from '../../general_components/form_components/select-asyn/react-select-async';
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar*/ } from '../../general_components/form_components/container';
 import { Label, InputText, Fieldset, Legend, TextArea, Fieldset1, Legend1 } from '../../general_components/form_components/controles';
@@ -23,7 +24,7 @@ padding-top: 20px;
 `;
 
 
-export default class registroClub extends React.Component{
+export default class asignarPSClub extends React.Component{
     constructor() { //Permite pasar valores al componente
         super();
         this.state = {
@@ -143,39 +144,34 @@ export default class registroClub extends React.Component{
         delDatosSesion('localidad');
     }
 
+    getOptionsClub(input, callback){
+        if(input.toString().length >= 3){
+            let cadena_busq = '?cadena_busq='+input;
+            
+        }
+
+    }
+
+
     render() {
 
         return <div className="container">
             <HeaderForm>
-                <TituloForm>Club</TituloForm>
+                <TituloForm>Asignación de Punto Satélite a Club</TituloForm>
             </HeaderForm>
             <CuerpoForm>
                     <Row>
                         <Container className='col-md-4' >
-                                <Label>Codigo:</Label>
-                                <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
-                        </Container>
-                        <Container className='col-md-4' >
-                            <Label>Fecha:</Label>
-                            <InputText name='fecha' value={this.state.fecha} type="date" className='form-control input-sm'  onChange={this.changeValues} />
+                             <Label>Club:</Label>
+                             <ReactSelectAsync name="options_club_sel" value={this.state.options_club_sel} onChange={(value) => { this.setState({ options_club_sel: value }) }} func_loadOptions={this.getOptionsClub.bind(this)} />
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Estado:</Label>
-                            <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
-                         </Container> 
-                    </Row>
-                    <Row>
-                        <Container className='col-md-4'>
-                            <Label>Nombre:</Label>
-                            <InputText name='nombre' value={this.state.nombre} type="text" className='form-control input-sm' placeholder='Nombre' onChange={this.changeValues} />
-                         </Container>
-                         <Container className='col-md-4'>
-                            <Label>Estrategia:</Label>
-                            <Selects name="options_estrategia_sel" value={this.state.options_estrategia_sel} onChange={(value) => { this.setState({ options_estrategia_sel: value }) }} options={this.state.options_estrategia} />
+                            <Selects name="options_estado_sel" value={this.state.options_estado_sel}  onChange={(value) => { this.setState({ progoptions_estado_selrama: value }) }} options={this.state.options_estado} />
                         </Container>
-                         <Container className='col-md-4'>  
-                            <Label>Programa:</Label>
-                            <Selects name="options_programa_sel" value={this.state.options_programa_sel} onChange={(value) => { this.setState({ options_programa_sel: value }) }} options={this.state.options_programa} />
+                        <Container className='col-md-4' >
+                            <Label>Fecha:</Label>
+                            <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
                         </Container>
                     </Row>
                     <Row>
@@ -221,12 +217,7 @@ export default class registroClub extends React.Component{
                     </Container>
                    </Row>
 
-                   <Row>
-                        <Container className='col-md-12' >
-                            <Label>Observación:</Label>
-                            <TextArea name='observacion'value={this.state.observacion} placeholder='Observacion' onChange={this.changeValues}></TextArea>
-                        </Container>
-                        </Row>
+
                     <Row>
                         <Container className='col-md-12'>
                             <div className="btn-group pull-right">
