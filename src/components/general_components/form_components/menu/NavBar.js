@@ -29,8 +29,8 @@ class NavBar extends React.Component{
                                          </Link>
                                     </li> 
                                     <li>
-                                         <Link to={'/registroBeneficiario'}>
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Registrar 
+                                         <Link to={'/inscribirBeneficiario'}>
+                                            <span className="glyphicon glyphicon-chevron-right"></span> Inscribir 
                                          </Link>
                                     </li>      
                                 </ul>
