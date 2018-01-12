@@ -6,7 +6,7 @@ import { Route, Switch } from 'react-router-dom';
 //import Home from './forms/Home/Home'; <Route exact path='/' component={Home} />
 
 import visualizarClub from './forms/Club/visualizarClub';
-import registroClub from './forms/Club/registroClub';
+import asignarPSClub from './forms/Club/asignarPSClub';
 import visualizarPuntoSatelite from './forms/Punto_Satelite/visualizarPuntoSatelite';
 import visualizarCoFacilitador from './forms/CoFacilitador/visualizarCoFacilitador';
 import asignarClub from './forms/CoFacilitador/asignarClub';
@@ -38,7 +38,7 @@ class App extends Component {
             <Switch>
               
               <Route path='/visualizarclub' component={visualizarClub} />
-              <Route path='/registroclub' component={registroClub} />
+              <Route path='/asignarpsclub' component={asignarPSClub} />
               <Route path='/visualizarpuntosatelite' component={visualizarPuntoSatelite} />   
               <Route path='/visualizarcofacilitador' component={visualizarCoFacilitador} />  
               <Route path='/asignarclub' component={asignarClub} />            

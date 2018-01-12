@@ -98,18 +98,23 @@ export default class inscribirBeneficiario extends React.Component{
                 <Row>
 
                             <Row>
-                            <Container className='col-md-4' >
+                            <Container className='col-md-3' >
                                     <Label>Beneficiario:</Label>
-                                    <ReactSelectAsync name="options_programa_sel" value={this.state.options_programa_sel} onChange={(value) => { this.setState({ options_programa_sel: value }) }} func_loadOptions={this.getOptionsBeneficiario.bind(this)} />
+                                    <ReactSelectAsync name="options_beneficiario_sel" value={this.state.options_beneficiario_sel} onChange={(value) => { this.setState({ options_beneficiario_sel: value }) }} func_loadOptions={this.getOptionsBeneficiario.bind(this)} />
                                 </Container>
-                                <Container className='col-md-4' >
+                                <Container className='col-md-3' >
                                     <Label>Programa:</Label>
                                     <Selects name="options_programa_sel" value={this.state.options_programa_sel} onChange={(value) => { this.setState({ options_programa_sel: value }) }} options={this.state.options_programa} />
                                 </Container>
-                                <Container className='col-md-4' >
+                                <Container className='col-md-3' >
                                     <Label>Estado:</Label>
                                     <Selects name="options_estado_sel" value={this.state.options_estado_sel}  onChange={(value) => { this.setState({ progoptions_estado_selrama: value }) }} options={this.state.options_estado} />
                                 </Container>
+                                <Container className='col-md-3' >
+                                    <Label>Fecha:</Label>
+                                    <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
+                                </Container>
+                                
                             </Row>
                             <Row>
                                 <Container className='col-md-12'>

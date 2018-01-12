@@ -22,7 +22,6 @@ class visualizarBeneficiario extends React.Component{
     constructor() { //Permite pasar valores al componente
         super();
         this.state = {
-            estado: "",
             cedula: "",
             codigo:"",
             fecha_creacion:"",
@@ -38,7 +37,6 @@ class visualizarBeneficiario extends React.Component{
             apellidoRe:"",
             direccion:"",
             telefono:"",
-            programa:"",
             //SELECTS
             options_estado: [],
             options_estado_sel: '',
@@ -48,49 +46,49 @@ class visualizarBeneficiario extends React.Component{
             isShowingModal: false,
 
             //Grid
-            data: [],
-            columnDefs: [{      header: "Codigo",
-                                field: "Codigo",
-                                width: 100,
-                                type: "string"
-                            },
-                            {
-                                header: "Nombre",
-                                field: "Nombre",
-                                width: 90,
-                                type: "string"
-                            },
-                            {
-                                header: "Apellido",
-                                field: "Apellido",
-                                width: 90,
-                                type: "string"
-                            },
-                            {
-                                header: "Edad",
-                                field: "Edad",
-                                width: 80,
-                                type: "string"
-                            },
-                            {
-                                header: "Estado",
-                                field: "Estado",
-                                width: 60,
-                                type: "string"
-                            },
-                            {
-                                header: "",
-                                field: "modificar",
-                                width: 40,
-                                type: "boton_modi"
-                            },
-                            {
-                                header: "",
-                                field: "eliminar",
-                                width: 40,
-                                type: "boton_elim"
-                            }
-                        ],
+            gridBeneficiario: [],
+            columnDefs_Beneficiario: [{         header: "Codigo",
+                                                field: "Codigo",
+                                                width: 100,
+                                                type: "string"
+                                            },
+                                            {
+                                                header: "Nombre",
+                                                field: "Nombre",
+                                                width: 90,
+                                                type: "string"
+                                            },
+                                            {
+                                                header: "Apellido",
+                                                field: "Apellido",
+                                                width: 90,
+                                                type: "string"
+                                            },
+                                            {
+                                                header: "Edad",
+                                                field: "Edad",
+                                                width: 80,
+                                                type: "string"
+                                            },
+                                            {
+                                                header: "Estado",
+                                                field: "Estado",
+                                                width: 60,
+                                                type: "string"
+                                            },
+                                            {
+                                                header: "",
+                                                field: "modificar",
+                                                width: 40,
+                                                type: "boton_modi"
+                                            },
+                                            {
+                                                header: "",
+                                                field: "eliminar",
+                                                width: 40,
+                                                type: "boton_elim"
+                                            }
+                                        ],
         };
 
         //GRID
@@ -128,7 +126,7 @@ class visualizarBeneficiario extends React.Component{
 
                 <Row>
                     <Container className='col-md-12'>
-                        <AgGridRender altura='250px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                        <AgGridRender altura='250px' data={this.state.gridBeneficiario} columnas={this.state.columnDefs_Beneficiario} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
@@ -166,7 +164,7 @@ class visualizarBeneficiario extends React.Component{
                             
                             <Container className='col-md-4' >
                                     <Label>Fecha:</Label>
-                                    <DayPicker id="fecha_creacion" selected={this.state.fecha_creacion} onChange={this.ChangeDateNacimiento} />
+                                    <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
                         
                             </Container>
                         </Row>
@@ -220,7 +218,7 @@ class visualizarBeneficiario extends React.Component{
                 <Fieldset className='col-md-12'>
                         <Legend>Representante</Legend>
                             <Row>
-                            <Container className='col-md-4' >
+                                <Container className='col-md-4' >
                                     <Label>Cedula:</Label>
                                     <InputText name='cedularepresentante' value={this.state.cedularepresentante} type="string" className='form-control input-sm' placeholder='Cedula' onChange={this.changeValues} />
                                 </Container>
@@ -235,8 +233,8 @@ class visualizarBeneficiario extends React.Component{
                             </Row>
                             <Row>
                                 <Container className='col-md-8' pull-left >
-                                        <Label>Direccion:</Label>
-                                        <InputText name='direccion' value={this.state.direccion} type="string" className='form-control input-sm' placeholder='Direccion' onChange={this.changeValues} />
+                                    <Label>Direccion:</Label>
+                                    <InputText name='direccion' value={this.state.direccion} type="string" className='form-control input-sm' placeholder='Direccion' onChange={this.changeValues} />
                                 </Container>
                                 <Container className='col-md-4' >
                                     <Label>Telefono:</Label>
@@ -245,8 +243,7 @@ class visualizarBeneficiario extends React.Component{
                                     
                             </Row>
                     </Fieldset>
-
-                    </Row>
+                 </Row>
                     <Row>
                         <Container className='col-md-12'>
                             <div className="btn-group pull-right">

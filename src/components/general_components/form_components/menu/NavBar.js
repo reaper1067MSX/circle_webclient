@@ -69,8 +69,8 @@ class NavBar extends React.Component{
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to={'/registroClub'}> 
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Registrar
+                                        <Link to={'/asignarPSClub'}> 
+                                            <span className="glyphicon glyphicon-chevron-right"></span> Asignar Punto Satélite a Club
                                         </Link>
                                     </li>
                                     <li>
