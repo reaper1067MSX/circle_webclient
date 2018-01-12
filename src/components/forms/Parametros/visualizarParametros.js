@@ -50,6 +50,9 @@ class visualizarParametros extends React.Component{
             options_tipo:[],
             options_tipo_sel: '',
 
+            //estado op
+            operacion: 'G',
+
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
 
@@ -123,18 +126,38 @@ class visualizarParametros extends React.Component{
         }
     }
 
-    eliminarParametro(id ){
-        this.setState(
+    eliminarParametro(id, datos_fila ){
+        //ELIMINACION LOCAL
+        /* this.setState(
             {gridParametros: this.immutableDelete(this.state.gridParametros, id)}
-        )
+        ) */
 
+        //Eliminacion DB
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'PATCH',
+            url: '/parametros/'+datos_fila.Codigo.toString()
+        }
+    
+        global_axios(config_request)
+        .then((response)=>{
+            alert(response.data.msg);
+            //FUNC RECARGAR GRID
+            this.cargarGrid();
+            
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
     //ACTION PARA MODIFICAR
     methodModifyFromParent(id, datos_fila){
         console.log(datos_fila)
         this.setState({codigo: datos_fila.Codigo});
-        this.showModal(datos_fila);
+        this.setState({operacion: 'M'});
+        this.cargarParametro(datos_fila.Codigo);
+        this.showModal();
         
     }
 
@@ -165,18 +188,14 @@ class visualizarParametros extends React.Component{
                     <Container className='col-md-12'>
                         <div className="btn-group pull-right">
                             <Label></Label>
-                            <button type="submit" className='btn btn-primary btn-sm' onClick={this.showModal}>
+                            <button type="submit" className='btn btn-primary btn-sm' onClick={()=>this.showModal('G')}>
                             <i className="fa fa-plus-circle fa-lg"></i> Nuevo
                             </button>
                         </div>
                     </Container>
                 </Row>
             </CuerpoForm>
-
-
-
             {/*-----------------------------------------------Modal---------------------------------------------------*/}
-
             <MyModal open={this.state.isShowingModal} onClose={this.onClose}>
                 <HeaderModal>
                     <TituloForm>Registro Parametros</TituloForm>
@@ -185,7 +204,7 @@ class visualizarParametros extends React.Component{
                 <Row>
                         <Container className='col-md-4 ' >
                                 <Label>Codigo:</Label>
-                                <InputText name='codigo' value={this.state.codigo} type="text" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
+                                <InputText name='codigo' value={this.state.codigo} type="text" disabled={this.state.operacion==='M'?true:false} className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
                                 <Label>Fecha:</Label>
@@ -243,13 +262,19 @@ class visualizarParametros extends React.Component{
 
     //Functions modal
     //Abrir/cerrar
-    showModal() {
+    showModal(operacion){
+        if(operacion === 'G'){
+            this.setState({codigo: ''});
+        }
         this.setState({ isShowingModal: !this.state.isShowingModal });
-        //console.log("FECHA ACTUAL: ", this.fecha_creacion);
+        console.log("OPERACION: ", this.state.operacion)
     }
 
     onClose(event) {
         this.setState({ isShowingModal: false });
+        if(this.state.operacion === 'M'){
+            this.setState({operacion: 'G'})
+        }
     }
 
     desactivarDep(){
@@ -322,9 +347,6 @@ class visualizarParametros extends React.Component{
             .catch(err => {
                 console.log(err);
             });
-
-
-
         })
         .catch(err => {
             console.log(err);
@@ -349,6 +371,12 @@ class visualizarParametros extends React.Component{
           console.log(err);
         });
 
+        this.cargarGrid();
+        //console.log();
+        
+    }
+
+    cargarGrid(){
         //Proceso Adquirir Registros GRID
         let config_request = {
             method: 'GET',
@@ -364,13 +392,36 @@ class visualizarParametros extends React.Component{
             console.log(err);
         });
 
-        //console.log();
-        
+    }
+
+    cargarParametro(codigo){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/parametros/'+codigo
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            if(response.data === null){
+                alert("El registro no existe");
+            }else{
+                console.log(response.data);
+                var respuesta = response.data;
+                console.log(response.data.fecha_creacion)
+                //fecha_creacion: moment(response.data.fecha_creacion, 'DD/MM/YYYY'),
+                this.setState({
+                    descripcion: respuesta.descripcion, options_estado_sel: respuesta.estado,
+                    options_tipo_sel: respuesta.tipo, options_depen_sel: respuesta.dependencia,
+                    fecha_creacion: moment(response.data.fecha_creacion, 'DD/MM/YYYY'),
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
 }//End
 
 export default visualizarParametros;
-
-
-
