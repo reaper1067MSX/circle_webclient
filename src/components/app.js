@@ -12,11 +12,13 @@ import visualizarCoFacilitador from './forms/CoFacilitador/visualizarCoFacilitad
 import asignarClub from './forms/CoFacilitador/asignarClub';
 import visualizarBeneficiario from './forms/Beneficiario/visualizarBeneficiario';
 import inscribirBeneficiario from './forms/Beneficiario/inscribirBeneficiario';
-
 import visualizarParametros from './forms/Parametros/visualizarParametros';
+import login from '../components/login';
+
 
 import NavBar from './general_components/form_components/menu/NavBar';
 //import Menu from './menu';
+import TopBar from './general_components/form_components/topBar/TopBar';
 
 const ContenedorApp = styled.div`
   max-width: 100%;    
@@ -24,7 +26,7 @@ const ContenedorApp = styled.div`
 `;
 
 const ContenedorCuerpoApp = styled.div`        
-  margin-top: 40px;
+  margin-top: -5px;
   margin-left: 25%;
     
 `;  
@@ -33,10 +35,14 @@ class App extends Component {
   render() {
     return (
       <ContenedorApp>
+        
+        <TopBar/>
         <NavBar/>
         <ContenedorCuerpoApp>                                
             <Switch>
+
               
+              <Route path='/login' component={login} />
               <Route path='/visualizarclub' component={visualizarClub} />
               <Route path='/asignarpsclub' component={asignarPSClub} />
               <Route path='/visualizarpuntosatelite' component={visualizarPuntoSatelite} />   

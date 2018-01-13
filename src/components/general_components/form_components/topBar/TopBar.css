@@ -1,0 +1,86 @@
+.navbar-default{
+    font-family: verdana;
+    background:#901f61;
+    border-color: #901f61;
+    width: 100%;
+    height: 50px;
+    border-radius:0%; 
+    margin-bottom: -5px;
+    
+}
+
+.label{
+color: #fff;
+font-size: 12px;
+}
+.navbar-default .navbar-nav > li > a{
+    color:#FFF;
+}
+
+
+.nav > li > a{
+    margin:5px; 
+    font-size: 17px; 
+    color:#FFF;
+    margin-right: 25px;
+}
+
+.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
+    color: #fff;
+}
+
+.navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
+    color:#344868;
+}
+
+.navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
+    color: #fff;
+
+}
+
+.nav .open > a:focus,
+
+.nav > li > a:hover, .nav > li > a:focus{
+    background-color:transparent !important;
+ 
+}
+
+.navbar-brand{    
+    line-height: 20spx;
+    display: block;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    color: #fff !important;
+    }
+    
+.navbar-toggle{
+    margin-top:5px !important;
+    line-height: 20spx;
+}
+.dropdown-menu{
+    background:#fff !important;
+
+
+}
+.navbar-login
+{
+    width: 250px;
+    height: 50px;
+    padding-left: 10px;
+    margin:5px;
+    
+}
+
+.navbar-login-session
+{
+    padding: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;
+    
+}
+
+.icon-size
+{
+    font-size: 65px;
+}

@@ -11,15 +11,14 @@
 .nav-side-menu {
     overflow: auto;
     font-family: verdana;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 200;
     background-color: #344868;
-    position: fixed;
-    top: 0px;
-    left: 0;
-    right: 0;
+    position: absolute;
+    top: 50px;
+
     width: 22%;
-    height: 100%;
+    height: 130%;
     color: #ffffff;
     z-index: 1;
 }
