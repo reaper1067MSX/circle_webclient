@@ -37,15 +37,18 @@ font-size: 12px;
 }
 
 .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
+    background: transparent;
     color: #fff;
 }
 
 .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
     color:#344868;
+    background: transparent;
 }
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
     color: #fff;
+    background: transparent;
 
 }
 
