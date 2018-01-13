@@ -135,7 +135,7 @@ class visualizarParametros extends React.Component{
         //Eliminacion DB
         //Proceso Adquirir Registros GRID
         let config_request = {
-            method: 'PATCH',
+            method: 'DELETE',
             url: '/parametros/'+datos_fila.Codigo.toString()
         }
     
@@ -321,8 +321,8 @@ class visualizarParametros extends React.Component{
         //Request
         //Proceso Adquirir Registros GRID
         let config_request = {
-            method: 'POST',
-            url: '/parametros',
+            method: (this.state.operacion==='G'?'POST':'PATCH'),
+            url: (this.state.operacion==='G'?'/parametros':'/parametros/'+this.state.codigo.toString()),
             data
         }
        
@@ -406,9 +406,9 @@ class visualizarParametros extends React.Component{
             if(response.data === null){
                 alert("El registro no existe");
             }else{
-                console.log(response.data);
+                //console.log(response.data);
                 var respuesta = response.data;
-                console.log(response.data.fecha_creacion)
+                //console.log(response.data.fecha_creacion)
                 //fecha_creacion: moment(response.data.fecha_creacion, 'DD/MM/YYYY'),
                 this.setState({
                     descripcion: respuesta.descripcion, options_estado_sel: respuesta.estado,

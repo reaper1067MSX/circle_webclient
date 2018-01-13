@@ -327,7 +327,7 @@ class visualizarBeneficiario extends React.Component{
         global_axios(config_request)
         .then((response)=>{
             console.log("DATA respondida en request paramentros: ",response.data)
-            this.setState({data: response.data})
+            this.setState({gridBeneficiario: response.data})
         })
     }
 
