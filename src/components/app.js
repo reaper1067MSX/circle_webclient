@@ -25,7 +25,7 @@ const ContenedorApp = styled.div`
 `;
 
 const ContenedorCuerpoApp = styled.div`        
-  margin-top: 40px;
+  margin-top: 0px;
   margin-left: 25%;
     
 `;  
