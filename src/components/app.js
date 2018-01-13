@@ -12,8 +12,9 @@ import visualizarCoFacilitador from './forms/CoFacilitador/visualizarCoFacilitad
 import asignarClub from './forms/CoFacilitador/asignarClub';
 import visualizarBeneficiario from './forms/Beneficiario/visualizarBeneficiario';
 import inscribirBeneficiario from './forms/Beneficiario/inscribirBeneficiario';
-
 import visualizarParametros from './forms/Parametros/visualizarParametros';
+import login from '../components/login';
+
 
 import NavBar from './general_components/form_components/menu/NavBar';
 //import Menu from './menu';
@@ -25,7 +26,7 @@ const ContenedorApp = styled.div`
 `;
 
 const ContenedorCuerpoApp = styled.div`        
-  margin-top: 0px;
+  margin-top: -5px;
   margin-left: 25%;
     
 `;  
@@ -34,11 +35,14 @@ class App extends Component {
   render() {
     return (
       <ContenedorApp>
+        
         <TopBar/>
         <NavBar/>
         <ContenedorCuerpoApp>                                
             <Switch>
+
               
+              <Route path='/login' component={login} />
               <Route path='/visualizarclub' component={visualizarClub} />
               <Route path='/asignarpsclub' component={asignarPSClub} />
               <Route path='/visualizarpuntosatelite' component={visualizarPuntoSatelite} />   

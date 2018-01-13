@@ -1,8 +1,26 @@
 import React from 'react';
 import './TopBar.css';
+import { borrarDatosSesion, getItemDatosSesion } from '../../../../funciones_globales/manejosesion';
 import { Link } from 'react-router-dom';
 
 class TopBar extends React.Component{
+    
+    constructor(props){
+        super(props);
+
+        this.cerrarSesion = this.cerrarSesion.bind(this);
+    }
+
+    cerrarSesion(){
+        let salir = window.confirm('¿Está seguro de cerrar sesión?');
+        if (salir){
+            borrarDatosSesion();
+
+        }
+    }
+
+    
+
     render() {
         return      <div className="navbar navbar-default nav-menu">
                         <div className="navbar-header">
@@ -28,9 +46,14 @@ class TopBar extends React.Component{
                                                             </p>
                                                         </div>
                                                         <div className="col-lg-8">
-                                                            <p className="text-left"><strong>Mahesh</strong></p>
+                                                            <p className="text-left"><strong>{getItemDatosSesion('usuario').toString().toUpperCase()}</strong></p>
+                                                            <p className="text-left"><strong>{getItemDatosSesion('cargo').toString().toUpperCase()}</strong></p>
                                                             <p className="text-left">
-                                                                <a href="#" className="btn btn-primary btn-block btn-sm">Cerrar Sesión</a>
+                                                                <button type="button" className='btn btn-primary btn-sm' onClick={this.cerrarSesion}>
+                                                                    <Link to={'/login'}>
+                                                                        <p className="label">Cerrar Sesión</p>
+                                                                     </Link>
+                                                                </button>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -42,5 +65,7 @@ class TopBar extends React.Component{
                                 </ul>
             </div>
     }
+   
 }
 export default TopBar;
+

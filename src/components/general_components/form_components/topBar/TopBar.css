@@ -6,9 +6,13 @@
     height: 50px;
     border-radius:0%; 
     margin-bottom: -5px;
+    
 }
 
-
+.label{
+color: #fff;
+font-size: 12px;
+}
 .navbar-default .navbar-nav > li > a{
     color:#FFF;
 }
@@ -61,12 +65,11 @@
 }
 .navbar-login
 {
-    width: 280px;
-    height: 60px;
-    padding: 3px;
+    width: 250px;
+    height: 50px;
     padding-left: 10px;
-    padding-right: 20px;
-    padding-bottom: 0px;
+    margin:5px;
+    
 }
 
 .navbar-login-session
@@ -74,6 +77,7 @@
     padding: 10px;
     padding-bottom: 0px;
     padding-top: 0px;
+    
 }
 
 .icon-size

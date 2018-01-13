@@ -154,6 +154,7 @@ export default class Login extends React.Component{
 
             setDatosSesion('usuario', sesion_data.usuario);            
             setDatosSesion('token', sesion_data.token);
+            setDatosSesion('cargo', sesion_data.cargo);
             setDatosSesion('tiempoSesion', tiempoSesion); 
             setDatosSesion('localidad', this.state.options_localidad_sel.value); 
  
@@ -208,7 +209,9 @@ export default class Login extends React.Component{
                                         <Selects name="options_localidad_sel" value={this.state.options_localidad_sel} onChange={(value) => { this.setState({ options_localidad_sel: value }) }} options={this.state.options_localidad} />
                                     </div>
                                     
-                                    <Button data-ripple type="submit" onClick={this.login}>Acceder</Button>
+                                    <Button data-ripple type="submit" onClick={this.login}>
+                                        Acceder
+                                    </Button>
                                
                                 </form>
                             </Login2>
