@@ -17,6 +17,7 @@ import visualizarParametros from './forms/Parametros/visualizarParametros';
 
 import NavBar from './general_components/form_components/menu/NavBar';
 //import Menu from './menu';
+import TopBar from './general_components/form_components/topBar/TopBar';
 
 const ContenedorApp = styled.div`
   max-width: 100%;    
@@ -33,6 +34,7 @@ class App extends Component {
   render() {
     return (
       <ContenedorApp>
+        <TopBar/>
         <NavBar/>
         <ContenedorCuerpoApp>                                
             <Switch>

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 class NavBar extends React.Component{
     render() {
         return  <div className="nav-side-menu">
-                   <div className="brand">The Circle</div>
+                   {/*<div className="brand">The Circle</div>*/}
                       <i className="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
                         <div className="menu-list">
                             <ul id="menu-content" className="menu-content collapse out">
