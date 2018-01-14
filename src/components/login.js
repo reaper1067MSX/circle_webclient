@@ -5,6 +5,8 @@ import Selects from '../components/general_components/form_components/selects/se
 import { setDatosSesion, borrarDatosSesion } from '../funciones_globales/manejosesion';
 //import { Topbar } from '../components/general_components/form_components/container';
 import background from './login.jpg';
+import { Link } from 'react-router-dom';
+
 
 const Body = styled.div`
     font-family: 'Roboto', sans-serif;
@@ -172,10 +174,11 @@ export default class Login extends React.Component{
             }, tiempoSesion);
             
             this.props.history.push("/");
-            
+            window.location.reload(true);
             
         })
-        .catch((error)=>{                
+        .catch(
+            (error)=>{                
             alert(error.response?error.response.data.msg:error.message);      
         });
     }
@@ -210,7 +213,7 @@ export default class Login extends React.Component{
                                     </div>
                                     
                                     <Button data-ripple type="submit" onClick={this.login}>
-                                        Acceder
+                                        Acceder                                       
                                     </Button>
                                
                                 </form>

@@ -123,7 +123,7 @@ class visualizarBeneficiario extends React.Component{
                 <TituloForm>Visualizar Beneficiarios</TituloForm>
             </HeaderForm>
             <CuerpoForm>
-
+   
                 <Row>
                     <Container className='col-md-12'>
                         <AgGridRender altura='250px' data={this.state.gridBeneficiario} columnas={this.state.columnDefs_Beneficiario} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
