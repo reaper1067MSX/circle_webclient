@@ -195,6 +195,7 @@ class visualizarParametros extends React.Component{
                     </Container>
                 </Row>
             </CuerpoForm>
+
             {/*-----------------------------------------------Modal---------------------------------------------------*/}
             <MyModal open={this.state.isShowingModal} onClose={this.onClose}>
                 <HeaderModal>
@@ -257,8 +258,6 @@ class visualizarParametros extends React.Component{
         this.api = params.api;
         this.columnApi = params.columnApi;
     }
-
-    //Valores aplicados
 
     //Functions modal
     //Abrir/cerrar

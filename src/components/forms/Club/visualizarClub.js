@@ -1,20 +1,24 @@
 import React from 'react';
 //import styled from 'styled-components'; //STYLES
 
-
+import { Link } from 'react-router-dom';
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar,*/ HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
 import { Label, InputText,Fieldset,Legend ,TextArea } from '../../general_components/form_components/controles'; 
+import DayPicker from '../../general_components/form_components/date-picker/date-piker';
+import moment from 'moment';
+import { get_FechaLocalActual } from '../../../funciones_globales/utils';
+import { fomatearFechaMoment_a_String } from '../../../funciones_globales/format';
+import  global_axios  from '../../../funciones_globales/interaccion_api';
+import { cargarCatalogos, cargarCatalogosGenerico } from '../../../funciones_globales/catalogos';
+
 
 //GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
-/* import { ColumnApi, GridApi } from "ag-grid";
-import { GridOptions } from "ag-grid"; */
 
 //Modal
 import MyModal from '../../general_components/form_components/modal/modal';
 
-import { Link } from 'react-router-dom';
 
 class visualizarClub extends React.Component{
 
@@ -24,39 +28,70 @@ class visualizarClub extends React.Component{
             buscar: "",
             codigo: "",
             nombre: "",
-            punto_satelite: "",
-            programa: "",
-            estado: "",
-            options_users: [],
+            observacion:"",
+            objEspecOpc: [],
+            objEspec_sel: '',
+            programaOpc: [],
+            programa_sel:'',
+            estadoOpc: [],
+            estado_sel: 'A',
+            fecha_creacion: moment(get_FechaLocalActual(),'DD/MM/YYYY'),
+
+            //estado op
+            operacion: 'G',
 
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
 
             //Grid
-            data: [],
+            grid_club: [],
             columnDefs: [{
-                            header: "Codigo",
-                            field: "DescripcionPago",
+                            header: "Cod.",
+                            field: "Codigo",
+                            width: 50,
+                            type: "string"
+                        },
+                        {
+                            header: "Nombre",
+                            field: "Nombre",
+                            width: 150,
+                            type: "string"
+                        },
+                        {
+                            header: "Fecha",
+                            field: "fecha_creacion",
+                            width: 100,
+                            type: "string"
+                        },
+                        {
+                            header: "Obj. Est.",
+                            field: "ObjetivoEstrategico",
                             width: 150,
                             type: "string"
                         },
                         {
                             header: "Programa",
-                            field: "Banco",
+                            field: "NombrePrograma",
+                            width: 170,
+                            type: "string"
+                        },
+                        {
+                            header: "Observacion",
+                            field: "observacion",
                             width: 150,
                             type: "string"
                         },
                         {
-                            header: "Punto Satelite",
-                            field: "Cuenta",
-                            width: 150,
-                            type: "string"
+                            header: "",
+                            field: "modificar",
+                            width: 40,
+                            type: "boton_modi"
                         },
                         {
-                            header: "Horario.",
-                            field: "Cheque",
-                            width: 150,
-                            type: "num_entero"
+                            header: "",
+                            field: "eliminar",
+                            width: 40,
+                            type: "boton_elim"
                         }]
         };
 
@@ -73,7 +108,8 @@ class visualizarClub extends React.Component{
 
         //Funciones binds
         this.changeValues = this.changeValues.bind(this);
-
+        this.eliminarClub = this.eliminarClub.bind(this);
+        this.guardarClub = this.guardarClub.bind(this);
         //Modals
         this.showModal = this.showModal.bind(this); //SWITCH OPEN/CLOSE
         this.onClose = this.onClose.bind(this);     //CLOSE
@@ -81,6 +117,53 @@ class visualizarClub extends React.Component{
         //GRID
         this.onGridReady = this.onGridReady.bind(this);
 
+    }
+
+    //ACTION PARA ELIMINAR
+    methodFromParent(id ,datos_fila){
+        var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
+        
+        if (mensaje){
+            this.eliminarClub(id, datos_fila ) 
+        }
+    }
+
+    eliminarClub(id, datos_fila ){
+        let config_request = {
+            method: 'DELETE',
+            url: '/club/'+datos_fila.Codigo.toString()
+        }
+    
+        global_axios(config_request)
+        .then((response)=>{
+            alert(response.data.msg);
+            //FUNC RECARGAR GRID
+            this.cargarGrid();
+            
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    //ACTION PARA MODIFICAR
+    methodModifyFromParent(id, datos_fila){
+        console.log(datos_fila)
+        this.setState({codigo: datos_fila.Codigo});
+        this.setState({operacion: 'M'});
+        //this.cargarClub(datos_fila.Codigo);
+        this.showModal();
+    }
+
+    //Adicionar un elimento en un ARRAY INMUTABLE
+    immutablePush(array, newItem){
+        return [ ...array, newItem ];  
+    }
+
+    //Eliminar un registro especifico del ARAAY
+    immutableDelete (arr, index) {
+        var i = parseInt(index, 10);
+        return arr.slice(0,i).concat(arr.slice(i+1));
     }
 
     render() {
@@ -92,13 +175,13 @@ class visualizarClub extends React.Component{
             <CuerpoForm>
                 <Row>
                     <Container className='col-md-12'>
-                        <AgGridRender altura='250px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                        <AgGridRender altura='250px' data={this.state.grid_club} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
                     <Container className='col-md-12'>
                         <div className="btn-group pull-right">
-                                <button type="submit" className='btn btn-primary btn-sm' onClick={this.showModal}>
+                                <button type="submit" className='btn btn-primary btn-sm' onClick={()=>this.showModal('G')}>
                                     <i className="fa fa-plus-circle fa-lg"></i> Nuevo
                                 </button>
                         </div>
@@ -117,15 +200,15 @@ class visualizarClub extends React.Component{
                     <Row>
                         <Container className='col-md-4' >
                                 <Label>Codigo:</Label>
-                                <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
+                                <InputText name='codigo' value={this.state.codigo} disabled={this.state.operacion==='M'?true:false} type="number" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Fecha:</Label>
-                            <InputText name='fecha' value={this.state.fecha} type="date" className='form-control input-sm'  onChange={this.changeValues} />
+                            <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Estado:</Label>
-                            <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
+                            <Selects name="estado_sel" value={this.state.estado_sel} onChange={(value) => { this.setState({ estado_sel: value }) }} options={this.state.estadoOpc} />
                          </Container> 
                     </Row>
                     <Row>
@@ -134,12 +217,12 @@ class visualizarClub extends React.Component{
                             <InputText name='nombre' value={this.state.nombre} type="text" className='form-control input-sm' placeholder='Nombre' onChange={this.changeValues} />
                          </Container>
                          <Container className='col-md-4'>
-                            <Label>Estrategia:</Label>
-                            <Selects name="options_estrategia_sel" value={this.state.options_estrategia_sel} onChange={(value) => { this.setState({ options_estrategia_sel: value }) }} options={this.state.options_estrategia} />
+                            <Label>Obj. Est.:</Label>
+                            <Selects name="objEspec_sel" value={this.state.objEspec_sel} onChange={(value) => { this.setState({ objEspec_sel: value }) }} options={this.state.objEspecOpc} />
                         </Container>
                          <Container className='col-md-4'>  
                             <Label>Programa:</Label>
-                            <Selects name="options_programa_sel" value={this.state.options_programa_sel} onChange={(value) => { this.setState({ options_programa_sel: value }) }} options={this.state.options_programa} />
+                            <Selects name="programa_sel" value={this.state.programa_sel} onChange={(value) => { this.setState({ programa_sel: value }) }} options={this.state.programaOpc} />
                         </Container>
                     </Row>
                     <Row>
@@ -176,42 +259,24 @@ class visualizarClub extends React.Component{
         this.columnApi = params.columnApi;
     }
 
-    //Valores aplicados
-
-
-    //Functions modal
-    //Abrir/cerrar
-    showModal(event) {
-        this.setState({ isShowingModal: !this.state.isShowingModal })
+    //Abrir/cerrar modal
+    showModal(operacion) {
+        if(operacion === 'G'){
+            this.setState({codigo: ''});
+        }
+        this.setState({ isShowingModal: !this.state.isShowingModal });
+        console.log("OPERACION: ", this.state.operacion)
     }
 
     onClose(event) {
         this.setState({ isShowingModal: false });
+        if(this.state.operacion === 'M'){
+            this.setState({operacion: 'G'})
+        }
     }
-
 
     //Functions
-
-    ChangeDateCreacion(day) {
-        //SAVE
-        this.setState({ fecha_creacion: day });
-
-        //LEERLO
-        //moment.locale('es');
-        //alert(moment(this.state.fecha_creacion).format('L'));
-    }
-
-    ChangeDateVigencia(event) {
-        console.log(event);
-        this.setState({ fecha_vigencia: event });
-    }
-
-
-//Functions
-
     changeValues(event) {
-
-        console.log("evento: ", event)
         const target = event.target;
         const name = target.name;
         const value = target.value;
@@ -222,12 +287,81 @@ class visualizarClub extends React.Component{
 
     //Realiza todas estas operaciones al renderizar el form
     componentDidMount() {
-        var options = [{ value: 0, label: 'YORK' },
-        { value: 1, label: 'Amadeus' },
-        { value: 2, label: 'Landa' },
-        { value: 3, label: 'FORK' }]
+        Promise.all([
+            cargarCatalogos('GENESTADO'), cargarCatalogosGenerico('/parametros?tipo=O'),cargarCatalogosGenerico('/parametros?tipo=P')
 
-        this.setState({ options_users: options })
+        ])
+        .then(([result_estado, result_objetivo, result_programa]) => {
+            this.setState(
+                { estadoOpc: result_estado,  objEspecOpc: result_objetivo, programaOpc: result_programa   
+            }, ()=>{
+                //DEFAULT VALUE DESPUES DE ASIGNAR
+                this.state.estadoOpc.forEach((OP)=>{
+                    if(OP.value === 'A'){
+                        this.setState({estado_sel: OP});
+                    }
+                })
+            })
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+        this.cargarGrid();
+    }
+
+    cargarGrid(){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/club?estado=A'
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            this.setState({grid_club: response.data})
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
+    }
+
+    //INSERT CLUB
+    guardarClub(){
+        //VALIDACION DE CAMPS REQUERIDOS
+
+        //Asignacion a guardar
+        var data = {};
+
+        data.codigo = this.state.codigo;
+        data.fecha_creacion = moment(this.state.fecha_creacion).format('L');
+        data.nombre = this.state.nombre;
+        data.estado_sel = this.state.estado_sel.value;
+        data.objEspec_sel = this.state.objEspec_sel.value;
+        data.options_estado_sel = this.state.estado_sel.value;
+        data.programa_sel = this.state.programa_sel.value;
+        data.observacion = this.state.observacion;
+        
+        //Request
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: (this.state.operacion==='G'?'POST':'PATCH'),
+            url: (this.state.operacion==='G'?'/club':'/club/'+this.state.codigo.toString()),
+            data
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            alert(response.data.msg);
+            //Actualizacion del grid luego de guardar
+            this.cargarGrid();
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
 }//End
