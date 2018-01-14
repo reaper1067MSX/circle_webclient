@@ -34,8 +34,10 @@ const ContenedorCuerpoApp = styled.div`
 class App extends Component {
   render() {
     return (
-      <ContenedorApp>
-        
+     
+
+      <ContenedorApp >
+
         <TopBar/>
         <NavBar/>
         <ContenedorCuerpoApp>                                
@@ -56,8 +58,10 @@ class App extends Component {
             </Switch>    
         </ContenedorCuerpoApp>
       </ContenedorApp>
+      
     );
   }
+  
 }
 
 export default App;

@@ -7,6 +7,9 @@ class TopBar extends React.Component{
     
     constructor(props){
         super(props);
+        this.state={
+            controlSesion:true
+        };
 
         this.cerrarSesion = this.cerrarSesion.bind(this);
     }
@@ -15,7 +18,7 @@ class TopBar extends React.Component{
         let salir = window.confirm('¿Está seguro de cerrar sesión?');
         if (salir){
             borrarDatosSesion();
-
+            this.setState({controlSesion: false});
         }
     }
 
@@ -50,7 +53,7 @@ class TopBar extends React.Component{
                                                             <p className="text-left"><strong>{getItemDatosSesion('cargo').toString().toUpperCase()}</strong></p>
                                                             <p className="text-left">
                                                                 <button type="button" className='btn btn-primary btn-sm' onClick={this.cerrarSesion}>
-                                                                    <Link to={'/login'}>
+                                                                    <Link to={this.state.controlSesion===false?'/login':'/'}>
                                                                         <p className="label">Cerrar Sesión</p>
                                                                      </Link>
                                                                 </button>

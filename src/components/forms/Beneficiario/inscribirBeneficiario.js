@@ -135,6 +135,7 @@ export default class inscribirBeneficiario extends React.Component{
                                     </div>
                                 </Container>
                             </Row>
+                            
             </Row>
             </CuerpoForm>
 
