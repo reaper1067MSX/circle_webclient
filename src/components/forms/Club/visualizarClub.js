@@ -1,7 +1,6 @@
 import React from 'react';
 //import styled from 'styled-components'; //STYLES
 
-import { Link } from 'react-router-dom';
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar,*/ HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
 import { Label, InputText,Fieldset,Legend ,TextArea } from '../../general_components/form_components/controles'; 
@@ -25,7 +24,6 @@ class visualizarClub extends React.Component{
     constructor() { //Permite pasar valores al componente
         super();
         this.state = {
-            buscar: "",
             codigo: "",
             nombre: "",
             observacion:"",
@@ -151,7 +149,7 @@ class visualizarClub extends React.Component{
         console.log(datos_fila)
         this.setState({codigo: datos_fila.Codigo});
         this.setState({operacion: 'M'});
-        //this.cargarClub(datos_fila.Codigo);
+        this.cargarClub(datos_fila.Codigo);
         this.showModal();
     }
 
@@ -340,7 +338,6 @@ class visualizarClub extends React.Component{
         data.nombre = this.state.nombre;
         data.estado_sel = this.state.estado_sel.value;
         data.objEspec_sel = this.state.objEspec_sel.value;
-        data.options_estado_sel = this.state.estado_sel.value;
         data.programa_sel = this.state.programa_sel.value;
         data.observacion = this.state.observacion;
         
@@ -358,6 +355,34 @@ class visualizarClub extends React.Component{
             alert(response.data.msg);
             //Actualizacion del grid luego de guardar
             this.cargarGrid();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    cargarClub(codigo){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/club/'+codigo
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            if(response.data === null){
+                alert("El registro no existe");
+            }else{
+                //console.log(response.data);
+                var respuesta = response.data;
+                console.log(response.data)
+                this.setState({
+                    codigo: respuesta.id, fecha_creacion: moment(respuesta.fecha_creacion, 'DD/MM/YYYY'),
+                    nombre: respuesta.nombre, estado_sel: respuesta.estado, objEspec_sel: respuesta.objetivo_Estrategico,
+                    programa_sel: respuesta.programa, observacion: (respuesta.observacion===null?'':respuesta.observacion),
+                    
+                });
+            }
         })
         .catch(err => {
             console.log(err);
