@@ -3,11 +3,10 @@ import React from 'react';
 
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar,*/ HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
-import { Label, InputText,Fieldset,Legend ,TextArea } from '../../general_components/form_components/controles'; 
+import { Label, InputText ,TextArea } from '../../general_components/form_components/controles'; 
 import DayPicker from '../../general_components/form_components/date-picker/date-piker';
 import moment from 'moment';
 import { get_FechaLocalActual } from '../../../funciones_globales/utils';
-import { fomatearFechaMoment_a_String } from '../../../funciones_globales/format';
 import  global_axios  from '../../../funciones_globales/interaccion_api';
 import { cargarCatalogos, cargarCatalogosGenerico } from '../../../funciones_globales/catalogos';
 

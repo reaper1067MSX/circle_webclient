@@ -4,13 +4,11 @@ import React from 'react';
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, Row, HeaderForm, Container, TituloForm, HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
 import { Label, InputText, Fieldset, Legend, TextArea } from '../../general_components/form_components/controles';
-import { Link } from 'react-router-dom';
 import DayPicker from '../../general_components/form_components/date-picker/date-piker';
 import moment from 'moment';
 import { get_FechaLocalActual } from '../../../funciones_globales/utils';
-import { fomatearFechaMoment_a_String } from '../../../funciones_globales/format';
 import  global_axios  from '../../../funciones_globales/interaccion_api';
-import { cargarCatalogos, cargarCatalogosGenerico } from '../../../funciones_globales/catalogos';
+import { cargarCatalogos } from '../../../funciones_globales/catalogos';
 
 //GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
