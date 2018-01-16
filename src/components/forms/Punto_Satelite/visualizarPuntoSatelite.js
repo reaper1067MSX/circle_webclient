@@ -38,14 +38,15 @@ class visualizarPuntoSatelite extends React.Component{
         super();
         this.state = {
             codigo:"",
+            localidad: "",
             nombre: "",
             fecha_creacion: moment(get_FechaLocalActual(),'DD/MM/YYYY'),
             telefono:"",
             direccion:"",
-            Longitud:"",
-            Latitud:"",
-            Responsable:"",
-            Capacidad:"",
+            longitud:"",
+            latitud:"",
+            responsable:"",
+            capacidad:"",
             //SELECTS
             options_estado: [],
             options_estado_sel: '',
@@ -62,6 +63,12 @@ class visualizarPuntoSatelite extends React.Component{
             //Grid
             grid_Satelite: [],
             columnDefs_Satelite: [
+                                    {
+                                        header: "Codigo",
+                                        field: "Codigo",
+                                        width: 50,
+                                        type: "string"
+                                    },
                                     {
                                         header: "Nombre",
                                         field: "Nombre",
@@ -108,6 +115,8 @@ class visualizarPuntoSatelite extends React.Component{
 
         //Funciones binds
         this.changeValues = this.changeValues.bind(this);
+        this.eliminarParametro = this.eliminarParametro.bind(this);
+        this.guardarPuntoSatelite = this.guardarPuntoSatelite.bind(this);
 
         //Modals
         this.showModal = this.showModal.bind(this); //SWITCH OPEN/CLOSE
@@ -115,9 +124,62 @@ class visualizarPuntoSatelite extends React.Component{
 
         //GRID
         this.onGridReady = this.onGridReady.bind(this);
-
-
     }
+
+    //ACTION PARA ELIMINAR
+    methodFromParent(id ,datos_fila){
+        var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
+        
+        if (mensaje){
+            this.eliminarParametro(id, datos_fila ) 
+        }
+    }
+
+    eliminarParametro(id, datos_fila ){
+        //ELIMINACION LOCAL
+        /* this.setState(
+            {gridParametros: this.immutableDelete(this.state.gridParametros, id)}
+        ) */
+
+        //Eliminacion DB
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'DELETE',
+            url: '/puntosatelite/'+datos_fila.Codigo.toString()
+        }
+    
+        global_axios(config_request)
+        .then((response)=>{
+            alert(response.data.msg);
+            //FUNC RECARGAR GRID
+            this.cargarGrid();
+            
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+       
+//ACTION PARA MODIFICAR
+methodModifyFromParent(id, datos_fila){
+    console.log(datos_fila)
+    this.setState({codigo: datos_fila.Codigo});
+    this.setState({operacion: 'M'});
+    this.cargarPuntoSatelite(datos_fila.Codigo);
+    this.showModal();
+}
+
+ //Adicionar un elimento en un ARRAY INMUTABLE
+ immutablePush(array, newItem){
+    return [ ...array, newItem ];  
+}
+
+//Eliminar un registro especifico del ARAAY
+immutableDelete (arr, index) {
+    var i = parseInt(index, 10);
+    return arr.slice(0,i).concat(arr.slice(i+1));
+}
 
     render() {
 
@@ -156,11 +218,11 @@ class visualizarPuntoSatelite extends React.Component{
                 <Row>
                     <Container className='col-md-4' >
                         <Label>Codigo:</Label>
-                        <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
+                        <InputText name='codigo' value={this.state.codigo} type="text" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
                     </Container>
                     <Container className='col-md-3' >
                         <Label>Estado:</Label>
-                        <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_estado} />
+                        <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
                     </Container>
                     <Container className='col-md-5' >
                         <Label>Fecha:</Label>
@@ -178,7 +240,7 @@ class visualizarPuntoSatelite extends React.Component{
                                 </Container>
                                 <Container className='col-md-5' > 
                                     <Label>Telf:</Label>
-                                    <InputText name='telefono' value={this.state.latitud} type="text" className='form-control input-sm' placeholder='Telefono' onChange={this.changeValues} />
+                                    <InputText name='telefono' value={this.state.telefono} type="text" className='form-control input-sm' placeholder='Telefono' onChange={this.changeValues} />
                                 </Container>
                             </Row>
                             <Row>
@@ -221,9 +283,9 @@ class visualizarPuntoSatelite extends React.Component{
                             </button>
                             </div>
                             <div className="btn-group pull-right">
-                                <button type="submit" className='btn btn-primary btn-sm'>
+                                <button type="button" className='btn btn-primary btn-sm' onClick={this.guardarPuntoSatelite}>
                                     <i className="fa fa-floppy-o fa-lg"></i> Guardar
-                            </button>
+                                </button>
                             </div>
                         </Container>
                     </Row>
@@ -255,10 +317,7 @@ class visualizarPuntoSatelite extends React.Component{
         this.setState({ isShowingModal: false });
     }
 
-
     //Functions
-
-
     changeValues(event) {
 
         console.log("evento: ", event)
@@ -278,8 +337,14 @@ class visualizarPuntoSatelite extends React.Component{
         .then(([result_tipoPuntoSatelie, result_genEstado]) => {
             this.setState(
               { options_tipo: result_tipoPuntoSatelie,  options_estado: result_genEstado      
-              })
-              
+              }, ()=>{
+                //DEFAULT VALUE DESPUES DE ASIGNAR
+                this.state.options_estado.forEach((OP)=>{
+                    if(OP.value === 'A'){
+                        this.setState({options_estado_sel: OP});
+                    }
+                })
+            })
         })
         .catch(err => {
             console.log(err);
@@ -305,6 +370,84 @@ class visualizarPuntoSatelite extends React.Component{
         });
 
     }
+
+    guardarPuntoSatelite(){
+        //VALIDACION DE CAMPS REQUERIDOS
+
+        //Asignacion a guardar
+        var data = {};
+        data.codigo = this.state.codigo;
+        data.localidad = getItemDatosSesion('localidad');
+        data.nombre = this.state.nombre;
+        data.options_tipo_sel = this.state.options_tipo_sel.value;
+        data.longitud = this.state.longitud;
+        data.latitud = this.state.latitud;
+        data.telefono = this.state.telefono;
+        data.capacidad = this.state.capacidad;
+        data.options_estado_sel = this.state.options_estado_sel.value;
+        data.fecha_creacion = moment(this.state.fecha_creacion).format('L');
+        data.direccion = this.state.direccion;
+        data.responsable = this.state.responsable;
+        
+
+        //Request
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: (this.state.operacion==='G'?'POST':'PATCH'),
+            url: (this.state.operacion==='G'?'/puntosatelite':'/puntosatelite/'+this.state.codigo.toString()),
+            data
+        }
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            alert(response.data.msg);
+            //Actualizacion del grid luego de guardar
+            this.cargarGrid();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    
+    cargarPuntoSatelite(codigo){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/puntosatelite/'+codigo
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            if(response.data === null){
+                alert("El registro no existe");
+            }else{
+                //console.log(response.data);
+                var respuesta = response.data;
+                console.log(response.data)
+                this.setState({
+                    codigo: respuesta.id, 
+                    localidad: respuesta.localidad, 
+                    nombre: respuesta.nombre,
+                    options_tipo_sel: respuesta.tipo,
+                    longitud: respuesta.longitud,
+                    latitud: respuesta.latitud,
+                    telefono: respuesta.telefono,
+                    capacidad: respuesta.capacidad,
+                    options_estado_sel: respuesta.estado,
+                    fecha_creacion: moment(respuesta.fecha_registro, 'DD/MM/YYYY'),
+                    direccion: respuesta.direccion,
+                    responsable: respuesta.responsable
+   
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+
 
 }//End
 
