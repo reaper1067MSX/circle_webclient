@@ -5,7 +5,6 @@ import Selects from '../components/general_components/form_components/selects/se
 import { setDatosSesion, borrarDatosSesion } from '../funciones_globales/manejosesion';
 //import { Topbar } from '../components/general_components/form_components/container';
 import background from './login.jpg';
-import { Link } from 'react-router-dom';
 
 
 const Body = styled.div`

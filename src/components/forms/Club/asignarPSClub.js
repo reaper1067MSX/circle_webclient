@@ -5,7 +5,7 @@ import ReactSelectAsync from '../../general_components/form_components/select-as
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar*/ } from '../../general_components/form_components/container';
 import { Label, InputText, Fieldset, Legend, TextArea, Fieldset1, Legend1 } from '../../general_components/form_components/controles';
-
+import { cargarCatalogos, cargarCatalogosGenerico, cargarCatalogosGenericoAsync} from '../../../funciones_globales/catalogos';
 import DayPicker from '../../general_components/form_components/date-picker/date-piker';
 import moment from 'moment';
 
@@ -17,10 +17,10 @@ import { getItemDatosSesion, delDatosSesion } from '../../../funciones_globales/
 
 
 const ContenedorBotonAdd = styled.div`
-padding-top: 20px;
-@media (max-width: 991px) {
-  padding: 0px;
-}
+    padding-top: 20px;
+    @media (max-width: 991px) {
+    padding: 0px;
+    }
 `;
 
 
@@ -29,11 +29,13 @@ export default class asignarPSClub extends React.Component{
         super();
         this.state = {
             codigo:"",
-            fecha:"",
+            fecha_creacion: moment(),
             nombre: "",
             desde:"",
             hasta:"",
             observacion:"",
+            club_sel: "",
+
             //SELECTS
             options_estado: [],
             options_estado_sel: '',
@@ -41,15 +43,7 @@ export default class asignarPSClub extends React.Component{
             options_estrategia: [],
             options_programa_sel:'',
             options_programa: [],
-            options_dia:[{ value: 0, label: 'Lunes' },
-                        { value: 1, label: 'Martes' },
-                        { value: 2, label: 'Miercoles' },
-                        { value: 3, label: 'Jueves' },
-                        { value: 4, label: 'Viernes' },
-                        { value: 5, label: 'Sabado' },
-                        { value: 6, label: 'Domingo' }],
-            
-
+            options_dia:[],
 
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
@@ -66,20 +60,26 @@ export default class asignarPSClub extends React.Component{
                                         pinned: true
                                     },
                                     {   header: "Codigo",
-                                        field: "Codigo",
+                                        field: "id",
                                         width: 150,
                                         type: "string"
                                     },
                                     {
                                         header: "Nombre",
-                                        field: "Nombre",
+                                        field: "nombre",
                                         width: 150,
                                         type: "string"
                                     },
                                     {
                                         header: "Tipo",
-                                        field: "Tipo",
+                                        field: "tipo",
                                         width: 150,
+                                        type: "string",
+                                    },
+                                    {
+                                        header: "Dirección",
+                                        field: "direccion",
+                                        width: 250,
                                         type: "string",
                                     }
                                 ],
@@ -144,17 +144,16 @@ export default class asignarPSClub extends React.Component{
         delDatosSesion('localidad');
     }
 
-    getOptionsClub(input, callback){
-        if(input.toString().length >= 3){
-            let cadena_busq = '?cadena_busq='+input;
-            
-        }
+    getOptions_Club(input, callback){
 
+        if (input.toString().length >= 3 ){
+            let cadena_busq = '?cadena_busq=' + input;
+            cargarCatalogosGenericoAsync('/club', cadena_busq, callback)  
+        }
     }
 
 
     render() {
-
         return <div className="container">
             <HeaderForm>
                 <TituloForm>Asignación de Punto Satélite a Club</TituloForm>
@@ -163,7 +162,7 @@ export default class asignarPSClub extends React.Component{
                     <Row>
                         <Container className='col-md-4' >
                              <Label>Club:</Label>
-                             <ReactSelectAsync name="options_club_sel" value={this.state.options_club_sel} onChange={(value) => { this.setState({ options_club_sel: value }) }} func_loadOptions={this.getOptionsClub.bind(this)} />
+                             <ReactSelectAsync  value={this.state.club_sel} func_onChange={(value)=>{this.setState({club_sel: value})}} func_loadOptions={this.getOptions_Club.bind(this)} />
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Estado:</Label>
@@ -257,11 +256,7 @@ export default class asignarPSClub extends React.Component{
         //alert(moment(this.state.fecha_creacion).format('L'));
     }
 
-    
-
     //Functions
-
-
     changeValues(event) {
 
         console.log("evento: ", event)
@@ -273,12 +268,26 @@ export default class asignarPSClub extends React.Component{
         });
     }
 
-    //Realiza todas estas operaciones al renderizar el form
-    componentDidMount() {
-        //var options = 
-        console.log("LOCALIDAD: ",getItemDatosSesion('localidad'));
+    //Realiza todas estas operaciones al renderizar el form catalogos?tabla=DIASEMANA&estado=A
+    componentDidMount(){
+        Promise.all([
+            cargarCatalogos('GENESTADO'), cargarCatalogos('DIASEMANA')
+        ])
+        .then(([result_estado, result_dia]) => {
+            this.setState(
+                { options_estado: result_estado, options_dia: result_dia }, ()=>{
+                //DEFAULT VALUE DESPUES DE ASIGNAR
+                this.state.options_estado.forEach((OP)=>{
+                    if(OP.value === 'A'){
+                        this.setState({options_estado_sel: OP});
+                    }
+                })
+            })
+        })
+        .catch(err => {
+          console.log(err);
+        });
+        
+        //console.log("LOCALIDAD: ",getItemDatosSesion('localidad'));
     }
-
-    
-
 }//End
