@@ -47,7 +47,14 @@ class visualizarCoFacilitador extends React.Component{
 
             //Grid
             grid_cofacilitador: [],
-            columnDefs_cofacilitador: [ {
+            columnDefs_cofacilitador: [ 
+                                        {
+                                            header: "Cedula",
+                                            field: "Codigo",
+                                            width: 100,
+                                            type: "string"
+                                        },
+                                        {
                                             header: "Nombre",
                                             field: "Nombre",
                                             width: 150,
@@ -153,6 +160,15 @@ class visualizarCoFacilitador extends React.Component{
             });
         }
     
+//ACTION PARA MODIFICAR
+methodModifyFromParent(id, datos_fila){
+    console.log(datos_fila)
+    this.setState({cedula: datos_fila.Codigo});
+    this.setState({operacion: 'M'});
+    this.cargarCoFacilitador(datos_fila.Codigo);
+    this.showModal();
+}
+
         //Adicionar un elimento en un ARRAY INMUTABLE
     immutablePush(array, newItem){
         return [ ...array, newItem ];  
@@ -227,7 +243,7 @@ class visualizarCoFacilitador extends React.Component{
                     <Row>
                         <Container className='col-md-3' >
                             <Label>Estado:</Label>
-                            <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_estado} />
+                            <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
                         </Container>
                         <Container className='col-md-9' >
                             <Label>Motivo:</Label>
@@ -383,6 +399,39 @@ class visualizarCoFacilitador extends React.Component{
         });
 
     }
+
+    
+    cargarCoFacilitador(cedula){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/cofacilitadores/'+cedula
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            if(response.data === null){
+                alert("El registro no existe");
+            }else{
+                //console.log(response.data);
+                var respuesta = response.data;
+                console.log(response.data)
+                this.setState({
+                    cedula: respuesta.cedula, codigo: respuesta.cod_apadrinado, fecha_creacion: moment(respuesta.fecha_inscripcion, 'DD/MM/YYYY'),
+                    localidad: respuesta.localidad, nombres: respuesta.nombre, apellidos: respuesta.apellido,
+                    fecha_nacimiento: moment(respuesta.fecha_nacimiento, 'DD/MM/YYYY'),
+                    observacion: (respuesta.observaciones===null?'':respuesta.observaciones),
+                    options_estado_sel: respuesta.estado
+                    
+                });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+
 
 }//End
 

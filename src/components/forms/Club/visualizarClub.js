@@ -198,7 +198,7 @@ class visualizarClub extends React.Component{
                     <Row>
                         <Container className='col-md-4' >
                                 <Label>Codigo:</Label>
-                                <InputText name='codigo' value={this.state.codigo} disabled={this.state.operacion==='M'?true:false} type="number" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
+                                <InputText name='codigo' value={this.state.codigo} disabled={this.state.operacion==='M'?true:false} type="text"className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Fecha:</Label>
