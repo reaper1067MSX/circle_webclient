@@ -10,10 +10,17 @@ import moment from 'moment';
 
 //GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
+import { get_FechaLocalActual } from '../../../funciones_globales/utils';
 
 //Modal
 import MyModal from '../../general_components/form_components/modal/modal';
 
+
+import  global_axios  from '../../../funciones_globales/interaccion_api';
+import { cargarCatalogos, cargarCatalogosGenerico } from '../../../funciones_globales/catalogos';
+
+import { getItemDatosSesion } from '../../../funciones_globales/manejosesion';
+import { fomatearFechaMoment_a_String } from '../../../funciones_globales/format';
 
 
 
@@ -30,38 +37,63 @@ class visualizarPuntoSatelite extends React.Component{
     constructor() { //Permite pasar valores al componente
         super();
         this.state = {
-            buscar: "",
+            codigo:"",
             nombre: "",
-            punto_satelite: "",
-            programa: "",
-            estado: "",
-            options_users: [],
+            fecha_creacion: moment(get_FechaLocalActual(),'DD/MM/YYYY'),
+            telefono:"",
+            direccion:"",
+            Longitud:"",
+            Latitud:"",
+            Responsable:"",
+            Capacidad:"",
+            //SELECTS
+            options_estado: [],
+            options_estado_sel: '',
+            options_tipo:[],
+            options_tipo_sel: '',
+
+             //estado op
+             operacion: 'G',
+
 
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
 
             //Grid
-            data: [],
-            columnDefs: [{
-                header: "Codigo",
-                field: "DescripcionPago",
-                width: 150,
-                type: "string"
-            },
-            {
-                header: "Nombre",
-                field: "Banco",
-                width: 150,
-                type: "string"
-            },
-            {
-                header: "Tipo",
-                field: "Cuenta",
-                width: 150,
-                type: "string",
-            }
-            ],
-        };
+            grid_Satelite: [],
+            columnDefs_Satelite: [
+                                    {
+                                        header: "Nombre",
+                                        field: "Nombre",
+                                        width: 150,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Tipo",
+                                        field: "Tipo",
+                                        width: 50,
+                                        type: "string",
+                                    },
+                                    {
+                                        header: "Direccion",
+                                        field: "Direccion",
+                                        width: 200,
+                                        type: "string",
+                                    },
+                                    {
+                                        header: "",
+                                        field: "modificar",
+                                        width: 40,
+                                        type: "boton_modi"
+                                    },
+                                    {
+                                        header: "",
+                                        field: "eliminar",
+                                        width: 40,
+                                        type: "boton_elim"
+                                    }
+                                    ],
+            };
 
         //GRID
         this.gridOptions = {
@@ -97,7 +129,7 @@ class visualizarPuntoSatelite extends React.Component{
             <CuerpoForm>
                 <Row>
                     <Container className='col-md-12'>
-                        <AgGridRender altura='250px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                        <AgGridRender altura='250px' data={this.state.grid_Satelite} columnas={this.state.columnDefs_Satelite} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
@@ -128,11 +160,11 @@ class visualizarPuntoSatelite extends React.Component{
                     </Container>
                     <Container className='col-md-3' >
                         <Label>Estado:</Label>
-                        <Selects name="estado" value={this.state.estado} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                        <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_estado} />
                     </Container>
                     <Container className='col-md-5' >
                         <Label>Fecha:</Label>
-                        <DayPicker id="fecha_creacion" selected={this.state.fecha_creacion} onChange={this.ChangeDateNacimiento} />
+                        <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
                     </Container>
                 </Row>
                     <Row>
@@ -142,7 +174,7 @@ class visualizarPuntoSatelite extends React.Component{
                             <Row>
                                 <Container className='col-md-7' > 
                                     <Label>Tipo:</Label>
-                                    <Selects name="tipo" value={this.state.tipo} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                                    <Selects name="options_tipo_sel" value={this.state.options_tipo_sel} onChange={(value) => { this.setState({ options_tipo_sel: value }) }} options={this.state.options_tipo} />
                                 </Container>
                                 <Container className='col-md-5' > 
                                     <Label>Telf:</Label>
@@ -156,11 +188,11 @@ class visualizarPuntoSatelite extends React.Component{
                                 </Container>
                             </Row>
                            <Row>
-                                 <Container className='col-md-7' > 
+                                 <Container className='col-md-6' > 
                                         <Label>Longitud:</Label>
                                         <InputText name='longitud' value={this.state.longitud} type="text" className='form-control input-sm' placeholder='Longitud' onChange={this.changeValues} />
                                     </Container>
-                                    <Container className='col-md-5' > 
+                                    <Container className='col-md-6' > 
                                         <Label>Latitud:</Label>
                                         <InputText name='latitud' value={this.state.latitud} type="text" className='form-control input-sm' placeholder='Latitud' onChange={this.changeValues} />
                                     </Container>
@@ -240,12 +272,38 @@ class visualizarPuntoSatelite extends React.Component{
 
     //Realiza todas estas operaciones al renderizar el form
     componentDidMount() {
-        var options = [{ value: 0, label: 'YORK' },
-        { value: 1, label: 'Amadeus' },
-        { value: 2, label: 'Landa' },
-        { value: 3, label: 'FORK' }]
+        Promise.all([
+            cargarCatalogos('TIPOSATELI'),cargarCatalogos('GENESTADO')
+        ])
+        .then(([result_tipoPuntoSatelie, result_genEstado]) => {
+            this.setState(
+              { options_tipo: result_tipoPuntoSatelie,  options_estado: result_genEstado      
+              })
+              
+        })
+        .catch(err => {
+            console.log(err);
+        });
+        
+        this.cargarGrid();
+    }
 
-        this.setState({ options_users: options })
+    cargarGrid(){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/puntosatelite?estado=A'
+        }
+    
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            this.setState({grid_Satelite: response.data})
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
     }
 
 }//End

@@ -10,9 +10,15 @@ import moment from 'moment';
 
 //GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
+import { get_FechaLocalActual } from '../../../funciones_globales/utils';
 
 //Modal
 import MyModal from '../../general_components/form_components/modal/modal';
+
+import  global_axios  from '../../../funciones_globales/interaccion_api';
+import { cargarCatalogos, cargarCatalogosGenerico } from '../../../funciones_globales/catalogos';
+
+import { getItemDatosSesion } from '../../../funciones_globales/manejosesion';
 
 
 class visualizarCoFacilitador extends React.Component{
@@ -20,44 +26,70 @@ class visualizarCoFacilitador extends React.Component{
     constructor() { //Permite pasar valores al componente
         super();
         this.state = {
-            buscar: "",
+            cedula:"",
             codigo: "",
+            fecha_creacion: moment(get_FechaLocalActual(),'DD/MM/YYYY'),
+            localidad: "",
             nombres: "",
             apellidos: "",
-            club: "",
-            fecha_nacimiento: moment(),
-            observaciones: "",
+            fecha_nacimiento: moment(get_FechaLocalActual(),'DD/MM/YYYY'),
+            observacion: "",
+            motivo:"",
+            //SELECTS
+            options_estado: [],
+            options_estado_sel: '',
+
+            //operacion
+            operacion: 'G',
 
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
 
             //Grid
-            data: [],
-            columnDefs: [{
-                header: "Nombre",
-                field: "DescripcionPago",
-                width: 150,
-                type: "string"
-            },
-            {
-                header: "Edad",
-                field: "Banco",
-                width: 150,
-                type: "string"
-            },
-            {
-                header: "Objetivo Estrategico",
-                field: "Cuenta",
-                width: 150,
-                type: "string",
-            },
-            {
-                header: "Punto Satelite",
-                field: "Cuenta",
-                width: 150,
-                type: "string",
-            }
-            ],
+            grid_cofacilitador: [],
+            columnDefs_cofacilitador: [ {
+                                            header: "Nombre",
+                                            field: "Nombre",
+                                            width: 150,
+                                            type: "string"
+                                        },
+                                        {
+                                            header: "Apellido",
+                                            field: "Apellido",
+                                            width: 150,
+                                            type: "string"
+                                        },
+                                        {
+                                            header: "Edad",
+                                            field: "Edad",
+                                            width: 50,
+                                            type: "string"
+                                        },
+                                        {
+                                            header: "Estado",
+                                            field: "Estado",
+                                            width: 60,
+                                            type: "string",
+                                        },
+                                        {
+                                            header: "Motivo",
+                                            field: "Motivo",
+                                            width: 160,
+                                            type: "string",
+                                        }, 
+                                        {
+                                            header: "",
+                                            field: "modificar",
+                                            width: 40,
+                                            type: "boton_modi"
+                                        },
+                                        {
+                                            header: "",
+                                            field: "eliminar",
+                                            width: 40,
+                                            type: "boton_elim"
+                                        }
+                                        ]
         };
 
         //GRID
@@ -71,8 +103,12 @@ class visualizarCoFacilitador extends React.Component{
                                             
         };
 
-        //Funciones binds
-        this.changeValues = this.changeValues.bind(this);
+               //Funciones binds
+               this.changeValues = this.changeValues.bind(this);
+               this.eliminarParametro = this.eliminarParametro.bind(this);
+               this.guardarCofacilitador = this.guardarCofacilitador.bind(this);
+           
+
 
         //Modals
         this.showModal = this.showModal.bind(this); //SWITCH OPEN/CLOSE
@@ -83,6 +119,45 @@ class visualizarCoFacilitador extends React.Component{
 
     }
 
+        //ACTION PARA ELIMINAR
+        methodFromParent(id ,datos_fila){
+            var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
+            
+            if (mensaje){
+                this.eliminarParametro(id, datos_fila ) 
+            }
+        }
+    
+        eliminarParametro(id, datos_fila ){
+            //ELIMINACION LOCAL
+            /* this.setState(
+                {gridParametros: this.immutableDelete(this.state.gridParametros, id)}
+            ) */
+    
+            //Eliminacion DB
+            //Proceso Adquirir Registros GRID
+            let config_request = {
+                method: 'DELETE',
+                url: '/cofacilitadores/'+datos_fila.Codigo.toString()
+            }
+        
+            global_axios(config_request)
+            .then((response)=>{
+                alert(response.data.msg);
+                //FUNC RECARGAR GRID
+                this.cargarGrid();
+                
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
+    
+        //Adicionar un elimento en un ARRAY INMUTABLE
+    immutablePush(array, newItem){
+        return [ ...array, newItem ];  
+    }
+
     render() {
         return <div className="container">
             <HeaderForm>
@@ -91,7 +166,7 @@ class visualizarCoFacilitador extends React.Component{
             <CuerpoForm>
                 <Row>
                     <Container className='col-md-12'>
-                        <AgGridRender altura='250px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                        <AgGridRender altura='250px' data={this.state.grid_cofacilitador} columnas={this.state.columnDefs_cofacilitador} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
@@ -126,7 +201,7 @@ class visualizarCoFacilitador extends React.Component{
                         </Container>
                        <Container className='col-md-4' >
                                     <Label>Fecha:</Label>
-                                    <DayPicker id="fecha_creacion" selected={this.state.fecha_creacion} onChange={this.ChangeDateNacimiento} />
+                                    <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
                         </Container>
                     </Row>
                     <Row>
@@ -140,19 +215,19 @@ class visualizarCoFacilitador extends React.Component{
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Fecha Nacimiento:</Label>
-                            <DayPicker id="fecha_nacimiento" selected={this.state.fecha_nacimiento} onChange={this.ChangeDateNacimiento} />
+                            <DayPicker fechaSeleccionada={this.state.fecha_nacimiento} func_onChange={(fechaEscogida)=>{this.setState({fecha_nacimiento: fechaEscogida})}}/>
                         </Container>
                     </Row>
                     <Row>
                         <Container className='col-md-12' >
                             <Label>Observaciones:</Label>
-                            <TextArea name='observaciones' placeholder='Observaciones'></TextArea>
+                            <TextArea name='observacion'value={this.state.observacion} placeholder='Observacion' onChange={this.changeValues}></TextArea>
                         </Container>
                     </Row>
                     <Row>
                         <Container className='col-md-3' >
                             <Label>Estado:</Label>
-                            <Selects name="estado" value={this.state.estado} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
+                            <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_estado} />
                         </Container>
                         <Container className='col-md-9' >
                             <Label>Motivo:</Label>
@@ -163,12 +238,12 @@ class visualizarCoFacilitador extends React.Component{
                     <Row>
                         <Container className='col-md-12'>
                             <div className="btn-group pull-right">
-                                <button type="submit" className='btn btn-secondary btn-sm'>
+                                <button type="button" className='btn btn-secondary btn-sm'>
                                     <i className="fa fa-trash-o fa-lg"></i> Limpiar
                             </button>
                             </div>
                             <div className="btn-group pull-right">
-                                <button type="submit" className='btn btn-primary btn-sm'>
+                                <button type="button" className='btn btn-primary btn-sm' onClick={this.guardarCofacilitador}>
                                     <i className="fa fa-floppy-o fa-lg"></i> Guardar
                             </button>
                             </div>
@@ -227,14 +302,86 @@ class visualizarCoFacilitador extends React.Component{
         });
     }
 
-    //Realiza todas estas operaciones al renderizar el form
-    componentDidMount() {
-        var options = [{ value: 0, label: 'YORK' },
-        { value: 1, label: 'Amadeus' },
-        { value: 2, label: 'Landa' },
-        { value: 3, label: 'FORK' }]
 
-        this.setState({ options_users: options })
+    guardarCofacilitador(){
+        //VALIDACION DE CAMPS REQUERIDOS
+
+        //Asignacion a guardar
+        var data = {};
+
+        data.cedula = this.state.cedula
+        data.codigo = this.state.codigo;
+        data.localidad = getItemDatosSesion('localidad');
+        data.nombres = this.state.nombres;
+        data.apellidos = this.state.apellidos;
+        data.fecha_nacimiento = moment(this.state.fecha_nacimiento).format('L');
+        data.options_estado_sel = this.state.options_estado_sel.value;
+        data.observacion = this.state.observacion;
+        data.motivo= this.state.motivo;
+        data.fecha_creacion = moment(this.state.fecha_creacion).format('L');
+        
+
+        //Request
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: (this.state.operacion==='G'?'POST':'PATCH'),
+            url: (this.state.operacion==='G'?'/cofacilitadores':'/cofacilitadores/'+this.state.cedula.toString()),
+            data
+        }
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            alert(response.data.msg);
+            //Actualizacion del grid luego de guardar
+            this.cargarGrid();
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+
+   //Realiza todas estas operaciones al renderizar el form
+    componentDidMount() {
+        Promise.all([
+            cargarCatalogos('GENESTADO')
+
+        ])
+        .then(([result_estado]) => {
+            this.setState(
+                { options_estado: result_estado   
+            }, ()=>{
+                //DEFAULT VALUE DESPUES DE ASIGNAR
+                this.state.options_estado.forEach((OP)=>{
+                    if(OP.value === 'A' ){
+                        this.setState({options_estado_sel: OP});
+                    }
+                })
+            })
+        })
+        .catch(err => {
+        console.log(err);
+        });
+
+        this.cargarGrid();
+    }
+
+    cargarGrid(){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/cofacilitadores?estado=A&estado=I'
+        }
+    
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            this.setState({grid_cofacilitador: response.data})
+        })
+        .catch(err => {
+            console.log(err);
+        });
+
     }
 
 }//End
