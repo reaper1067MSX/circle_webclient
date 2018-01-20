@@ -417,7 +417,7 @@ methodModifyFromParent(id, datos_fila){
                 var respuesta = response.data;
                 console.log(response.data)
                 this.setState({
-                    cedula: respuesta.cedula, codigo: respuesta.cod_apadrinado, fecha_creacion: moment(respuesta.fecha_inscripcion, 'DD/MM/YYYY'),
+                    cedula: respuesta.cedula, codigo: (respuesta.cod_apadrinado===null?'':respuesta.cod_apadrinado), fecha_creacion: moment(respuesta.fecha_inscripcion, 'DD/MM/YYYY'),
                     localidad: respuesta.localidad, nombres: respuesta.nombre, apellidos: respuesta.apellido,
                     fecha_nacimiento: moment(respuesta.fecha_nacimiento, 'DD/MM/YYYY'),
                     observacion: (respuesta.observaciones===null?'':respuesta.observaciones),
