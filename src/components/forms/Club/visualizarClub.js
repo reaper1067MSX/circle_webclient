@@ -1,6 +1,5 @@
 import React from 'react';
-//import styled from 'styled-components'; //STYLES
-
+import styled from 'styled-components';
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar,*/ HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
 import { Label, InputText ,TextArea } from '../../general_components/form_components/controles'; 
@@ -9,14 +8,14 @@ import moment from 'moment';
 import { get_FechaLocalActual } from '../../../funciones_globales/utils';
 import  global_axios  from '../../../funciones_globales/interaccion_api';
 import { cargarCatalogos, cargarCatalogosGenerico } from '../../../funciones_globales/catalogos';
-
-
-//GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
-
-//Modal
 import MyModal from '../../general_components/form_components/modal/modal';
 
+const LabelTitle = styled.label` //LABEL STYLE
+    font-size: 18px;
+    font-weight: 700;
+    color: #901f61;
+`;
 
 class visualizarClub extends React.Component{
 
@@ -42,6 +41,7 @@ class visualizarClub extends React.Component{
 
             //Grid
             grid_club: [],
+            grid_Asignacion:[],
             columnDefs: [{
                             header: "Cod.",
                             field: "Codigo",
@@ -89,7 +89,50 @@ class visualizarClub extends React.Component{
                             field: "eliminar",
                             width: 40,
                             type: "boton_elim"
-                        }]
+                        }],
+
+            columnDefs_Asignacion: [{   header: "N°",
+                        field: "secuencia",
+                        width: 50,
+                        type: "string"
+                    },
+                    {
+                        header: "Club",
+                        field: "club",
+                        width: 150,
+                        type: "string"
+                    },
+                    {
+                        header: "Punto Satélite",
+                        field: "punto_satelite_N",
+                        width: 150,
+                        type: "string",
+                    },
+                    {
+                        header: "Dia",
+                        field: "dia_D",
+                        width: 100,
+                        type: "string"
+                    },
+                    {
+                        header: "Desde",
+                        field: "desde",
+                        width: 100,
+                        type: "string"
+                    },
+                    {
+                        header: "Hasta",
+                        field: "hasta",
+                        width: 100,
+                        type: "string"
+                    },
+                    {
+                        header: "",
+                        field: "eliminar",
+                        width: 40,
+                        type: "boton_elim"
+                    }]
+
         };
 
         //GRID
@@ -118,17 +161,47 @@ class visualizarClub extends React.Component{
 
     //ACTION PARA ELIMINAR
     methodFromParent(id ,datos_fila){
-        var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
-        
-        if (mensaje){
-            this.eliminarClub(id, datos_fila ) 
+
+        if(datos_fila.hasOwnProperty('ObjetivoEstrategico') === true && datos_fila.hasOwnProperty('NombrePrograma')===true){
+            var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
+            if (mensaje){
+                this.eliminarClub(id, datos_fila ) 
+            }
         }
+
+        if(datos_fila.hasOwnProperty('punto_satelite_N') === true && datos_fila.hasOwnProperty('dia_D')===true){
+            var mensaje = window.confirm("¿Desea eliminar la asignación seleccionada?"); 
+            if (mensaje){
+                this.eliminarAsignacion(id, datos_fila ) 
+            }
+        }
+
+    
     }
 
     eliminarClub(id, datos_fila ){
         let config_request = {
             method: 'DELETE',
             url: '/club/'+datos_fila.Codigo.toString()
+        }
+    
+        global_axios(config_request)
+        .then((response)=>{
+            alert(response.data.msg);
+            //FUNC RECARGAR GRID
+            this.cargarGrid();
+            
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    //MANDAR 4 FUCK CAMPS PARA ELIMINAR UN PUERCO REGISTRO
+    eliminarAsignacion(id, datos_fila){
+        let config_request = {
+            method: 'DELETE',
+            url: '/asignaciones/'+datos_fila.Codigo.toString()
         }
     
         global_axios(config_request)
@@ -182,6 +255,12 @@ class visualizarClub extends React.Component{
                                     <i className="fa fa-plus-circle fa-lg"></i> Nuevo
                                 </button>
                         </div>
+                    </Container>
+                </Row>
+                <Row>
+                    <Container className='col-md-12'>
+                        <LabelTitle>Asignaciones</LabelTitle>
+                        <AgGridRender altura='200px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
             </CuerpoForm>
@@ -305,6 +384,7 @@ class visualizarClub extends React.Component{
         });
 
         this.cargarGrid();
+        this.cargarGridAsignacion();
     }
 
     cargarGrid(){
@@ -323,6 +403,23 @@ class visualizarClub extends React.Component{
             console.log(err);
         });
 
+    }
+
+    cargarGridAsignacion(){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/asignaciones'
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            this.setState({grid_Asignacion: response.data})
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
     //INSERT CLUB
