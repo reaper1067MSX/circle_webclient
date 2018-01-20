@@ -1,12 +1,15 @@
 import React from 'react';
 //import styled from 'styled-components'; //STYLES
-
+//import styled from 'styled-components'; //STYLES
+import ReactSelectAsync from '../../general_components/form_components/select-asyn/react-select-async';
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar*/ } from '../../general_components/form_components/container';
-import { Label, InputText, /*Fieldset, Legend, TextArea,*/ Fieldset1, Legend1 } from '../../general_components/form_components/controles';
+import { Label, InputText, Fieldset, Legend, TextArea, Fieldset1, Legend1 } from '../../general_components/form_components/controles';
+import { cargarCatalogos, cargarCatalogosGenericoAsync} from '../../../funciones_globales/catalogos';
 
-//import DayPicker from '../../general_components/form_components/date-picker/date-piker';
-//import moment from 'moment';
+import DayPicker from '../../general_components/form_components/date-picker/date-piker';
+import moment from 'moment';
+
 
 //GRID
 import AgGridRender from '../../general_components/form_components/grid/ag_grid_render';
@@ -17,48 +20,97 @@ export default class asignarClub extends React.Component{
     constructor() { //Permite pasar valores al componente
         super();
         this.state = {
-            buscar: "",
-            codigo:"",
-            nombres: "",
-            apellidos: "",
-            punto_satelite: "",
-            programa: "",
-            estado: "",
-            options_users: [],
-
+            fecha_creacion: moment(),
+            //SELECTS
+            options_estado: [],
+            options_estado_sel: null,
 
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
 
-            //Grid
-            data: [],
-            columnDefs: [{
-                header: "Club",
-                field: "DescripcionPago",
-                width: 150,
-                type: "string"
-            },
-            {
-                header: "Desde",
-                field: "Banco",
-                width: 150,
-                type: "string"
-            },
-            {
-                header: "Hasta",
-                field: "Cuenta",
-                width: 150,
-                type: "string",
-            },
-            {
-                header: "Punto Satelite",
-                field: "Cuenta",
-                width: 150,
-                type: "string",
-            }
-            ],
-        };
-
+  //Grid
+            grid_Club: [],
+            grid_Asignacion:[],
+            colDefs_Club: [{
+                                header: "Club",
+                                field: "club",
+                                width: 150,
+                                type: "string"
+                            },
+                            {
+                                header: "Punto Satelite",
+                                field: "Cuenta",
+                                width: 150,
+                                type: "string",
+                            },
+                            {
+                                header: "Día",
+                                field: "Dia",
+                                width: 80,
+                                type: "string",
+                            },
+                            {
+                                header: "Desde",
+                                field: "Banco",
+                                width: 150,
+                                type: "string"
+                            },
+                            {
+                                header: "Hasta",
+                                field: "Cuenta",
+                                width: 150,
+                                type: "string",
+                            },
+                            
+                            ],
+    columnDefs_Asignacion: [{   header: "N°",
+                                field: "secuencia",
+                                width: 50,
+                                type: "string"
+                            },
+                            {
+                                header: "Co Facilitador",
+                                field: "beneficiario",
+                                width: 150,
+                                type: "string"
+                            },
+                            {
+                                header: "Club",
+                                field: "club",
+                                width: 150,
+                                type: "string"
+                            },
+                            {
+                                header: "Punto Satélite",
+                                field: "punto_satelite_N",
+                                width: 150,
+                                type: "string",
+                            },
+                            {
+                                header: "Dia",
+                                field: "dia_D",
+                                width: 100,
+                                type: "string"
+                            },
+                            {
+                                header: "Desde",
+                                field: "desde",
+                                width: 100,
+                                type: "string"
+                            },
+                            {
+                                header: "Hasta",
+                                field: "hasta",
+                                width: 100,
+                                type: "string"
+                            },
+                            {
+                                header: "",
+                                field: "eliminar",
+                                width: 40,
+                                type: "boton_elim"
+                            }]
+};
         //GRID
         this.gridOptions = {
             context: {
@@ -78,6 +130,13 @@ export default class asignarClub extends React.Component{
 
     }
 
+        getOptionsCoFacilitador(input, callback){
+            if(input.toString().length >= 3){
+                let cadena_busq = '?cadena_busq=' + input;
+                cargarCatalogosGenericoAsync('/cofacilitadores', cadena_busq, callback)  
+            }
+        }
+
     render() {
 
         return <div className="container">
@@ -86,40 +145,31 @@ export default class asignarClub extends React.Component{
             </HeaderForm>
             <CuerpoForm>
                 <Row>
-                    <Container className='col-md-4' >
+                    <Container className='col-md-6' >
                         <Label>Co-Facilitador:</Label>
-                        <Selects name="programa" value={this.state.programa} onChange={(value) => { this.setState({ programa: value }) }} options={this.state.options_users} />
-                    </Container>
-                        <Container className='col-md-4' >
-                            <Label>Nombres:</Label>
-                            <InputText name='nombres' value={this.state.nombres} type="string" className='form-control input-sm' placeholder='Nombres' onChange={this.changeValues} />
+                            <ReactSelectAsync name="options_cofacilitador_sel" value={this.state.options_cofacilitador_sel} func_onChange={(value) => { this.setState({ options_cofacilitador_sel: value }) }} func_loadOptions={this.getOptionsCoFacilitador.bind(this)} />
                         </Container>
-                            <Container className='col-md-4' pull-left >                           
-                                <Label>Apellidos:</Label>
-                                <InputText name='apellidos' value={this.state.apellidos} type="string" className='form-control input-sm' placeholder='Apellidos' onChange={this.changeValues} />
-                            </Container>
+                    <Container className='col-md-3' >
+                        <Label>Estado:</Label>
+                        <Selects name="options_estado_sel" value={this.state.options_estado_sel}  onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
+                    </Container>
+                    <Container className='col-md-3' >
+                        <Label>Fecha:</Label>
+                        <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
+                    </Container>
                 </Row>
                 <Row>
                     <Container className='col-md-12'>
-                        <AgGridRender altura='250px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                        <AgGridRender altura='250px' data={this.state.grid_Club} columnas={this.state.colDefs_Club} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
-                    <Fieldset1 className='col-md-12'>
-                        <Legend1>Asigancion</Legend1>
-                            <Container className='col-md-12'>
-                                <AgGridRender altura='250px' data={this.state.data} columnas={this.state.columnDefs} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
-                            </Container>
-                            <Container className='col-md-12'>
-                                <div className="btn-group pull-right">
-                                    <Label></Label>
-                                    <button type="submit" className='btn btn-primary btn-sm' onClick={this.showModal}>
-                                    <i className="fa fa-check-circle fa-lg"></i> Asignar
-                                    </button>
-                                </div>
-                            </Container>
-              
-                    </Fieldset1>
+                    <Container className='col-md-12' > 
+                        <Fieldset1 className='col-md-12'>
+                            <Legend1>Asiganción de Club</Legend1>
+                                 <AgGridRender altura='100px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                        </Fieldset1>
+                    </Container>
                 </Row>
                 
             <Row>
@@ -150,19 +200,6 @@ export default class asignarClub extends React.Component{
         this.columnApi = params.columnApi;
     }
 
-    //Valores aplicados
-
-    ChangeDateNacimiento(day) {
-        //SAVE
-        this.setState({ fecha_nacimiento: day });
-
-        //LEERLO
-        //moment.locale('es');
-        //alert(moment(this.state.fecha_creacion).format('L'));
-    }
-
-    
-
     //Functions
 
 
@@ -177,16 +214,27 @@ export default class asignarClub extends React.Component{
         });
     }
 
-    //Realiza todas estas operaciones al renderizar el form
-    componentDidMount() {
-        var options = [{ value: 0, label: 'YORK' },
-        { value: 1, label: 'Amadeus' },
-        { value: 2, label: 'Landa' },
-        { value: 3, label: 'FORK' }]
-
-        this.setState({ options_users: options })
-    }
-
+  //Realiza todas estas operaciones al renderizar el form catalogos?tabla=DIASEMANA&estado=A
+  componentDidMount(){
+    Promise.all([
+        cargarCatalogos('GENESTADO')
+    ])
+    .then(([result_estado]) => {
+        this.setState(
+            { options_estado: result_estado }, ()=>{
+            //DEFAULT VALUE DESPUES DE ASIGNAR
+            this.state.options_estado.forEach((OP)=>{
+                if(OP.value === 'A'){
+                    this.setState({options_estado_sel: OP});
+                }
+            })
+           // this.cargarGridPuntoSatelite();
+        })
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
     
 
 }//End

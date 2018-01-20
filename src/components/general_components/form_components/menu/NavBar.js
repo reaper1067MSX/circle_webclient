@@ -73,9 +73,6 @@ class NavBar extends React.Component{
                                             <span className="glyphicon glyphicon-chevron-right"></span> Asignar Punto Satélite a Club
                                         </Link>
                                     </li>
-                                    <li>
-                                        <span className="glyphicon glyphicon-chevron-right"></span> Asignar Co-Facilitadores a Club
-                                    </li>
                                 </ul>
                                 {/*--------------Opcion  Punto Satelite*----------*/}
                                 <li data-toggle="collapse" data-target="#new3" className="collapsed">
