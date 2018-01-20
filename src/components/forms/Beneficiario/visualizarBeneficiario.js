@@ -1,5 +1,5 @@
 import React from 'react';
-//import styled from 'styled-components'; //STYLES
+import styled from 'styled-components'; //STYLES
 
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, Row, HeaderForm, Container, TituloForm, HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
@@ -16,6 +16,11 @@ import AgGridRender from '../../general_components/form_components/grid/ag_grid_
 //Modal
 import MyModal from '../../general_components/form_components/modal/modal';
 
+const LabelTitle = styled.label` //LABEL STYLE
+    font-size: 18px;
+    font-weight: 700;
+    color: #901f61;
+`;
 
 class visualizarBeneficiario extends React.Component{
     constructor() { //Permite pasar valores al componente
@@ -47,7 +52,7 @@ class visualizarBeneficiario extends React.Component{
 
             //Grid
             gridBeneficiario: [],
-            columnDefs_Beneficiario: [{         header: "Cedula",
+            columnDefs_Beneficiario: [{  header: "Cedula",
                                                 field: "Cedula",
                                                 width: 100,
                                                 type: "string"
@@ -89,8 +94,54 @@ class visualizarBeneficiario extends React.Component{
                                                 type: "boton_elim"
                                             }
                                         ],
+            columnDefs_Asignacion: [{   header: "N°",
+                                        field: "secuencia",
+                                        width: 50,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Beneficiario",
+                                        field: "beneficiario",
+                                        width: 150,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Club",
+                                        field: "club",
+                                        width: 150,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Punto Satélite",
+                                        field: "punto_satelite_N",
+                                        width: 150,
+                                        type: "string",
+                                    },
+                                    {
+                                        header: "Dia",
+                                        field: "dia_D",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Desde",
+                                        field: "desde",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Hasta",
+                                        field: "hasta",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "",
+                                        field: "eliminar",
+                                        width: 40,
+                                        type: "boton_elim"
+                                    }]
         };
-
         //GRID
         this.gridOptions = {
             context: {
@@ -160,6 +211,12 @@ class visualizarBeneficiario extends React.Component{
                 <Row>
                     <Container className='col-md-12'>
                         <AgGridRender altura='250px' data={this.state.gridBeneficiario} columnas={this.state.columnDefs_Beneficiario} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                    </Container>
+                </Row>
+                <Row>
+                    <Container className='col-md-12'>
+                        <LabelTitle>Asignaciones</LabelTitle>
+                        <AgGridRender altura='200px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
@@ -362,6 +419,7 @@ class visualizarBeneficiario extends React.Component{
         
 
         this.cargarGrid();
+        this.cargarGridAsignacion();
     }
 
     cargarGrid(){
@@ -452,7 +510,23 @@ class visualizarBeneficiario extends React.Component{
         });
     }
 
-    
+    cargarGridAsignacion(){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/asignaciones'
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            this.setState({grid_Asignacion: response.data})
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
 
 }//End
 

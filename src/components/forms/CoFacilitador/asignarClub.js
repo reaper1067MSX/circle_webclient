@@ -6,7 +6,7 @@ import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar*/ } from '../../general_components/form_components/container';
 import { Label, InputText, Fieldset, Legend, TextArea, Fieldset1, Legend1 } from '../../general_components/form_components/controles';
 import { cargarCatalogos, cargarCatalogosGenericoAsync} from '../../../funciones_globales/catalogos';
-
+import  global_axios  from '../../../funciones_globales/interaccion_api';
 import DayPicker from '../../general_components/form_components/date-picker/date-piker';
 import moment from 'moment';
 
@@ -31,38 +31,50 @@ export default class asignarClub extends React.Component{
   //Grid
             grid_Club: [],
             grid_Asignacion:[],
-            colDefs_Club: [{
+            colDefs_Club: [{    header: "",
+                                width: 30,
+                                checkboxSelection: true,
+                                suppressSorting: true,
+                                suppressMenu: true,
+                                suppressFilter: true,
+                                pinned: true
+                            },
+                            {   header: "N°",
+                                field: "secuencia",
+                                width: 50,
+                                type: "string"
+                            },
+                            {
                                 header: "Club",
                                 field: "club",
                                 width: 150,
                                 type: "string"
                             },
                             {
-                                header: "Punto Satelite",
-                                field: "Cuenta",
+                                header: "Punto Satélite",
+                                field: "punto_satelite_N",
                                 width: 150,
                                 type: "string",
                             },
                             {
-                                header: "Día",
-                                field: "Dia",
-                                width: 80,
-                                type: "string",
+                                header: "Dia",
+                                field: "dia_D",
+                                width: 100,
+                                type: "string"
                             },
                             {
                                 header: "Desde",
-                                field: "Banco",
-                                width: 150,
+                                field: "desde",
+                                width: 100,
                                 type: "string"
                             },
                             {
                                 header: "Hasta",
-                                field: "Cuenta",
-                                width: 150,
-                                type: "string",
-                            },
-                            
-                            ],
+                                field: "hasta",
+                                width: 100,
+                                type: "string"
+                            }],
+
     columnDefs_Asignacion: [{   header: "N°",
                                 field: "secuencia",
                                 width: 50,
@@ -71,6 +83,7 @@ export default class asignarClub extends React.Component{
                             {
                                 header: "Co Facilitador",
                                 field: "beneficiario",
+                                
                                 width: 150,
                                 type: "string"
                             },
@@ -111,16 +124,25 @@ export default class asignarClub extends React.Component{
                                 type: "boton_elim"
                             }]
 };
-        //GRID
-        this.gridOptions = {
+         //GRID
+         this.gridOptionsClub = {
             context: {
                 componentParent: this
-            },      
+            },
+            enableFilter: true,      
             enableColResize: true,
             enableCellChangeFlash: true,
-            onCellValueChanged: (event)=>{  }
-                                            
-        };
+            onCellValueChanged: (event)=>{  }                                  
+       };
+
+       this.gridOptions = {
+        context: {
+            componentParent: this
+        },      
+        enableColResize: true,
+        enableCellChangeFlash: true,
+        onCellValueChanged: (event)=>{  }                                  
+    };
 
         //Funciones binds
         this.changeValues = this.changeValues.bind(this);
@@ -160,7 +182,7 @@ export default class asignarClub extends React.Component{
                 </Row>
                 <Row>
                     <Container className='col-md-12'>
-                        <AgGridRender altura='250px' data={this.state.grid_Club} columnas={this.state.colDefs_Club} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                        <AgGridRender altura='250px' data={this.state.grid_Club} columnas={this.state.colDefs_Club} gridOptions={this.gridOptionsClub} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
@@ -228,7 +250,7 @@ export default class asignarClub extends React.Component{
                     this.setState({options_estado_sel: OP});
                 }
             })
-           // this.cargarGridPuntoSatelite();
+            this.cargarGridAsignacion();
         })
     })
     .catch(err => {
@@ -236,5 +258,21 @@ export default class asignarClub extends React.Component{
     });
 }
     
+cargarGridAsignacion(){
+    //Proceso Adquirir Registros GRID
+    let config_request = {
+        method: 'GET',
+        url: '/asignaciones'
+    }
+   
+    global_axios(config_request)
+    .then((response)=>{
+        console.log("DATA respondida en request paramentros: ",response.data)
+        this.setState({grid_Club: response.data})
+    })
+    .catch(err => {
+        console.log(err);
+    });
+}
 
 }//End

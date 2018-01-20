@@ -1,5 +1,5 @@
 import React from 'react';
-//import styled from 'styled-components'; //STYLES
+import styled from 'styled-components'; //STYLES
 
 import Selects from '../../general_components/form_components/selects/select';
 import { CuerpoForm, /*ContainerEdit,*/ Row, HeaderForm, Container, TituloForm, /*Topbar,*/ HeaderModal, CuerpoModal } from '../../general_components/form_components/container';
@@ -20,6 +20,12 @@ import { cargarCatalogos, cargarCatalogosGenerico } from '../../../funciones_glo
 
 import { getItemDatosSesion } from '../../../funciones_globales/manejosesion';
 
+
+const LabelTitle = styled.label` //LABEL STYLE
+    font-size: 18px;
+    font-weight: 700;
+    color: #901f61;
+`;
 
 class visualizarCoFacilitador extends React.Component{
 
@@ -47,6 +53,7 @@ class visualizarCoFacilitador extends React.Component{
 
             //Grid
             grid_cofacilitador: [],
+            grid_Asignacion:[],
             columnDefs_cofacilitador: [ 
                                         {
                                             header: "Cedula",
@@ -96,7 +103,55 @@ class visualizarCoFacilitador extends React.Component{
                                             width: 40,
                                             type: "boton_elim"
                                         }
-                                        ]
+                                        ],
+            columnDefs_Asignacion: [{   header: "N°",
+                                        field: "secuencia",
+                                        width: 50,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Co Facilitador",
+                                        field: "beneficiario",
+                                        
+                                        width: 150,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Club",
+                                        field: "club",
+                                        width: 150,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Punto Satélite",
+                                        field: "punto_satelite_N",
+                                        width: 150,
+                                        type: "string",
+                                    },
+                                    {
+                                        header: "Dia",
+                                        field: "dia_D",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Desde",
+                                        field: "desde",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Hasta",
+                                        field: "hasta",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "",
+                                        field: "eliminar",
+                                        width: 40,
+                                        type: "boton_elim"
+                                    }]
         };
 
         //GRID
@@ -183,6 +238,12 @@ methodModifyFromParent(id, datos_fila){
                 <Row>
                     <Container className='col-md-12'>
                         <AgGridRender altura='250px' data={this.state.grid_cofacilitador} columnas={this.state.columnDefs_cofacilitador} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                    </Container>
+                </Row>
+                <Row>
+                    <Container className='col-md-12'>
+                        <LabelTitle>Asignaciones</LabelTitle>
+                        <AgGridRender altura='200px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
@@ -380,6 +441,7 @@ methodModifyFromParent(id, datos_fila){
         });
 
         this.cargarGrid();
+        this.cargarGridAsignacion();
     }
 
     cargarGrid(){
@@ -431,7 +493,22 @@ methodModifyFromParent(id, datos_fila){
         });
     }
 
-
+    cargarGridAsignacion(){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/asignaciones'
+        }
+       
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            this.setState({grid_Asignacion: response.data})
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
 
 }//End
 
