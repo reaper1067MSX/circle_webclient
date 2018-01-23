@@ -216,7 +216,7 @@ immutableDelete (arr, index) {
                 </HeaderModal>
                 <CuerpoModal>
                 <Row>
-                    <Container className='col-md-4' >
+                    <Container className='col-md-5' >
                         <Label>Codigo:</Label>
                         <InputText name='codigo' value={this.state.codigo} type="text" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
                     </Container>
@@ -224,25 +224,27 @@ immutableDelete (arr, index) {
                         <Label>Estado:</Label>
                         <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
                     </Container>
-                    <Container className='col-md-5' >
+                    <Container className='col-md-4' >
                         <Label>Fecha:</Label>
                         <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
                     </Container>
                 </Row>
-                    <Row>
-                        <Container className='col-md-7' > 
+                <Row>
+                        <Container className='col-md-12' > 
                             <Label>Nombre:</Label>
                             <InputText name='nombre' value={this.state.nombre} type="text" className='form-control input-sm' placeholder='Nombre' onChange={this.changeValues} />
-                            <Row>
-                                <Container className='col-md-7' > 
-                                    <Label>Tipo:</Label>
-                                    <Selects name="options_tipo_sel" value={this.state.options_tipo_sel} onChange={(value) => { this.setState({ options_tipo_sel: value }) }} options={this.state.options_tipo} />
-                                </Container>
-                                <Container className='col-md-5' > 
-                                    <Label>Telf:</Label>
-                                    <InputText name='telefono' value={this.state.telefono} type="text" className='form-control input-sm' placeholder='Telefono' onChange={this.changeValues} />
-                                </Container>
-                            </Row>
+                        </Container>
+                </Row>
+                <Row>
+                        <Container className='col-md-6' > 
+                                <Label>Tipo:</Label>
+                                <Selects name="options_tipo_sel" value={this.state.options_tipo_sel} onChange={(value) => { this.setState({ options_tipo_sel: value }) }} options={this.state.options_tipo} />
+                        </Container>
+                        <Container className='col-md-6' > 
+                                <Label>Telf:</Label>
+                                <InputText name='telefono' value={this.state.telefono} type="text" className='form-control input-sm' placeholder='Telefono' onChange={this.changeValues} />
+                        </Container>
+                </Row>
                             <Row>
                                 <Container className='col-md-12' > 
                                     <Label>Dirección:</Label>
@@ -270,11 +272,7 @@ immutableDelete (arr, index) {
                                     <InputText name='capacidad' value={this.state.capacidad} type="text" className='form-control input-sm' placeholder='Capacidad' onChange={this.changeValues} />
                                 </Container>
                             </Row>
-                        </Container>
-                        <Container className='col-md-5'>
-                            <Content/>
-                        </Container>
-                    </Row>
+
                     <Row>
                         <Container className='col-md-12'>
                             <div className="btn-group pull-right">
