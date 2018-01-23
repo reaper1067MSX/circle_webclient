@@ -191,3 +191,11 @@
 .well-title {
     margin-bottom: 40px;
 }
+
+.invisible {
+    display:none;
+}
+
+.visible {
+    display:block;
+}

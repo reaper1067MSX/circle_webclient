@@ -14,7 +14,8 @@ import visualizarBeneficiario from './forms/Beneficiario/visualizarBeneficiario'
 import inscribirBeneficiario from './forms/Beneficiario/inscribirBeneficiario';
 import visualizarParametros from './forms/Parametros/visualizarParametros';
 import login from '../components/login';
-
+import RegistroFaltas from './forms/Faltas/RegistroFaltas';
+import VisualizarFaltas from './forms/Faltas/VisualizarFaltas';
 
 import NavBar from './general_components/form_components/menu/NavBar';
 //import Menu from './menu';
@@ -53,7 +54,9 @@ class App extends Component {
               <Route path='/visualizarbeneficiario' component={visualizarBeneficiario} />  
               <Route path='/inscribirbeneficiario' component={inscribirBeneficiario} />            
               <Route path='/visualizarparametros' component={visualizarParametros} />               
-              
+              <Route path='/registrofaltas' component={RegistroFaltas} /> 
+              <Route path='/visualizarfaltas' component={VisualizarFaltas} /> 
+              visualizarfaltas
                                               
             </Switch>    
         </ContenedorCuerpoApp>
