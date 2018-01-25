@@ -35,6 +35,7 @@ export default class inscribirBeneficiario extends React.Component{
             grid_Asignacion:[],
             colDefs_Club: [{    header: "",
                                 width: 30,
+                                suppressRowClickSelection:true,
                                 checkboxSelection: true,
                                 suppressSorting: true,
                                 suppressMenu: true,
@@ -77,64 +78,99 @@ export default class inscribirBeneficiario extends React.Component{
                                 type: "string"
                             }],
 
-    columnDefs_Asignacion: [{   header: "N°",
-                                field: "secuencia",
-                                width: 50,
-                                type: "string"
-                            },
-                            {
-                                header: "Beneficiario",
-                                field: "beneficiario",
-                                width: 150,
-                                type: "string"
-                            },
-                            {
-                                header: "Club",
-                                field: "club",
-                                width: 150,
-                                type: "string"
-                            },
-                            {
-                                header: "Punto Satélite",
-                                field: "punto_satelite_N",
-                                width: 150,
-                                type: "string",
-                            },
-                            {
-                                header: "Dia",
-                                field: "dia_D",
-                                width: 100,
-                                type: "string"
-                            },
-                            {
-                                header: "Desde",
-                                field: "desde",
-                                width: 100,
-                                type: "string"
-                            },
-                            {
-                                header: "Hasta",
-                                field: "hasta",
-                                width: 100,
-                                type: "string"
-                            },
-                            {
-                                header: "",
-                                field: "eliminar",
-                                width: 40,
-                                type: "boton_elim"
-                            }]
-};
+            columnDefs_Asignacion: [{   header: "N°",
+                                        field: "secuencia",
+                                        width: 50,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Club",
+                                        field: "club",
+                                        width: 150,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Punto Satélite",
+                                        field: "punto_satelite_N",
+                                        width: 150,
+                                        type: "string",
+                                    },
+                                    {
+                                        header: "Dia",
+                                        field: "dia_D",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Desde",
+                                        field: "desde",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "Hasta",
+                                        field: "hasta",
+                                        width: 100,
+                                        type: "string"
+                                    },
+                                    {
+                                        header: "",
+                                        field: "eliminar",
+                                        width: 40,
+                                        type: "boton_elim"
+                                    }]
+            };
 
             //GRID
             this.gridOptionsClub = {
                 context: {
                     componentParent: this
                 },
+                rowSelection: 'single',
                 enableFilter: true,      
                 enableColResize: true,
                 enableCellChangeFlash: true,
-                onCellValueChanged: (event)=>{  }                                  
+                onRowSelected: (event)=>{
+                    let seleccion = this.api.getSelectedRows();
+                    var cont = 0;
+
+                    console.log("EVENTO: ",event)
+                    if(event.node.selected === true){
+                        if(this.state.options_beneficiario_sel !== null){
+                        
+                            var item ={};
+                            var index = 0;
+                            index = this.state.grid_Asignacion.length + 1;
+                            console.log("ARRAY SEL", seleccion[0])
+                            item.secuencia = index;
+                            item.beneficiario_cod = this.state.options_beneficiario_sel.value;
+                            item.club_cod = seleccion[0].id;
+                            item.club = seleccion[0].club;
+                            item.punto_satelite = seleccion[0].punto_satelite;
+                            item.punto_satelite_N = seleccion[0].punto_satelite_N;
+                            item.dia = seleccion[0].dia;
+                            item.dia_D = seleccion[0].dia_D;
+                            item.desde = seleccion[0].desde;
+                            item.hasta = seleccion[0].hasta;
+                            
+                            if(this.comprobarCruces(item)===false){
+                                this.setState(
+                                    { grid_Asignacion: this.immutablePush(this.state.grid_Asignacion, item) }
+                                ,()=>{
+                                    console.log("ARRAY", this.state.grid_Asignacion)
+                                    this.api.deselectAll();
+                                })
+                            }else{
+                                alert("Cruce de horario detectado con el club: "+item.club);
+                            }
+
+                            
+                        }else{
+                            alert("Seleccione un beneficiario antes de proceder a asignar");
+                            this.api.deselectAll();
+                        }
+                    }
+                }                                  
            };
     
            this.gridOptions = {
@@ -142,17 +178,26 @@ export default class inscribirBeneficiario extends React.Component{
                 componentParent: this
             },      
             enableColResize: true,
-            enableCellChangeFlash: true,
-            onCellValueChanged: (event)=>{  }                                  
+            enableCellChangeFlash: true
+                                            
         };
-
-    
 
         //Funciones binds
         this.changeValues = this.changeValues.bind(this);
+        this.guardarInscripcion = this.guardarInscripcion.bind(this);
 
         //GRID
         this.onGridReady = this.onGridReady.bind(this);
+    }
+
+    comprobarCruces(fila){
+        var response = false;
+        this.state.grid_Asignacion.forEach((DATA)=>{
+            if(fila.dia === DATA.dia && fila.desde === DATA.desde && fila.hasta === DATA.hasta){
+                response = true;
+            }
+        })
+        return response;
     }
 
      //Asignacion
@@ -161,10 +206,69 @@ export default class inscribirBeneficiario extends React.Component{
         this.columnApi = params.columnApi;
     }
 
+    onGridReadyAsig(params) {
+        this.apiA = params.api;
+        this.columnApiA = params.columnApi;
+    }
+
+    //Adicionar un elimento en un ARRAY INMUTABLE
+    immutablePush(array, newItem){
+        return [ ...array, newItem ];  
+    }
+
+    //Eliminar un registro especifico del ARAAY
+    immutableDelete (arr, index) {
+        var i = parseInt(index, 10);
+        return arr.slice(0,i).concat(arr.slice(i+1));
+    }
+
+    //ACTION PARA ELIMINAR
+    methodFromParent(id ,datos_fila){
+        var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
+        
+        if (mensaje){
+            this.eliminarAsignacion(id, datos_fila ) 
+        }
+    }
+
+    eliminarAsignacion(id, datos_fila){
+        //ELIMINACION LOCAL
+        this.setState(
+            {grid_Asignacion: this.immutableDelete(this.state.grid_Asignacion, id)}
+        )
+    }
+
     getOptionsBeneficiario(input, callback){
         if(input.toString().length >= 3){
             let cadena_busq = '?cadena_busq=' + input;
             cargarCatalogosGenericoAsync('/beneficiarios', cadena_busq, callback)  
+        }
+    }
+
+    guardarInscripcion(){
+        if(this.state.grid_Asignacion.length > 0 && this.state.options_beneficiario_sel !== null){
+            var data = {};
+            data.detalle = this.state.grid_Asignacion;
+            data.id = this.state.options_beneficiario_sel.value;
+
+            let config_request = {
+                method: 'POST',
+                url: '/inscripciones/'+data.id,
+                data
+            }
+        
+            global_axios(config_request)
+            .then((response)=>{
+                alert(response.data.msg);
+                //FUNC RECARGAR GRID
+                this.cargarGridAsignacion();
+                this.setState({grid_Asignacion: [], options_beneficiario_sel: null});
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }else{
+            alert("Cree una asignacion antes de guardar la transaccion")
         }
     }
 
@@ -176,59 +280,50 @@ export default class inscribirBeneficiario extends React.Component{
             </HeaderForm>
             <CuerpoForm>
                 <Row>
-
-                            <Row>
-                            <Container className='col-md-6' >
-                                    <Label>Beneficiario:</Label>
-                                    <ReactSelectAsync name="options_beneficiario_sel" value={this.state.options_beneficiario_sel} func_onChange={(value) => { this.setState({ options_beneficiario_sel: value }) }} func_loadOptions={this.getOptionsBeneficiario.bind(this)} />
-                                </Container>
-
-                                <Container className='col-md-3' >
-                                    <Label>Estado:</Label>
-                                    <Selects name="options_estado_sel" value={this.state.options_estado_sel}  onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
-                                </Container>
-                                <Container className='col-md-3' >
-                                    <Label>Fecha:</Label>
-                                    <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
-                                </Container>
-                                
-                            </Row>
-                            <Row>
-                                <Container className='col-md-12'>
-                                    <AgGridRender altura='250px' data={this.state.grid_Club} columnas={this.state.colDefs_Club} gridOptions={this.gridOptionsClub} onGridReady={this.onGridReady} />
-                                </Container> 
-                            </Row>
-                            <Row>
-                                <Container className='col-md-12' > 
-                                    <Fieldset className='col-md-12'>
-                                            <Legend>Asignación</Legend>
-                                                <AgGridRender altura='100px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
-                                    </Fieldset>
-                                </Container>
-                            </Row>
-                            <Row>
-                                <Container className='col-md-12'>
-                                    <div className="btn-group pull-right">
-                                        <button type="submit" className='btn btn-secondary btn-sm'>
-                                            <i className="fa fa-trash-o fa-lg"></i> Limpiar
-                                        </button>
-                                    </div>
-                                    <div className="btn-group pull-right">
-                                        <button type="submit" className='btn btn-primary btn-sm'>
-                                            <i className="fa fa-floppy-o fa-lg"></i> Guardar
-                                        </button>
-                                    </div>
-                                </Container>
-                            </Row>
-                            
-            </Row>
+                    <Container className='col-md-6' >
+                        <Label>Beneficiario:</Label>
+                        <ReactSelectAsync name="options_beneficiario_sel" value={this.state.options_beneficiario_sel} func_onChange={(value) => { this.setState({ options_beneficiario_sel: value }) }} func_loadOptions={this.getOptionsBeneficiario.bind(this)} />
+                    </Container>
+                    <Container className='col-md-3' >
+                        <Label>Estado:</Label>
+                        <Selects name="options_estado_sel" value={this.state.options_estado_sel}  onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
+                    </Container>
+                    <Container className='col-md-3' >
+                        <Label>Fecha:</Label>
+                        <DayPicker disabled={true} fechaSeleccionada={this.state.fecha_creacion} func_onChange={(fechaEscogida)=>{this.setState({fecha_creacion: fechaEscogida})}} />
+                    </Container>
+                </Row>
+                <Row>
+                    <Container className='col-md-12'>
+                        <AgGridRender altura='250px' data={this.state.grid_Club} columnas={this.state.colDefs_Club} gridOptions={this.gridOptionsClub} onGridReady={this.onGridReady} />
+                    </Container> 
+                </Row>
+                <Row>
+                    <Container className='col-md-12' > 
+                        <Fieldset className='col-md-12'>
+                            <Legend>Asignación</Legend>
+                            <AgGridRender altura='100px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReadyAsig} />
+                        </Fieldset>
+                    </Container>
+                </Row>
+                <Row>
+                    <Container className='col-md-12'>
+                        <div className="btn-group pull-right">
+                            <button type="submit" className='btn btn-secondary btn-sm'>
+                                <i className="fa fa-trash-o fa-lg"></i> Limpiar
+                            </button>
+                        </div>
+                        <div className="btn-group pull-right">
+                            <button type="submit" className='btn btn-primary btn-sm' onClick={this.guardarInscripcion}>
+                                <i className="fa fa-floppy-o fa-lg"></i> Guardar
+                            </button>
+                        </div>
+                    </Container>
+                </Row>                        
             </CuerpoForm>
 
         </div>;
     }
-
-
-    //--------------------------------------------------Funciones-------------------------------------------------------------
 
     //Funciones Grid
     onGridReady(params) {
@@ -237,9 +332,7 @@ export default class inscribirBeneficiario extends React.Component{
     }
     //Functions
 
-
     changeValues(event) {
-
         console.log("evento: ", event)
         const target = event.target;
         const name = target.name;

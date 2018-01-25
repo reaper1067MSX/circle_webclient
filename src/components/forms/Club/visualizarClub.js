@@ -201,15 +201,13 @@ class visualizarClub extends React.Component{
     eliminarAsignacion(id, datos_fila){
         let config_request = {
             method: 'DELETE',
-            url: '/asignaciones/'+datos_fila.Codigo.toString()
-        }
-    
+            url: '/asignaciones/'+datos_fila.id.toString()+'/'+datos_fila.punto_satelite+'/'+datos_fila.secuencia+'/'+datos_fila.dia
+        } 
         global_axios(config_request)
         .then((response)=>{
             alert(response.data.msg);
             //FUNC RECARGAR GRID
-            this.cargarGrid();
-            
+            this.cargarGridAsignacion();   
         })
         .catch(err => {
             console.log(err);
