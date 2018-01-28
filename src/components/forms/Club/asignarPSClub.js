@@ -300,6 +300,16 @@ export default class asignarPSClub extends React.Component{
     }
 
     render() {
+        var year = '2013';
+var month = '04';
+var day = '18';
+
+var hour = '12';
+var min = '35';
+
+var reserv = new Date(year,month,day,hour,min)
+
+console.log(reserv);
         return <div className="container">
             <HeaderForm>
                 <TituloForm>Asignación de Punto Satélite a Club</TituloForm>
@@ -452,4 +462,5 @@ export default class asignarPSClub extends React.Component{
         });
 
     }
+
 }//End
