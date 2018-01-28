@@ -56,7 +56,7 @@ class visualizarCoFacilitador extends React.Component{
             grid_Asignacion:[],
             columnDefs_cofacilitador: [ 
                                         {
-                                            header: "Cedula",
+                                            header: "Cédula",
                                             field: "Codigo",
                                             width: 100,
                                             type: "string"
@@ -129,7 +129,7 @@ class visualizarCoFacilitador extends React.Component{
                                         type: "string",
                                     },
                                     {
-                                        header: "Dia",
+                                        header: "Día",
                                         field: "dia_D",
                                         width: 100,
                                         type: "string"
@@ -242,12 +242,6 @@ methodModifyFromParent(id, datos_fila){
                 </Row>
                 <Row>
                     <Container className='col-md-12'>
-                        <LabelTitle>Asignaciones</LabelTitle>
-                        <AgGridRender altura='200px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
-                    </Container>
-                </Row>
-                <Row>
-                    <Container className='col-md-12'>
                         <div className="btn-group pull-right">
                             <Label></Label>
                             <button type="submit" className='btn btn-primary btn-sm' onClick={this.showModal}>
@@ -256,6 +250,13 @@ methodModifyFromParent(id, datos_fila){
                         </div>
                     </Container>
                 </Row>
+                <Row>
+                    <Container className='col-md-12'>
+                        <LabelTitle>Asignaciones</LabelTitle>
+                        <AgGridRender altura='200px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                    </Container>
+                </Row>
+                
             </CuerpoForm>
 
 
@@ -273,8 +274,8 @@ methodModifyFromParent(id, datos_fila){
                             <InputText name='cedula' value={this.state.cedula} type="number" className='form-control input-sm' placeholder='Cédula' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
-                                <Label>Codigo Apadrinado:</Label>
-                                <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
+                                <Label>Código Apadrinado:</Label>
+                                <InputText name='codigo' value={this.state.codigo} type="number" className='form-control input-sm' placeholder='Código Apadrinado' onChange={this.changeValues} />
                         </Container>
                        <Container className='col-md-4' >
                                     <Label>Fecha:</Label>
@@ -298,7 +299,7 @@ methodModifyFromParent(id, datos_fila){
                     <Row>
                         <Container className='col-md-12' >
                             <Label>Observaciones:</Label>
-                            <TextArea name='observacion'value={this.state.observacion} placeholder='Observacion' onChange={this.changeValues}></TextArea>
+                            <TextArea name='observacion'value={this.state.observacion} placeholder='Observaciones' onChange={this.changeValues}></TextArea>
                         </Container>
                     </Row>
                     <Row>

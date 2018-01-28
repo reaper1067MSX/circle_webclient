@@ -13,6 +13,21 @@ ag-grid-polymer {
 ag-grid-aurelia {
   display: block;
 }
+
+.ag-silver {
+  line-height: 2.4;
+  font-family: FontAwesome;
+  font-size: 14px;
+  color: #222;
+}
+.ag-silver .ag-header-cell-text {
+
+  padding-left: 2px;
+  font-size: 15px;
+
+}
+
+
 .ag-rtl {
   direction: rtl;
 }
@@ -615,6 +630,7 @@ ag-grid-aurelia {
   text-overflow: ellipsis;
   overflow: hidden;
   position: absolute;
+  text-align: center;
 }
 .ag-value-slide-out {
   opacity: 1;

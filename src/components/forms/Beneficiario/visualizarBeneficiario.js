@@ -52,21 +52,21 @@ class visualizarBeneficiario extends React.Component{
 
             //Grid
             gridBeneficiario: [],
-            columnDefs_Beneficiario: [{  header: "Cedula",
+            columnDefs_Beneficiario: [{  header: "Cédula",
                                                 field: "Cedula",
-                                                width: 100,
+                                                width: 110,
                                                 type: "string"
                                             },
                                             {
                                                 header: "Nombre",
                                                 field: "Nombre",
-                                                width: 90,
+                                                width: 160,
                                                 type: "string"
                                             },
                                             {
                                                 header: "Apellido",
                                                 field: "Apellido",
-                                                width: 90,
+                                                width: 160,
                                                 type: "string"
                                             },
                                             {
@@ -78,7 +78,7 @@ class visualizarBeneficiario extends React.Component{
                                             {
                                                 header: "Estado",
                                                 field: "Estado",
-                                                width: 60,
+                                                width: 80,
                                                 type: "string"
                                             },
                                             {
@@ -118,7 +118,7 @@ class visualizarBeneficiario extends React.Component{
                                         type: "string",
                                     },
                                     {
-                                        header: "Dia",
+                                        header: "Día",
                                         field: "dia_D",
                                         width: 100,
                                         type: "string"
@@ -215,12 +215,6 @@ class visualizarBeneficiario extends React.Component{
                 </Row>
                 <Row>
                     <Container className='col-md-12'>
-                        <LabelTitle>Asignaciones</LabelTitle>
-                        <AgGridRender altura='200px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
-                    </Container>
-                </Row>
-                <Row>
-                    <Container className='col-md-12'>
                         <div className="btn-group pull-right">
                             <button type="submit" className='btn btn-primary btn-sm' onClick={()=>this.showModal('G')}>
                                 <i className="fa fa-plus-circle fa-lg"></i> Nuevo
@@ -228,6 +222,13 @@ class visualizarBeneficiario extends React.Component{
                         </div>
                     </Container>
                 </Row>
+                <Row>
+                    <Container className='col-md-12'>
+                        <LabelTitle>Asignaciones</LabelTitle>
+                        <AgGridRender altura='200px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                    </Container>
+                </Row>
+                
             </CuerpoForm>
 
     
@@ -246,8 +247,8 @@ class visualizarBeneficiario extends React.Component{
                             <InputText name='cedula' value={this.state.cedula} type="number" className='form-control input-sm' placeholder='Cédula' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
-                            <Label>Codigo Apadrinado:</Label>
-                            <InputText name='codigo_apadrinado' value={this.state.codigo_apadrinado} type="number" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
+                            <Label>Código Apadrinado:</Label>
+                            <InputText name='codigo_apadrinado' value={this.state.codigo_apadrinado} type="number" className='form-control input-sm' placeholder='Código Apadrinado' onChange={this.changeValues} />
                         </Container>
                         
                         <Container className='col-md-4' >
@@ -278,7 +279,7 @@ class visualizarBeneficiario extends React.Component{
                     </Row>
                     <Row>
                         <Container className='col-md-12' >
-                            <Label>Dolencia Medica:</Label>
+                            <Label>Dolencia Médica:</Label>
                             <TextArea name='dolencia' placeholder='Dolencia Medica' value={this.state.dolencia} onChange={this.changeValues} ></TextArea>
                         </Container>
                     
@@ -286,19 +287,21 @@ class visualizarBeneficiario extends React.Component{
                     {/*Educacion*/}
             
                     <Fieldset className='col-md-12'>
-                        <Legend>Educacion</Legend>
-                            <Container className='col-md-5' >
-                                <Label>Nombre unidad edu.:</Label>
-                                <InputText name='escuela' value={this.state.escuela} type="text" className='form-control input-sm' placeholder='Escuela' onChange={this.changeValues} />
-                            </Container>
-                            <Container className='col-md-4' >
-                                <Label>Periodo Escolar:</Label>
-                                <InputText name='periodoEscolar' value={this.state.periodoEscolar} type="text" className='form-control input-sm' placeholder='Periodo Escolar' onChange={this.changeValues} />
-                            </Container>
-                            <Container className='col-md-3' >
-                                <Label>Calificacion:</Label>
-                                <InputText name='calificacion' value={this.state.calificacion} type="number" className='form-control input-sm' placeholder='Calificacion' onChange={this.changeValues} />
-                            </Container>
+                        <Legend>Educación</Legend>
+                            <Row>
+                                <Container className='col-md-5' >
+                                    <Label> Unidad Educativa:</Label>
+                                    <InputText name='escuela' value={this.state.escuela} type="text" className='form-control input-sm' placeholder='Unidad Educativa' onChange={this.changeValues} />
+                                </Container>
+                                <Container className='col-md-4' >
+                                    <Label>Período Escolar:</Label>
+                                    <InputText name='periodoEscolar' value={this.state.periodoEscolar} type="text" className='form-control input-sm' placeholder='Período Escolar' onChange={this.changeValues} />
+                                </Container>
+                                <Container className='col-md-3' >
+                                    <Label>Calificación:</Label>
+                                    <InputText name='calificacion' value={this.state.calificacion} type="number" className='form-control input-sm' placeholder='Calificación' onChange={this.changeValues} />
+                                </Container>
+                            </Row>
                     </Fieldset>
                     
                     {/*Representante*/}
@@ -306,8 +309,8 @@ class visualizarBeneficiario extends React.Component{
                             <Legend>Representante</Legend>
                                 <Row>
                                     <Container className='col-md-4' >
-                                        <Label>Cedula:</Label>
-                                        <InputText name='cedulaRepresentante' value={this.state.cedulaRepresentante} type="number" className='form-control input-sm' placeholder='Cedula' onChange={this.changeValues} />
+                                        <Label>Cédula:</Label>
+                                        <InputText name='cedulaRepresentante' value={this.state.cedulaRepresentante} type="number" className='form-control input-sm' placeholder='Cédula' onChange={this.changeValues} />
                                     </Container>
                                     <Container className='col-md-4' >
                                         <Label>Nombres:</Label>
@@ -320,12 +323,12 @@ class visualizarBeneficiario extends React.Component{
                                 </Row>
                                 <Row>
                                     <Container className='col-md-8' pull-left >
-                                        <Label>Direccion:</Label>
-                                        <InputText name='direccion' value={this.state.direccion} type="text" className='form-control input-sm' placeholder='Direccion' onChange={this.changeValues} />
+                                        <Label>Dirección:</Label>
+                                        <InputText name='direccion' value={this.state.direccion} type="text" className='form-control input-sm' placeholder='Dirección' onChange={this.changeValues} />
                                     </Container>
                                     <Container className='col-md-4' >
-                                        <Label>Telefono:</Label>
-                                        <InputText name='telefono' value={this.state.telefono} type="number" className='form-control input-sm' placeholder='Telefono' onChange={this.changeValues} />
+                                        <Label>Telf:</Label>
+                                        <InputText name='telefono' value={this.state.telefono} type="number" className='form-control input-sm' placeholder='Teléfono' onChange={this.changeValues} />
                                     </Container>
                                         
                                 </Row>

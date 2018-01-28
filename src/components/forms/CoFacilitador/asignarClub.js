@@ -223,8 +223,6 @@ export default class asignarClub extends React.Component{
     }
 
     //Functions
-
-
     changeValues(event) {
 
         console.log("evento: ", event)

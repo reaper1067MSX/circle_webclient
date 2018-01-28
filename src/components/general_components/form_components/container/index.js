@@ -5,7 +5,7 @@ import styled from 'styled-components';
 //=========================================
 export const Container = styled.div`
     margin-bottom: 6px;
-    
+
 `;
 //=========================================
 
@@ -49,7 +49,7 @@ export const HeaderForm = styled.div`
     padding: 0.75rem 1.25rem;
     margin-top: 30px;
     padding-bottom: 35px;
-    width:80%;
+    width:97%;
 `;
 //background - color: #901f61;    
 
@@ -59,7 +59,7 @@ export const CuerpoForm = styled.div`
     padding-left: 10px;
     padding-right: 10px;
     margin-left: 1%;
-    width: 80%;
+    width: 97%;
 `;
 //max-width: 991px; para que se vea bien en cualquier resolucion
 

@@ -34,9 +34,9 @@ class TopBar extends React.Component{
                             <ul className="nav navbar-nav navbar-right">
                                     <li className="dropdown">
                                         <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                            <span className="glyphicon glyphicon-user"></span> 
+                                            <span className="fa fa-user-circle-o"></span> 
                                             <strong>Bienvenido </strong>
-                                            <span className="glyphicon glyphicon-chevron-down"> </span>
+                                            <span className="fa fa-chevron-down"> </span>
                                         </a>
                                         
                                         <ul className="dropdown-menu">
@@ -45,7 +45,7 @@ class TopBar extends React.Component{
                                                     <div className="row">
                                                         <div className="col-lg-4">
                                                             <p className="text-center">
-                                                                <span className="glyphicon glyphicon-user icon-size"></span>
+                                                                <span className="fa fa-user icon-size"></span>
                                                             </p>
                                                         </div>
                                                         <div className="col-lg-8">

@@ -61,7 +61,7 @@ class visualizarParametros extends React.Component{
             columnDefs: [{
                             header: "Código",
                             field: "Codigo",
-                            width: 150,
+                            width: 100,
                             type: "string"
                         },
                         {
@@ -199,13 +199,13 @@ class visualizarParametros extends React.Component{
             {/*-----------------------------------------------Modal---------------------------------------------------*/}
             <MyModal open={this.state.isShowingModal} onClose={this.onClose}>
                 <HeaderModal>
-                    <TituloForm>Registro Parametros</TituloForm>
+                    <TituloForm>Registro Parámetro</TituloForm>
                 </HeaderModal>
                 <CuerpoModal>
                 <Row>
                         <Container className='col-md-4 ' >
-                                <Label>Codigo:</Label>
-                                <InputText name='codigo' value={this.state.codigo} type="text" disabled={this.state.operacion==='M'?true:false} className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
+                                <Label>Código:</Label>
+                                <InputText name='codigo' value={this.state.codigo} type="text" disabled={this.state.operacion==='M'?true:false} className='form-control input-sm' placeholder='Código' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
                                 <Label>Fecha:</Label>
@@ -219,7 +219,7 @@ class visualizarParametros extends React.Component{
                     <Row>  
                         <Container className='col-md-4'>
                             <Label>Descripción:</Label>
-                            <InputText name='descripcion' value={this.state.descripcion} type="text" className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
+                            <InputText name='descripcion' value={this.state.descripcion} type="text" className='form-control input-sm' placeholder='Descripción' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4'>
                             <Label>Tipo:</Label>

@@ -13,7 +13,7 @@ export const Label = styled.label` //LABEL STYLE
 export const InputText = styled.input`
       height: 25px;
       padding: 5px 10px;
-      font-size: 13px;
+      font-size: 14px;
       line-height: 1.5;
       border-radius: 3px;
       display: block;
@@ -27,7 +27,7 @@ export const InputText = styled.input`
     export const TextArea = styled.textarea`
       height: 45px;
       padding: 5px 10px;
-      font-size: 11px;
+      font-size: 14px;
       line-height: 1.5;
       border-radius: 3px;
       display: block;

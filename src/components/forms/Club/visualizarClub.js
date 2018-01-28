@@ -49,7 +49,7 @@ class visualizarClub extends React.Component{
                             type: "string"
                         },
                         {
-                            header: "Nombre",
+                            header: "Club",
                             field: "Nombre",
                             width: 150,
                             type: "string"
@@ -61,7 +61,7 @@ class visualizarClub extends React.Component{
                             type: "string"
                         },
                         {
-                            header: "Obj. Est.",
+                            header: "Objetivo. Est.",
                             field: "ObjetivoEstrategico",
                             width: 150,
                             type: "string"
@@ -73,7 +73,7 @@ class visualizarClub extends React.Component{
                             type: "string"
                         },
                         {
-                            header: "Observacion",
+                            header: "Observación",
                             field: "observacion",
                             width: 150,
                             type: "string"
@@ -109,7 +109,7 @@ class visualizarClub extends React.Component{
                         type: "string",
                     },
                     {
-                        header: "Dia",
+                        header: "Día",
                         field: "dia_D",
                         width: 100,
                         type: "string"
@@ -256,7 +256,7 @@ class visualizarClub extends React.Component{
                     </Container>
                 </Row>
                 <Row>
-                    <Container className='col-md-12'>
+                    <Container className='col-md-10'>
                         <LabelTitle>Asignaciones</LabelTitle>
                         <AgGridRender altura='200px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>
@@ -273,8 +273,8 @@ class visualizarClub extends React.Component{
                 <CuerpoModal>
                     <Row>
                         <Container className='col-md-4' >
-                                <Label>Codigo:</Label>
-                                <InputText name='codigo' value={this.state.codigo} disabled={this.state.operacion==='M'?true:false} type="text"className='form-control input-sm' placeholder='Ej: 123' onChange={this.changeValues} />
+                                <Label>Código:</Label>
+                                <InputText name='codigo' value={this.state.codigo} disabled={this.state.operacion==='M'?true:false} type="text"className='form-control input-sm' placeholder='Código' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Fecha:</Label>
@@ -291,7 +291,7 @@ class visualizarClub extends React.Component{
                             <InputText name='nombre' value={this.state.nombre} type="text" className='form-control input-sm' placeholder='Nombre' onChange={this.changeValues} />
                          </Container>
                          <Container className='col-md-4'>
-                            <Label>Obj. Est.:</Label>
+                            <Label>Objetivo Est.:</Label>
                             <Selects name="objEspec_sel" value={this.state.objEspec_sel} onChange={(value) => { this.setState({ objEspec_sel: value }) }} options={this.state.objEspecOpc} />
                         </Container>
                          <Container className='col-md-4'>  
@@ -302,7 +302,7 @@ class visualizarClub extends React.Component{
                     <Row>
                         <Container className='col-md-12' >
                             <Label>Observación:</Label>
-                            <TextArea name='observacion'value={this.state.observacion} placeholder='Observacion' onChange={this.changeValues}></TextArea>
+                            <TextArea name='observacion'value={this.state.observacion} placeholder='Observación' onChange={this.changeValues}></TextArea>
                         </Container>
                     </Row>
                     <Row>

@@ -52,7 +52,7 @@ export default class NavBar extends React.Component{
                                 <ul className="sub-menu collapse" id="cofa">                                    
                                     <li>
                                         <Link to={'/visualizarfaltas'}>
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Visualizar Faltas
+                                            <span className="fa fa-chevron-circle-right"></span> Visualizar Faltas
                                          </Link>     
                                     </li>  
                                     <li>
@@ -74,12 +74,12 @@ export default class NavBar extends React.Component{
                                 <ul className="sub-menu collapse" id="new">                                    
                                     <li>
                                          <Link to={'/visualizarBeneficiario'}>
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Visualizar
+                                            <span className="fa fa-chevron-right"></span> Visualizar
                                          </Link>
                                     </li> 
                                     <li>
                                          <Link to={'/inscribirBeneficiario'}>
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Inscribir 
+                                            <span className="fa fa-chevron-right"></span> Inscribir 
                                          </Link>
                                     </li>      
                                 </ul>
@@ -94,12 +94,12 @@ export default class NavBar extends React.Component{
                                 <ul className="sub-menu collapse" id="new1">
                                     <li>
                                         <Link to={'/visualizarCoFacilitador'}> 
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Visualizar
+                                            <span className="fa fa-chevron-right"></span> Visualizar
                                         </Link>
                                     </li>
                                     <li>
                                         <Link to={'/asignarclub'}>
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Asignar Club a Co-Facilitador
+                                            <span className="fa fa-chevron-right"></span> Asignar Club a Co-Facilitador
                                     </Link>
                                     </li>
                                 </ul>
@@ -114,12 +114,12 @@ export default class NavBar extends React.Component{
                                 <ul className="sub-menu collapse" id="new2">
                                     <li>
                                         <Link to={'/visualizarClub'}> 
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Visualizar
+                                            <span className="fa fa-chevron-right"></span> Visualizar
                                         </Link>
                                     </li>
                                     <li>
                                         <Link to={'/asignarPSClub'}> 
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Asignar Punto Satélite a Club
+                                            <span className="fa fa-chevron-right"></span> Asignar Punto Satélite a Club
                                         </Link>
                                     </li>
                                 </ul>
@@ -133,7 +133,7 @@ export default class NavBar extends React.Component{
                                 <ul className="sub-menu collapse" id="new3">
                                     <li>
                                         <Link to={'/visualizarPuntoSatelite'} >
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Visualizar
+                                            <span className="fa fa-chevron-right"></span> Visualizar
                                         </Link>
                                     </li>
                                 </ul>
@@ -147,7 +147,7 @@ export default class NavBar extends React.Component{
                                 <ul className="sub-menu collapse" id="new4">
                                     <li>
                                         <Link to={'/visualizarParametros'}> 
-                                            <span className="glyphicon glyphicon-chevron-right"></span> Visualizar
+                                            <span className="fa fa-chevron-right"></span> Visualizar
                                         </Link>
                                     </li>
                                 </ul>

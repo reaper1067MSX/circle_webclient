@@ -64,9 +64,9 @@ class visualizarPuntoSatelite extends React.Component{
             grid_Satelite: [],
             columnDefs_Satelite: [
                                     {
-                                        header: "Codigo",
+                                        header: "Código",
                                         field: "Codigo",
-                                        width: 50,
+                                        width: 100,
                                         type: "string"
                                     },
                                     {
@@ -82,7 +82,7 @@ class visualizarPuntoSatelite extends React.Component{
                                         type: "string",
                                     },
                                     {
-                                        header: "Direccion",
+                                        header: "Dirección",
                                         field: "Direccion",
                                         width: 200,
                                         type: "string",
@@ -212,13 +212,13 @@ immutableDelete (arr, index) {
 
             <MyModal open={this.state.isShowingModal} onClose={this.onClose}>
                 <HeaderModal>
-                    <TituloForm>Registro Punto Satelite</TituloForm>
+                    <TituloForm>Registro Punto Satélite</TituloForm>
                 </HeaderModal>
                 <CuerpoModal>
                 <Row>
                     <Container className='col-md-5' >
-                        <Label>Codigo:</Label>
-                        <InputText name='codigo' value={this.state.codigo} type="text" className='form-control input-sm' placeholder='Codigo' onChange={this.changeValues} />
+                        <Label>Código:</Label>
+                        <InputText name='codigo' value={this.state.codigo} type="text" className='form-control input-sm' placeholder='Código' onChange={this.changeValues} />
                     </Container>
                     <Container className='col-md-3' >
                         <Label>Estado:</Label>
@@ -242,7 +242,7 @@ immutableDelete (arr, index) {
                         </Container>
                         <Container className='col-md-6' > 
                                 <Label>Telf:</Label>
-                                <InputText name='telefono' value={this.state.telefono} type="text" className='form-control input-sm' placeholder='Telefono' onChange={this.changeValues} />
+                                <InputText name='telefono' value={this.state.telefono} type="text" className='form-control input-sm' placeholder='Teléfono' onChange={this.changeValues} />
                         </Container>
                 </Row>
                             <Row>
@@ -253,12 +253,12 @@ immutableDelete (arr, index) {
                             </Row>
                            <Row>
                                  <Container className='col-md-6' > 
-                                        <Label>Longitud:</Label>
-                                        <InputText name='longitud' value={this.state.longitud} type="text" className='form-control input-sm' placeholder='Longitud' onChange={this.changeValues} />
+                                        <Label>Mz:</Label>
+                                        <InputText name='longitud' value={this.state.longitud} type="text" className='form-control input-sm' placeholder='Mz' onChange={this.changeValues} />
                                     </Container>
                                     <Container className='col-md-6' > 
-                                        <Label>Latitud:</Label>
-                                        <InputText name='latitud' value={this.state.latitud} type="text" className='form-control input-sm' placeholder='Latitud' onChange={this.changeValues} />
+                                        <Label>Vila:</Label>
+                                        <InputText name='latitud' value={this.state.latitud} type="text" className='form-control input-sm' placeholder='Villa' onChange={this.changeValues} />
                                     </Container>
                             </Row>
      
