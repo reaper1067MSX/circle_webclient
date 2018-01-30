@@ -61,19 +61,19 @@ class visualizarParametros extends React.Component{
             columnDefs: [{
                             header: "Código",
                             field: "Codigo",
-                            width: 100,
+                            width: 150,
                             type: "string"
                         },
                         {
                             header: "Descripción",
                             field: "Descripcion",
-                            width: 150,
+                            width: 250,
                             type: "string"
                         },
                         {
                             header: "Tipo",
                             field: "Tipo",
-                            width: 150,
+                            width: 100,
                             type: "string",
                         },
                         {

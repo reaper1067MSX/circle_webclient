@@ -25,12 +25,16 @@ import { Row } from './general_components/form_components/container/index';
 const ContenedorApp = styled.div`
   max-width: 100%;    
   font-family: Verdana, Geneva, sans-serif;
+  margin-rigth:0%;
 `;
 
 const ContenedorCuerpoApp = styled.div`        
-  margin-top: -5px;
-  margin-left: 25%;
-  margin-rigth:-10%;
+  margin-top: 30px;
+  margin-left: 22%;
+  margin-rigth:0%;
+  position: absolute;
+  width: 75%;
+  z-index:1;
     
 `;  
 

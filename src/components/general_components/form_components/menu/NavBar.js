@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { borrarDatosSesion, getItemDatosSesion } from '../../../../funciones_globales/manejosesion';
 
 
+
 export default class NavBar extends React.Component{
 
     menuVisible(){
@@ -32,7 +33,7 @@ export default class NavBar extends React.Component{
         const invisible = "collapsed invisible";
         const visible = "collapsed visible";
         return  <div className="nav-side-menu">
-                   <div className="brand">The Circle</div>
+                   <div className="brand"> The Circle</div>
                       <i className="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
                         <div className="menu-list">
                             <ul id="menu-content" className="menu-content collapse out">

@@ -54,19 +54,19 @@ class visualizarBeneficiario extends React.Component{
             gridBeneficiario: [],
             columnDefs_Beneficiario: [{  header: "Cédula",
                                                 field: "Cedula",
-                                                width: 110,
+                                                width: 130,
                                                 type: "string"
                                             },
                                             {
                                                 header: "Nombre",
                                                 field: "Nombre",
-                                                width: 160,
+                                                width: 200,
                                                 type: "string"
                                             },
                                             {
                                                 header: "Apellido",
                                                 field: "Apellido",
-                                                width: 160,
+                                                width: 200,
                                                 type: "string"
                                             },
                                             {
@@ -96,13 +96,13 @@ class visualizarBeneficiario extends React.Component{
                                         ],
             columnDefs_Asignacion: [{   header: "N°",
                                         field: "secuencia",
-                                        width: 50,
+                                        width: 80,
                                         type: "string"
                                     },
                                     {
                                         header: "Beneficiario",
                                         field: "beneficiario",
-                                        width: 150,
+                                        width: 200,
                                         type: "string"
                                     },
                                     {

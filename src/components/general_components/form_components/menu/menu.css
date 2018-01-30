@@ -12,12 +12,12 @@
     font-weight: 200;
     background-color: #344868;
     position: fixed;
-    top: 0%;
+    
 
-    width: 22%;
+    width: 20%;
     height: 100%;
     color: #ffffff;
-    
+    margin-left: 1%;
 }
     /*Encabezado del menu*/
     .nav-side-menu .brand {

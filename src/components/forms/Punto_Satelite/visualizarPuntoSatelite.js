@@ -72,19 +72,19 @@ class visualizarPuntoSatelite extends React.Component{
                                     {
                                         header: "Nombre",
                                         field: "Nombre",
-                                        width: 150,
+                                        width: 250,
                                         type: "string"
                                     },
                                     {
                                         header: "Tipo",
                                         field: "Tipo",
-                                        width: 50,
+                                        width: 100,
                                         type: "string",
                                     },
                                     {
                                         header: "Dirección",
                                         field: "Direccion",
-                                        width: 200,
+                                        width: 350,
                                         type: "string",
                                     },
                                     {

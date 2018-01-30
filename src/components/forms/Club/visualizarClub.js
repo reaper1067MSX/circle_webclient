@@ -45,7 +45,7 @@ class visualizarClub extends React.Component{
             columnDefs: [{
                             header: "Cod.",
                             field: "Codigo",
-                            width: 50,
+                            width: 100,
                             type: "string"
                         },
                         {
@@ -57,7 +57,7 @@ class visualizarClub extends React.Component{
                         {
                             header: "Fecha",
                             field: "fecha_creacion",
-                            width: 100,
+                            width: 110,
                             type: "string"
                         },
                         {
@@ -75,7 +75,7 @@ class visualizarClub extends React.Component{
                         {
                             header: "Observación",
                             field: "observacion",
-                            width: 150,
+                            width: 160,
                             type: "string"
                         },
                         {
@@ -93,7 +93,7 @@ class visualizarClub extends React.Component{
 
             columnDefs_Asignacion: [{   header: "N°",
                         field: "secuencia",
-                        width: 50,
+                        width: 80,
                         type: "string"
                     },
                     {
@@ -105,7 +105,7 @@ class visualizarClub extends React.Component{
                     {
                         header: "Punto Satélite",
                         field: "punto_satelite_N",
-                        width: 150,
+                        width: 200,
                         type: "string",
                     },
                     {
@@ -256,7 +256,7 @@ class visualizarClub extends React.Component{
                     </Container>
                 </Row>
                 <Row>
-                    <Container className='col-md-10'>
+                    <Container className='col-md-11'>
                         <LabelTitle>Asignaciones</LabelTitle>
                         <AgGridRender altura='200px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
                     </Container>

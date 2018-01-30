@@ -58,31 +58,31 @@ class visualizarCoFacilitador extends React.Component{
                                         {
                                             header: "Cédula",
                                             field: "Codigo",
-                                            width: 100,
+                                            width: 130,
                                             type: "string"
                                         },
                                         {
                                             header: "Nombre",
                                             field: "Nombre",
-                                            width: 150,
+                                            width: 200,
                                             type: "string"
                                         },
                                         {
                                             header: "Apellido",
                                             field: "Apellido",
-                                            width: 150,
+                                            width: 200,
                                             type: "string"
                                         },
                                         {
                                             header: "Edad",
                                             field: "Edad",
-                                            width: 50,
+                                            width: 80,
                                             type: "string"
                                         },
                                         {
                                             header: "Estado",
                                             field: "Estado",
-                                            width: 60,
+                                            width: 80,
                                             type: "string",
                                         },
                                         {
@@ -106,14 +106,13 @@ class visualizarCoFacilitador extends React.Component{
                                         ],
             columnDefs_Asignacion: [{   header: "N°",
                                         field: "secuencia",
-                                        width: 50,
+                                        width: 80,
                                         type: "string"
                                     },
                                     {
                                         header: "Co Facilitador",
                                         field: "beneficiario",
-                                        
-                                        width: 150,
+                                        width: 200,
                                         type: "string"
                                     },
                                     {
