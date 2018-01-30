@@ -26,9 +26,7 @@ class TopBar extends React.Component{
 
     render() {
         return      <div className="navbar navbar-default nav-menu">
-                        <div className="navbar-header">
-                            <a className="navbar-brand" href="#">The Circle</a>
-                        </div>
+                        
                         
                             {/*--------------------------cerrar sesion --------------------------*/}
                             <ul className="nav navbar-nav navbar-right">

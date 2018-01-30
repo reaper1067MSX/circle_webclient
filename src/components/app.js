@@ -20,6 +20,7 @@ import VisualizarFaltas from './forms/Faltas/VisualizarFaltas';
 import NavBar from './general_components/form_components/menu/NavBar';
 //import Menu from './menu';
 import TopBar from './general_components/form_components/topBar/TopBar';
+import { Row } from './general_components/form_components/container/index';
 
 const ContenedorApp = styled.div`
   max-width: 100%;    
@@ -39,28 +40,31 @@ class App extends Component {
      
 
       <ContenedorApp >
+        <Row>
+          <TopBar/>
+        </Row>
+        <Row>
+          <NavBar/>
+          <ContenedorCuerpoApp>                                
+              <Switch>
 
-        <TopBar/>
-        <NavBar/>
-        <ContenedorCuerpoApp>                                
-            <Switch>
-
-              
-              <Route path='/login' component={login} />
-              <Route path='/visualizarclub' component={visualizarClub} />
-              <Route path='/asignarpsclub' component={asignarPSClub} />
-              <Route path='/visualizarpuntosatelite' component={visualizarPuntoSatelite} />   
-              <Route path='/visualizarcofacilitador' component={visualizarCoFacilitador} />  
-              <Route path='/asignarclub' component={asignarClub} />            
-              <Route path='/visualizarbeneficiario' component={visualizarBeneficiario} />  
-              <Route path='/inscribirbeneficiario' component={inscribirBeneficiario} />            
-              <Route path='/visualizarparametros' component={visualizarParametros} />               
-              <Route path='/registrofaltas' component={RegistroFaltas} /> 
-              <Route path='/visualizarfaltas' component={VisualizarFaltas} /> 
-              visualizarfaltas
-                                              
-            </Switch>    
-        </ContenedorCuerpoApp>
+                
+                <Route path='/login' component={login} />
+                <Route path='/visualizarclub' component={visualizarClub} />
+                <Route path='/asignarpsclub' component={asignarPSClub} />
+                <Route path='/visualizarpuntosatelite' component={visualizarPuntoSatelite} />   
+                <Route path='/visualizarcofacilitador' component={visualizarCoFacilitador} />  
+                <Route path='/asignarclub' component={asignarClub} />            
+                <Route path='/visualizarbeneficiario' component={visualizarBeneficiario} />  
+                <Route path='/inscribirbeneficiario' component={inscribirBeneficiario} />            
+                <Route path='/visualizarparametros' component={visualizarParametros} />               
+                <Route path='/registrofaltas' component={RegistroFaltas} /> 
+                <Route path='/visualizarfaltas' component={VisualizarFaltas} /> 
+                visualizarfaltas
+                                                
+              </Switch>    
+          </ContenedorCuerpoApp>
+        </Row>
       </ContenedorApp>
       
     );

@@ -11,18 +11,24 @@ const Body = styled.div`
     font-family: 'Roboto', sans-serif;
     background-image: url(${background}) ;
     background-size: cover;
-    background-repeat: no-repeat 50% 70%;
+    background-repeat: no-repeat 50% 100%;
     max-height: 100%;
     overflow: hidden
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    width: 100%;
 `;
 
 const LoginWrapper = styled.div`
-    width: 100%;
+
     float: right;
-    margin-top: 170px;
-    margin-bottom: 130px;
+    margin-top: 12.5%;
+    margin-bottom: 11.5%;
+    margin-right: 3%;
     position: relative;
-    max-width: 360px
+    max-width: 100%;
 `;
 
 const Login1 = styled.div`
@@ -81,6 +87,11 @@ const Footer = styled.div`
   cursor: pointer;
 
 `;
+const Label = styled.label` //LABEL STYLE
+      display: inline-block;  
+      font-size: 15px;
+      color: white;
+    `;
 
 const A3 = styled.a`
   color: #fff;
@@ -90,12 +101,15 @@ const A3 = styled.a`
 `;
 
 const Button = styled.button`
+    border-radius: 6px;
     color: #fff;
     width: 100%;
+    font-size:18px;
     border-color: #17c092;
     background-color: #28d1a3;
     height: 33px;
-    border-radius: 5px;
+    text-decoration: none;
+
 `;
 
 export default class Login extends React.Component{  
@@ -204,21 +218,18 @@ export default class Login extends React.Component{
                                         </div>
                                     </div>
 
-                                    <A1 href="#" data-toggle="modal" data-target="#modal-recuperarClave" id="texto_recordar_clave">Olvido su contraseña</A1>
-                                    <A2 href="#" data-toggle="modal" data-target="#modal_cambiar_clave" id="texto_cambiar_clave">Cambie su contraseña</A2>
-                       
+
                                     <div className="form-group">
+                                        <Label>Centro Comunitario:</Label>
                                         <Selects name="options_localidad_sel" value={this.state.options_localidad_sel} onChange={(value) => { this.setState({ options_localidad_sel: value }) }} options={this.state.options_localidad} />
                                     </div>
-                                    
-                                    <Button data-ripple type="submit" onClick={this.login}>
-                                        Acceder                                       
-                                    </Button>
-                               
+
                                 </form>
                             </Login2>
                             <Footer className="panel-footer">
-                                <A3 >Crear una cuenta</A3>
+                                    <Button  data-ripple type="submit" onClick={this.login}>
+                                        Acceder                                       
+                                    </Button>
                             </Footer>
                         </Login1>          
                     </LoginWrapper>  
