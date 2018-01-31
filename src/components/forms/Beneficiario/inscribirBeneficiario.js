@@ -44,7 +44,7 @@ export default class inscribirBeneficiario extends React.Component{
                             },
                             {   header: "N°",
                                 field: "secuencia",
-                                width: 50,
+                                width: 70,
                                 type: "string"
                             },
                             {
@@ -56,7 +56,7 @@ export default class inscribirBeneficiario extends React.Component{
                             {
                                 header: "Punto Satélite",
                                 field: "punto_satelite_N",
-                                width: 150,
+                                width: 200,
                                 type: "string",
                             },
                             {
@@ -80,7 +80,7 @@ export default class inscribirBeneficiario extends React.Component{
 
             columnDefs_Asignacion: [{   header: "N°",
                                         field: "secuencia",
-                                        width: 50,
+                                        width: 80,
                                         type: "string"
                                     },
                                     {
@@ -92,7 +92,7 @@ export default class inscribirBeneficiario extends React.Component{
                                     {
                                         header: "Punto Satélite",
                                         field: "punto_satelite_N",
-                                        width: 150,
+                                        width: 200,
                                         type: "string",
                                     },
                                     {

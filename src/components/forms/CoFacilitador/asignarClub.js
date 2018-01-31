@@ -41,7 +41,7 @@ export default class asignarClub extends React.Component{
                             },
                             {   header: "N°",
                                 field: "secuencia",
-                                width: 50,
+                                width: 80,
                                 type: "string"
                             },
                             {
@@ -53,7 +53,7 @@ export default class asignarClub extends React.Component{
                             {
                                 header: "Punto Satélite",
                                 field: "punto_satelite_N",
-                                width: 150,
+                                width: 200,
                                 type: "string",
                             },
                             {
@@ -77,26 +77,26 @@ export default class asignarClub extends React.Component{
 
     columnDefs_Asignacion: [{   header: "N°",
                                 field: "secuencia",
-                                width: 50,
+                                width: 70,
                                 type: "string"
                             },
                             {
                                 header: "Co Facilitador",
                                 field: "beneficiario",
                                 
-                                width: 150,
+                                width: 170,
                                 type: "string"
                             },
                             {
                                 header: "Club",
                                 field: "club",
-                                width: 150,
+                                width: 140,
                                 type: "string"
                             },
                             {
                                 header: "Punto Satélite",
                                 field: "punto_satelite_N",
-                                width: 150,
+                                width: 170,
                                 type: "string",
                             },
                             {
