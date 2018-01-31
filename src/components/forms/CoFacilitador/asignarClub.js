@@ -39,6 +39,14 @@ export default class asignarClub extends React.Component{
                                 suppressFilter: true,
                                 pinned: true
                             },
+<<<<<<< HEAD
+=======
+                            {   header: "N°",
+                                field: "secuencia",
+                                width: 80,
+                                type: "string"
+                            },
+>>>>>>> 176cf8c62359abad28ce19190e93e3f00ebcb69b
                             {
                                 header: "Club",
                                 field: "club",
@@ -46,8 +54,20 @@ export default class asignarClub extends React.Component{
                                 type: "string"
                             },
                             {
-                                header: "Estado",
-                                field: "estado",
+                                header: "Punto Satélite",
+                                field: "punto_satelite_N",
+                                width: 200,
+                                type: "string",
+                            },
+                            {
+                                header: "Dia",
+                                field: "dia_D",
+                                width: 100,
+                                type: "string"
+                            },
+                            {
+                                header: "Desde",
+                                field: "desde",
                                 width: 100,
                                 type: "string",
                             },
@@ -60,26 +80,26 @@ export default class asignarClub extends React.Component{
 
     columnDefs_Asignacion: [{   header: "N°",
                                 field: "secuencia",
-                                width: 50,
+                                width: 70,
                                 type: "string"
                             },
                             {
                                 header: "Co Facilitador",
                                 field: "beneficiario",
                                 
-                                width: 150,
+                                width: 170,
                                 type: "string"
                             },
                             {
                                 header: "Club",
                                 field: "club",
-                                width: 150,
+                                width: 140,
                                 type: "string"
                             },
                             {
                                 header: "Punto Satélite",
                                 field: "punto_satelite_N",
-                                width: 150,
+                                width: 170,
                                 type: "string",
                             },
                             {
