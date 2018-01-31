@@ -39,14 +39,11 @@ export default class asignarClub extends React.Component{
                                 suppressFilter: true,
                                 pinned: true
                             },
-<<<<<<< HEAD
-=======
                             {   header: "N°",
                                 field: "secuencia",
                                 width: 80,
                                 type: "string"
                             },
->>>>>>> 176cf8c62359abad28ce19190e93e3f00ebcb69b
                             {
                                 header: "Club",
                                 field: "club",
@@ -54,21 +51,9 @@ export default class asignarClub extends React.Component{
                                 type: "string"
                             },
                             {
-                                header: "Punto Satélite",
-                                field: "punto_satelite_N",
-                                width: 200,
-                                type: "string",
-                            },
-                            {
-                                header: "Dia",
-                                field: "dia_D",
-                                width: 100,
-                                type: "string"
-                            },
-                            {
-                                header: "Desde",
-                                field: "desde",
-                                width: 100,
+                                header: "Estado",
+                                field: "estado",
+                                width: 90,
                                 type: "string",
                             },
                             {
