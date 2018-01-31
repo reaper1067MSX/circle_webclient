@@ -111,8 +111,8 @@ class visualizarCoFacilitador extends React.Component{
                                     },
                                     {
                                         header: "Co Facilitador",
-                                        field: "beneficiario",
-                                        width: 200,
+                                        field: "cofacilitador",
+                                        width: 350,
                                         type: "string"
                                     },
                                     {
@@ -182,10 +182,18 @@ class visualizarCoFacilitador extends React.Component{
 
         //ACTION PARA ELIMINAR
         methodFromParent(id ,datos_fila){
-            var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
-            
-            if (mensaje){
-                this.eliminarParametro(id, datos_fila ) 
+            if(datos_fila.hasOwnProperty('Edad')===true && datos_fila.hasOwnProperty('Estado')===true){
+                var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
+                if (mensaje){
+                    this.eliminarParametro(id, datos_fila ) 
+                }
+            }
+
+            if(datos_fila.hasOwnProperty('desde')===true && datos_fila.hasOwnProperty('hasta')===true){
+                var mensaje = window.confirm("¿Desea desvincular al cofacilitador actual de todos los clubs de "+datos_fila.club+"?"); 
+                if (mensaje){
+                    this.desVincularCofacilitador(id, datos_fila ) 
+                }
             }
         }
     
@@ -208,6 +216,23 @@ class visualizarCoFacilitador extends React.Component{
                 //FUNC RECARGAR GRID
                 this.cargarGrid();
                 
+            })
+            .catch(err => {
+                console.log(err);
+            });
+        }
+
+        desVincularCofacilitador(id, datos_fila){
+            let config_request = {
+                method: 'PATCH',
+                url: '/asignaciones/desvinculacion/'+datos_fila.id.toString()
+            }
+        
+            global_axios(config_request)
+            .then((response)=>{
+                alert(response.data.msg);
+                //FUNC RECARGAR GRID
+                this.cargarGridAsignacionCO();
             })
             .catch(err => {
                 console.log(err);
@@ -441,7 +466,7 @@ methodModifyFromParent(id, datos_fila){
         });
 
         this.cargarGrid();
-        this.cargarGridAsignacion();
+        this.cargarGridAsignacionCO();
     }
 
     cargarGrid(){
@@ -493,11 +518,11 @@ methodModifyFromParent(id, datos_fila){
         });
     }
 
-    cargarGridAsignacion(){
+    cargarGridAsignacionCO(){
         //Proceso Adquirir Registros GRID
         let config_request = {
             method: 'GET',
-            url: '/asignaciones'
+            url: '/asignaciones?cofacilitador=true'
         }
        
         global_axios(config_request)

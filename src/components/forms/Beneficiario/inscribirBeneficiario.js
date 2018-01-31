@@ -172,27 +172,28 @@ export default class inscribirBeneficiario extends React.Component{
                     }
                 }                                  
            };
-    
+
            this.gridOptions = {
             context: {
                 componentParent: this
             },      
             enableColResize: true,
-            enableCellChangeFlash: true
-                                            
+            enableCellChangeFlash: true                        
         };
 
         //Funciones binds
         this.changeValues = this.changeValues.bind(this);
         this.guardarInscripcion = this.guardarInscripcion.bind(this);
-
+        this.getAsignacionBeneficiario = this.getAsignacionBeneficiario.bind(this);
         //GRID
         this.onGridReady = this.onGridReady.bind(this);
     }
 
     comprobarCruces(fila){
         var response = false;
+        console.log("FILA ENTRANTE: ", fila)
         this.state.grid_Asignacion.forEach((DATA)=>{
+            console.log("FILA CONSULTADA: ", DATA)
             if(fila.dia === DATA.dia && fila.desde === DATA.desde && fila.hasta === DATA.hasta){
                 response = true;
             }
@@ -272,6 +273,28 @@ export default class inscribirBeneficiario extends React.Component{
         }
     }
 
+    getAsignacionBeneficiario(){
+        var beneficiario = this.state.options_beneficiario_sel.value.toString();
+
+        let config_request = {
+            method: 'GET',
+            url: '/asignaciones?beneficiario='+beneficiario
+        }
+
+        global_axios(config_request)
+            .then((response)=>{
+                console.log("RESPUESTA: ", response.data)
+                var asignacion = [];
+                asignacion = response.data;
+                if(asignacion.length > 0){
+                    this.setState({grid_Asignacion: asignacion});
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     render() {
 
         return <div className="container">
@@ -282,7 +305,7 @@ export default class inscribirBeneficiario extends React.Component{
                 <Row>
                     <Container className='col-md-6' >
                         <Label>Beneficiario:</Label>
-                        <ReactSelectAsync name="options_beneficiario_sel" value={this.state.options_beneficiario_sel} func_onChange={(value) => { this.setState({ options_beneficiario_sel: value }) }} func_loadOptions={this.getOptionsBeneficiario.bind(this)} />
+                        <ReactSelectAsync name="options_beneficiario_sel" value={this.state.options_beneficiario_sel} func_onChange={(value) => { this.setState({ options_beneficiario_sel: value }, ()=>{this.setState({grid_Asignacion: []})}) }} func_loadOptions={this.getOptionsBeneficiario.bind(this)} func_onBlur={this.getAsignacionBeneficiario}/>
                     </Container>
                     <Container className='col-md-3' >
                         <Label>Estado:</Label>
@@ -295,14 +318,14 @@ export default class inscribirBeneficiario extends React.Component{
                 </Row>
                 <Row>
                     <Container className='col-md-12'>
-                        <AgGridRender altura='250px' data={this.state.grid_Club} columnas={this.state.colDefs_Club} gridOptions={this.gridOptionsClub} onGridReady={this.onGridReady} />
+                        <AgGridRender altura='150px' data={this.state.grid_Club} columnas={this.state.colDefs_Club} gridOptions={this.gridOptionsClub} onGridReady={this.onGridReady} />
                     </Container> 
                 </Row>
                 <Row>
                     <Container className='col-md-12' > 
                         <Fieldset className='col-md-12'>
                             <Legend>Asignación</Legend>
-                            <AgGridRender altura='100px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReadyAsig} />
+                            <AgGridRender altura='150px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReadyAsig} />
                         </Fieldset>
                     </Container>
                 </Row>

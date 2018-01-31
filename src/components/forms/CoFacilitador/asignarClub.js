@@ -24,11 +24,11 @@ export default class asignarClub extends React.Component{
             //SELECTS
             options_estado: [],
             options_estado_sel: null,
-
+            options_cofacilitador_sel: null,
             //Por cada modal un state para controlar su estado! 
             isShowingModal: false,
 
-  //Grid
+            //Grid
             grid_Club: [],
             grid_Asignacion:[],
             colDefs_Club: [{    header: "",
@@ -39,11 +39,6 @@ export default class asignarClub extends React.Component{
                                 suppressFilter: true,
                                 pinned: true
                             },
-                            {   header: "N°",
-                                field: "secuencia",
-                                width: 50,
-                                type: "string"
-                            },
                             {
                                 header: "Club",
                                 field: "club",
@@ -51,27 +46,15 @@ export default class asignarClub extends React.Component{
                                 type: "string"
                             },
                             {
-                                header: "Punto Satélite",
-                                field: "punto_satelite_N",
-                                width: 150,
+                                header: "Estado",
+                                field: "estado",
+                                width: 100,
                                 type: "string",
                             },
                             {
-                                header: "Dia",
-                                field: "dia_D",
-                                width: 100,
-                                type: "string"
-                            },
-                            {
-                                header: "Desde",
-                                field: "desde",
-                                width: 100,
-                                type: "string"
-                            },
-                            {
-                                header: "Hasta",
-                                field: "hasta",
-                                width: 100,
+                                header: "Observación",
+                                field: "observacion",
+                                width: 350,
                                 type: "string"
                             }],
 
@@ -146,16 +129,52 @@ export default class asignarClub extends React.Component{
 
         //Funciones binds
         this.changeValues = this.changeValues.bind(this);
+        this.guardarAsignacionCofacilitador = this.guardarAsignacionCofacilitador.bind(this);
 
         //GRID
         this.onGridReady = this.onGridReady.bind(this);
-
+        this.onGridReadyAS = this.onGridReadyAS.bind(this);
     }
 
         getOptionsCoFacilitador(input, callback){
             if(input.toString().length >= 3){
                 let cadena_busq = '?cadena_busq=' + input;
                 cargarCatalogosGenericoAsync('/cofacilitadores', cadena_busq, callback)  
+            }
+        }
+
+        guardarAsignacionCofacilitador(){
+
+            var select = [];
+            select = this.api.getSelectedRows();
+            console.log("#: ", select)
+
+            if(select.length > 0 && this.state.options_cofacilitador_sel !== null){
+                var mensaje = window.confirm("Esta apunto de asignar un cofacilitador a todos las planificanes para este club, ¿Desea continuar?"); 
+                if (mensaje){
+                    var data = {};
+                    data.cofacilitador = this.state.options_cofacilitador_sel.value;
+
+                    let config_request = {
+                        method: 'PATCH',
+                        url: '/asignaciones/'+select[0].club_id,
+                        data
+                    }
+                
+                    global_axios(config_request)
+                    .then((response)=>{
+                        alert(response.data.msg);
+                        //FUNC RECARGAR GRID
+                        this.cargarGridClubsDisponibles();
+                        this.setState({options_cofacilitador_sel: null})
+                        //this.setState({grid_Asignacion: [], options_beneficiario_sel: null});
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+                }
+            }else{
+                alert("Antes de guardar seleccione un club o busque un cofacilitador")
             }
         }
 
@@ -182,32 +201,31 @@ export default class asignarClub extends React.Component{
                 </Row>
                 <Row>
                     <Container className='col-md-12'>
-                        <AgGridRender altura='250px' data={this.state.grid_Club} columnas={this.state.colDefs_Club} gridOptions={this.gridOptionsClub} onGridReady={this.onGridReady} />
+                        <AgGridRender altura='150px' data={this.state.grid_Club} columnas={this.state.colDefs_Club} gridOptions={this.gridOptionsClub} onGridReady={this.onGridReady} />
                     </Container>
                 </Row>
                 <Row>
+                    <Container className='col-md-12'>
+                        {/* <div className="btn-group pull-right">
+                            <button type="submit" className='btn btn-secondary btn-sm'>
+                                <i className="fa fa-trash-o fa-lg"></i> Limpiar
+                        </button>
+                        </div> */}
+                        <div className="btn-group pull-right">
+                            <button type="submit" className='btn btn-primary btn-sm' onClick={this.guardarAsignacionCofacilitador}>
+                                <i className="fa fa-floppy-o fa-lg"></i> Guardar
+                            </button>
+                        </div>
+                    </Container>
+                </Row>
+                {/* <Row>
                     <Container className='col-md-12' > 
                         <Fieldset1 className='col-md-12'>
                             <Legend1>Asiganción de Club</Legend1>
-                                 <AgGridRender altura='100px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReady} />
+                                 <AgGridRender altura='150px' data={this.state.grid_Asignacion} columnas={this.state.columnDefs_Asignacion} gridOptions={this.gridOptions} onGridReady={this.onGridReadyAS} />
                         </Fieldset1>
                     </Container>
-                </Row>
-                
-            <Row>
-                <Container className='col-md-12'>
-                    <div className="btn-group pull-right">
-                        <button type="submit" className='btn btn-secondary btn-sm'>
-                            <i className="fa fa-trash-o fa-lg"></i> Limpiar
-                    </button>
-                    </div>
-                    <div className="btn-group pull-right">
-                        <button type="submit" className='btn btn-primary btn-sm'>
-                            <i className="fa fa-floppy-o fa-lg"></i> Guardar
-                        </button>
-                    </div>
-                </Container>
-            </Row>
+                </Row> */}
             </CuerpoForm>
 
         </div>;
@@ -222,6 +240,11 @@ export default class asignarClub extends React.Component{
         this.columnApi = params.columnApi;
     }
 
+    onGridReadyAS(params) {
+        this.apiAS = params.api;
+        this.columnApiAS = params.columnApi;
+    }
+
     //Functions
     changeValues(event) {
 
@@ -234,43 +257,49 @@ export default class asignarClub extends React.Component{
         });
     }
 
-  //Realiza todas estas operaciones al renderizar el form catalogos?tabla=DIASEMANA&estado=A
-  componentDidMount(){
-    Promise.all([
-        cargarCatalogos('GENESTADO')
-    ])
-    .then(([result_estado]) => {
-        this.setState(
-            { options_estado: result_estado }, ()=>{
-            //DEFAULT VALUE DESPUES DE ASIGNAR
-            this.state.options_estado.forEach((OP)=>{
-                if(OP.value === 'A'){
-                    this.setState({options_estado_sel: OP});
-                }
+    //Realiza todas estas operaciones al renderizar el form catalogos?tabla=DIASEMANA&estado=A
+    componentDidMount(){
+        Promise.all([
+            cargarCatalogos('GENESTADO')
+        ])
+        .then(([result_estado]) => {
+            this.setState(
+                { options_estado: result_estado }, ()=>{
+                //DEFAULT VALUE DESPUES DE ASIGNAR
+                this.state.options_estado.forEach((OP)=>{
+                    if(OP.value === 'A'){
+                        this.setState({options_estado_sel: OP});
+                    }
+                })
+                this.cargarGridClubsDisponibles();
             })
-            this.cargarGridAsignacion();
         })
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}
-    
-cargarGridAsignacion(){
-    //Proceso Adquirir Registros GRID
-    let config_request = {
-        method: 'GET',
-        url: '/asignaciones'
-    }
-   
-    global_axios(config_request)
-    .then((response)=>{
-        console.log("DATA respondida en request paramentros: ",response.data)
-        this.setState({grid_Club: response.data})
-    })
-    .catch(err => {
+        .catch(err => {
         console.log(err);
-    });
-}
+        });
+    }
+    
+    cargarGridClubsDisponibles(){
+        //Proceso Adquirir Registros GRID
+        let config_request = {
+            method: 'GET',
+            url: '/clubsasignados'
+        }
+    
+        global_axios(config_request)
+        .then((response)=>{
+            console.log("DATA respondida en request paramentros: ",response.data)
+            let clubsDisponibles = response.data;
+            if(clubsDisponibles.length > 0){
+                this.setState({grid_Club: response.data})
+            }else{
+                alert("No quedan clubs por ingresar")
+            }
+            
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
 
 }//End

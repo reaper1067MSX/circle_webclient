@@ -102,7 +102,7 @@ class visualizarBeneficiario extends React.Component{
                                     {
                                         header: "Beneficiario",
                                         field: "beneficiario",
-                                        width: 200,
+                                        width: 250,
                                         type: "string"
                                     },
                                     {
@@ -166,11 +166,21 @@ class visualizarBeneficiario extends React.Component{
 
     //ACTION PARA ELIMINAR
     methodFromParent(id ,datos_fila){
-        var mensaje = window.confirm("¿Desea eliminar la dirección seleccionada?"); 
-        
-        if (mensaje){
-            this.eliminarBeneficiario(id, datos_fila ) 
+
+        if((datos_fila.hasOwnProperty('Edad'))===true && (datos_fila.hasOwnProperty('Estado'))===true){
+            var mensaje = window.confirm("¿Desea eliminar al beneficiario?"); 
+            if (mensaje){
+                this.eliminarBeneficiario(id, datos_fila ) 
+            }
         }
+
+        if((datos_fila.hasOwnProperty('dia'))===true && (datos_fila.hasOwnProperty('desde'))===true){
+            var mensaje = window.confirm("¿Desea eliminar la asignacion en el beneficiario actual?"); 
+            if (mensaje){
+                this.eliminarInscripcion(id, datos_fila ) 
+            }
+        }
+        
     }
 
     eliminarBeneficiario(id, datos_fila ){
@@ -184,6 +194,24 @@ class visualizarBeneficiario extends React.Component{
             alert(response.data.msg);
             //FUNC RECARGAR GRID
             this.cargarGrid();
+            
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    eliminarInscripcion(id, datos_fila){
+        let config_request = {
+            method: 'DELETE',
+            url: '/inscripciones?beneficiario='+datos_fila.beneficiario_cod.toString()+'&secuencia='+datos_fila.secuencia.toString()
+        }
+    
+        global_axios(config_request)
+        .then((response)=>{
+            alert(response.data.msg);
+            //FUNC RECARGAR GRID
+            this.cargarGridAsignacion();
             
         })
         .catch(err => {
@@ -364,7 +392,6 @@ class visualizarBeneficiario extends React.Component{
     }
 
     //Valores aplicados
-
     ChangeDateNacimiento(day) {
         //SAVE
         this.setState({ fecha_nacimiento: day });
@@ -387,7 +414,6 @@ class visualizarBeneficiario extends React.Component{
         this.setState({ isShowingModal: false });
     }
     
-
     //Functions
     changeValues(event) {
 
@@ -517,7 +543,7 @@ class visualizarBeneficiario extends React.Component{
         //Proceso Adquirir Registros GRID
         let config_request = {
             method: 'GET',
-            url: '/asignaciones'
+            url: '/asignaciones?visualizar=true'
         }
        
         global_axios(config_request)
