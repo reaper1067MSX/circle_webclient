@@ -67,7 +67,7 @@ class visualizarParametros extends React.Component{
                         {
                             header: "Descripción",
                             field: "Descripcion",
-                            width: 250,
+                            width: 300,
                             type: "string"
                         },
                         {
@@ -107,6 +107,7 @@ class visualizarParametros extends React.Component{
         this.eliminarParametro = this.eliminarParametro.bind(this);
         this.methodModifyFromParent = this.methodModifyFromParent.bind(this);
         this.guardarParametro = this.guardarParametro.bind(this);
+        this.limpiarPantalla = this.limpiarPantalla.bind(this);
 
         //Modals
         this.showModal = this.showModal.bind(this); //SWITCH OPEN/CLOSE
@@ -234,7 +235,7 @@ class visualizarParametros extends React.Component{
                     <Row>
                         <Container className='col-md-12'>
                             <div className="btn-group pull-right">
-                                <button type="button" className='btn btn-secondary btn-sm'>
+                                <button type="button" className='btn btn-secondary btn-sm' /*onClick={this.limpiarPantalla}*/>
                                     <i className="fa fa-trash-o fa-lg"></i> Limpiar
                             </button>
                             </div>
@@ -267,6 +268,7 @@ class visualizarParametros extends React.Component{
         }
         this.setState({ isShowingModal: !this.state.isShowingModal });
         console.log("OPERACION: ", this.state.operacion)
+        this.limpiarPantalla();
     }
 
     onClose(event) {
@@ -299,6 +301,12 @@ class visualizarParametros extends React.Component{
         });
     }
 
+    limpiarPantalla(){
+        this.state.codigo="";
+       this.state.descripcion="";
+       this.state.options_tipo_sel="";
+       this.state.options_depen_sel="";
+    }
     guardarParametro(){
         //VALIDACION DE CAMPS REQUERIDOS
 
@@ -312,9 +320,9 @@ class visualizarParametros extends React.Component{
         data.options_estado_sel = this.state.options_estado_sel.value;
 
         if(this.state.options_depen_sel!==""){
-            data.options_depen = this.state.options_depen_sel;
+            data.options_depen_sel = this.state.options_depen_sel.value;
         }else{
-            data.options_depen = "";
+            data.options_depen_sel = "";
         }
         
         //Request
@@ -350,6 +358,8 @@ class visualizarParametros extends React.Component{
         .catch(err => {
             console.log(err);
         });
+
+        this.limpiarPantalla();
     }
 
     //Realiza todas estas operaciones al renderizar el form

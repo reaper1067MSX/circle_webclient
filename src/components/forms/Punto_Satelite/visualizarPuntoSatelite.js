@@ -218,7 +218,7 @@ immutableDelete (arr, index) {
                 <Row>
                     <Container className='col-md-5' >
                         <Label>Código:</Label>
-                        <InputText name='codigo' value={this.state.codigo} type="text" className='form-control input-sm' placeholder='Código' onChange={this.changeValues} />
+                        <InputText name='codigo' value={this.state.codigo} disabled={this.state.operacion==='M'?true:false} type="number" className='form-control input-sm' placeholder='Código' onChange={this.changeValues} />
                     </Container>
                     <Container className='col-md-3' >
                         <Label>Estado:</Label>
@@ -242,7 +242,7 @@ immutableDelete (arr, index) {
                         </Container>
                         <Container className='col-md-6' > 
                                 <Label>Telf:</Label>
-                                <InputText name='telefono' value={this.state.telefono} type="text" className='form-control input-sm' placeholder='Teléfono' onChange={this.changeValues} />
+                                <InputText name='telefono' value={this.state.telefono} type="number" className='form-control input-sm' placeholder='Teléfono' onChange={this.changeValues} />
                         </Container>
                 </Row>
                             <Row>
@@ -254,11 +254,11 @@ immutableDelete (arr, index) {
                            <Row>
                                  <Container className='col-md-6' > 
                                         <Label>Mz:</Label>
-                                        <InputText name='longitud' value={this.state.longitud} type="text" className='form-control input-sm' placeholder='Mz' onChange={this.changeValues} />
+                                        <InputText name='longitud' value={this.state.longitud} type="num" className='form-control input-sm' placeholder='Mz' onChange={this.changeValues} />
                                     </Container>
                                     <Container className='col-md-6' > 
                                         <Label>Vila:</Label>
-                                        <InputText name='latitud' value={this.state.latitud} type="text" className='form-control input-sm' placeholder='Villa' onChange={this.changeValues} />
+                                        <InputText name='latitud' value={this.state.latitud} type="number" className='form-control input-sm' placeholder='Villa' onChange={this.changeValues} />
                                     </Container>
                             </Row>
      
@@ -269,7 +269,7 @@ immutableDelete (arr, index) {
                                 </Container>
                                 <Container className='col-md-4' > 
                                     <Label>Capacidad:</Label>
-                                    <InputText name='capacidad' value={this.state.capacidad} type="text" className='form-control input-sm' placeholder='Capacidad' onChange={this.changeValues} />
+                                    <InputText name='capacidad' value={this.state.capacidad} type="number" className='form-control input-sm' placeholder='Capacidad' onChange={this.changeValues} />
                                 </Container>
                             </Row>
 
@@ -309,6 +309,7 @@ immutableDelete (arr, index) {
     //Abrir/cerrar
     showModal(event) {
         this.setState({ isShowingModal: !this.state.isShowingModal })
+        this.limpiarPantalla();
     }
 
     onClose(event) {
@@ -369,6 +370,19 @@ immutableDelete (arr, index) {
 
     }
 
+    limpiarPantalla(){
+        this.state.codigo="";
+       this.state.nombre="";
+       this.state.options_tipo_sel="";
+       this.state.longitud="";
+       this.state.latitud="";
+       this.state.telefono="";
+       this.state.capacidad="";
+       this.state.direccion="";
+       this.state.responsable="";
+
+    }
+
     guardarPuntoSatelite(){
         //VALIDACION DE CAMPS REQUERIDOS
 
@@ -405,6 +419,7 @@ immutableDelete (arr, index) {
         .catch(err => {
             console.log(err);
         });
+        this.limpiarPantalla();
     }
 
     

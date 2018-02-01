@@ -156,6 +156,7 @@ class visualizarBeneficiario extends React.Component{
         //Funciones binds
         this.changeValues = this.changeValues.bind(this);
         this.guardarBeneficiario = this.guardarBeneficiario.bind(this);
+        this.limpiarPantalla = this.limpiarPantalla.bind(this);
         //Modals
         this.showModal = this.showModal.bind(this); //SWITCH OPEN/CLOSE
         this.onClose = this.onClose.bind(this);     //CLOSE
@@ -272,7 +273,7 @@ class visualizarBeneficiario extends React.Component{
                     <Row>
                         <Container className='col-md-4' >
                             <Label>Cédula:</Label>
-                            <InputText name='cedula' value={this.state.cedula} type="number" className='form-control input-sm' placeholder='Cédula' onChange={this.changeValues} />
+                            <InputText name='cedula' value={this.state.cedula} disabled={this.state.operacion==='M'?true:false} type="number" className='form-control input-sm' placeholder='Cédula' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Código Apadrinado:</Label>
@@ -365,7 +366,7 @@ class visualizarBeneficiario extends React.Component{
                         <Row>
                             <Container className='col-md-12'>
                                 <div className="btn-group pull-right">
-                                    <button type="submit" className='btn btn-secondary btn-sm'>
+                                    <button type="submit" className='btn btn-secondary btn-sm' >
                                         <i className="fa fa-trash-o fa-lg"></i> Limpiar
                                     </button>
                                 </div>
@@ -408,12 +409,15 @@ class visualizarBeneficiario extends React.Component{
         }
         this.setState({ isShowingModal: !this.state.isShowingModal });
         console.log("OPERACION: ", this.state.operacion)
+        this.limpiarPantalla();
     }
 
-    onClose(event) {
+     onClose(event) {
         this.setState({ isShowingModal: false });
+        if(this.state.operacion === 'M'){
+            this.setState({operacion: 'G'})
+        }
     }
-    
     //Functions
     changeValues(event) {
 
@@ -465,6 +469,23 @@ class visualizarBeneficiario extends React.Component{
         })
     }
 
+    limpiarPantalla(){
+        this.state.cedula="";
+        this.state.codigo_apadrinado="";
+        this.state.nombres="";
+        this.state.apellidos="";
+        this.fecha_nacimiento= moment(get_FechaLocalActual(),'DD/MM/YYYY');
+        this.state.dolencia= "";
+        this.state.escuela="";
+        this.state.periodoEscolar="";
+        this.state.calificacion="";
+        this.state.telefono="";
+        this.state.cedulaRepresentante="";
+        this.state.nombreRe="";
+        this.state.apellidoRe="";
+        this.state.direccion="";
+     }
+
     //INSERT CLUB
     guardarBeneficiario(){
         //VALIDACION DE CAMPS REQUERIDOS
@@ -508,6 +529,7 @@ class visualizarBeneficiario extends React.Component{
         .catch(err => {
             console.log(err);
         });
+        this.limpiarPantalla();
     }
 
     cargarBeneficiario(cedula){
@@ -537,6 +559,7 @@ class visualizarBeneficiario extends React.Component{
         .catch(err => {
             console.log(err);
         });
+       
     }
 
     cargarGridAsignacion(){

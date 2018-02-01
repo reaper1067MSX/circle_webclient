@@ -274,7 +274,7 @@ class visualizarClub extends React.Component{
                     <Row>
                         <Container className='col-md-4' >
                                 <Label>Código:</Label>
-                                <InputText name='codigo' value={this.state.codigo} disabled={this.state.operacion==='M'?true:false} type="text"className='form-control input-sm' placeholder='Código' onChange={this.changeValues} />
+                                <InputText name='codigo' value={this.state.codigo} disabled={this.state.operacion==='M'?true:false} type="number"className='form-control input-sm' placeholder='Código' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
                             <Label>Fecha:</Label>
@@ -340,6 +340,7 @@ class visualizarClub extends React.Component{
         }
         this.setState({ isShowingModal: !this.state.isShowingModal });
         console.log("OPERACION: ", this.state.operacion)
+        this.limpiarPantalla();
     }
 
     onClose(event) {
@@ -420,6 +421,15 @@ class visualizarClub extends React.Component{
         });
     }
 
+
+    limpiarPantalla(){
+       this.state.codigo="";
+       this.state.nombre="";
+       this.state.objEspec_sel="";
+       this.state.programa_sel="";
+       this.state.observacion="";
+    }
+
     //INSERT CLUB
     guardarClub(){
         //VALIDACION DE CAMPS REQUERIDOS
@@ -453,7 +463,10 @@ class visualizarClub extends React.Component{
         .catch(err => {
             console.log(err);
         });
+        this.limpiarPantalla();
     }
+
+    
 
     cargarClub(codigo){
         //Proceso Adquirir Registros GRID

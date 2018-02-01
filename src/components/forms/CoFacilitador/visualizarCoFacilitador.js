@@ -295,7 +295,7 @@ methodModifyFromParent(id, datos_fila){
                     <Row>
                         <Container className='col-md-4' >
                             <Label>Cédula:</Label>
-                            <InputText name='cedula' value={this.state.cedula} type="number" className='form-control input-sm' placeholder='Cédula' onChange={this.changeValues} />
+                            <InputText name='cedula' value={this.state.cedula} disabled={this.state.operacion==='M'?true:false} type="number" className='form-control input-sm' placeholder='Cédula' onChange={this.changeValues} />
                         </Container>
                         <Container className='col-md-4' >
                                 <Label>Código Apadrinado:</Label>
