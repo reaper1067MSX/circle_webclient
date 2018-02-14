@@ -421,13 +421,8 @@ class visualizarClub extends React.Component{
         });
     }
 
-
     limpiarPantalla(){
-       this.state.codigo="";
-       this.state.nombre="";
-       this.state.objEspec_sel="";
-       this.state.programa_sel="";
-       this.state.observacion="";
+       this.setState({codigo:"", nombre:"", objEspec_sel:"", programa_sel:"", observacion:""})
     }
 
     //INSERT CLUB
@@ -465,8 +460,6 @@ class visualizarClub extends React.Component{
         });
         this.limpiarPantalla();
     }
-
-    
 
     cargarClub(codigo){
         //Proceso Adquirir Registros GRID

@@ -329,11 +329,11 @@ methodModifyFromParent(id, datos_fila){
                     <Row>
                         <Container className='col-md-3' >
                             <Label>Estado:</Label>
-                            <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ options_estado_sel: value }) }} options={this.state.options_estado} />
+                            <Selects name="options_estado_sel" value={this.state.options_estado_sel} onChange={(value) => { this.setState({ options_estado_sel: value!==null?value:"" }) }} options={this.state.options_estado} />
                         </Container>
                         <Container className='col-md-9' >
                             <Label>Motivo:</Label>
-                            <InputText name='motivo' value={this.state.motivo} type="string" className='form-control input-sm' placeholder='Motivo' onChange={this.changeValues} />
+                            <InputText name='motivo' value={this.state.motivo} disabled={this.state.options_estado_sel.value==="A"?true:false} type="text" className='form-control input-sm' placeholder='Motivo' onChange={this.changeValues} />
                         </Container>
                     </Row>
 
@@ -436,11 +436,18 @@ methodModifyFromParent(id, datos_fila){
             alert(response.data.msg);
             //Actualizacion del grid luego de guardar
             this.cargarGrid();
+            this.limpiarPantalla();
         })
         .catch(err => {
             console.log(err);
         });
     }
+
+    limpiarPantalla(){
+        
+        this.setState({cedula:"", codigo:"", nombres:"", apellidos:"", fecha_creacion: moment(get_FechaLocalActual(),'DD/MM/YYYY'),
+        localidad: "", fecha_nacimiento: moment(get_FechaLocalActual(),'DD/MM/YYYY'), observacion:"", motivo:""});
+     }
 
 
    //Realiza todas estas operaciones al renderizar el form

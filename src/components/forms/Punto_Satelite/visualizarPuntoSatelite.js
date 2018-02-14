@@ -165,9 +165,11 @@ class visualizarPuntoSatelite extends React.Component{
 methodModifyFromParent(id, datos_fila){
     console.log(datos_fila)
     this.setState({codigo: datos_fila.Codigo});
-    this.setState({operacion: 'M'});
-    this.cargarPuntoSatelite(datos_fila.Codigo);
-    this.showModal();
+    this.setState({operacion: 'M'}, ()=>{
+        this.cargarPuntoSatelite(datos_fila.Codigo);
+        this.showModal();
+    });
+    
 }
 
  //Adicionar un elimento en un ARRAY INMUTABLE
@@ -307,13 +309,21 @@ immutableDelete (arr, index) {
 
     //Functions modal
     //Abrir/cerrar
-    showModal(event) {
-        this.setState({ isShowingModal: !this.state.isShowingModal })
+    showModal(operacion) {
+
+        if(operacion === 'G'){
+            this.setState({codigo: ''});
+        }
+        this.setState({ isShowingModal: !this.state.isShowingModal });
         this.limpiarPantalla();
     }
 
     onClose(event) {
-        this.setState({ isShowingModal: false });
+        this.setState({ isShowingModal: false }, ()=>{
+            if(this.state.operacion === 'M'){
+                this.setState({operacion: 'G'})
+            }
+        });
     }
 
     //Functions
@@ -371,15 +381,9 @@ immutableDelete (arr, index) {
     }
 
     limpiarPantalla(){
-        this.state.codigo="";
-       this.state.nombre="";
-       this.state.options_tipo_sel="";
-       this.state.longitud="";
-       this.state.latitud="";
-       this.state.telefono="";
-       this.state.capacidad="";
-       this.state.direccion="";
-       this.state.responsable="";
+
+       this.setState({codigo:"", nombre:"", options_tipo_sel:"", longitud:"", latitud:"",
+       telefono:"", capacidad:"", direccion:"", responsable:""})
 
     }
 

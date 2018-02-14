@@ -274,7 +274,8 @@ export default class inscribirBeneficiario extends React.Component{
     }
 
     getAsignacionBeneficiario(){
-        var beneficiario = this.state.options_beneficiario_sel.value.toString();
+        if(this.state.options_beneficiario_sel!==null){
+            var beneficiario = this.state.options_beneficiario_sel.value.toString();
 
         let config_request = {
             method: 'GET',
@@ -293,6 +294,7 @@ export default class inscribirBeneficiario extends React.Component{
             .catch(err => {
                 console.log(err);
             });
+        }
     }
 
     render() {

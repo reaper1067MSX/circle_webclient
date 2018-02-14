@@ -470,20 +470,9 @@ class visualizarBeneficiario extends React.Component{
     }
 
     limpiarPantalla(){
-        this.state.cedula="";
-        this.state.codigo_apadrinado="";
-        this.state.nombres="";
-        this.state.apellidos="";
-        this.fecha_nacimiento= moment(get_FechaLocalActual(),'DD/MM/YYYY');
-        this.state.dolencia= "";
-        this.state.escuela="";
-        this.state.periodoEscolar="";
-        this.state.calificacion="";
-        this.state.telefono="";
-        this.state.cedulaRepresentante="";
-        this.state.nombreRe="";
-        this.state.apellidoRe="";
-        this.state.direccion="";
+        
+        this.setState({cedula:"", codigo_apadrinado:"", nombres:"", apellidos:"", fecha_nacimiento: moment(get_FechaLocalActual(),'DD/MM/YYYY'),
+        dolencia: "", escuela:"", periodoEscolar:"", calificacion:"", telefono:"", cedulaRepresentante:"", nombreRe:"", apellidoRe:"", direccion:""});
      }
 
     //INSERT CLUB
@@ -526,8 +515,9 @@ class visualizarBeneficiario extends React.Component{
             //Actualizacion del grid luego de guardar
             this.cargarGrid();
         })
-        .catch(err => {
-            console.log(err);
+        .catch(error => {
+            console.log("ERROR: ", error)
+            alert(error.response?error.response.data.msg:error.message)
         });
         this.limpiarPantalla();
     }

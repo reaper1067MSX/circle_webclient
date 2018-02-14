@@ -263,19 +263,22 @@ class visualizarParametros extends React.Component{
     //Functions modal
     //Abrir/cerrar
     showModal(operacion){
+   
         if(operacion === 'G'){
             this.setState({codigo: ''});
         }
         this.setState({ isShowingModal: !this.state.isShowingModal });
         console.log("OPERACION: ", this.state.operacion)
         this.limpiarPantalla();
+   
     }
 
     onClose(event) {
-        this.setState({ isShowingModal: false });
-        if(this.state.operacion === 'M'){
-            this.setState({operacion: 'G'})
-        }
+        this.setState({ isShowingModal: false }, ()=>{
+            if(this.state.operacion === 'M'){
+                this.setState({operacion: 'G'})
+            }
+        });
     }
 
     desactivarDep(){
@@ -302,11 +305,9 @@ class visualizarParametros extends React.Component{
     }
 
     limpiarPantalla(){
-        this.state.codigo="";
-       this.state.descripcion="";
-       this.state.options_tipo_sel="";
-       this.state.options_depen_sel="";
+       this.setState({codigo:"", descripcion:"", options_tipo_sel:"", options_depen_sel:""})
     }
+
     guardarParametro(){
         //VALIDACION DE CAMPS REQUERIDOS
 
@@ -360,6 +361,7 @@ class visualizarParametros extends React.Component{
         });
 
         this.limpiarPantalla();
+        this.cargarGrid();
     }
 
     //Realiza todas estas operaciones al renderizar el form
@@ -371,8 +373,12 @@ class visualizarParametros extends React.Component{
         ])
         .then(([result_tipoParametros, result_genEstado, resul_dependencia]) => {
           this.setState(
-            { options_tipo: result_tipoParametros,  options_estado: result_genEstado, options_depen: resul_dependencia
-                 
+            { options_tipo: result_tipoParametros,  options_estado: result_genEstado, options_depen: resul_dependencia }, ()=>{
+                this.state.options_estado.forEach((DATA)=>{
+                    if(DATA.value==="A"){
+                        this.setState({options_estado_sel: DATA})
+                    }
+                })
             })
             
         })
@@ -417,10 +423,10 @@ class visualizarParametros extends React.Component{
             }else{
                 //console.log(response.data);
                 var respuesta = response.data;
-                //console.log(response.data.fecha_creacion)
+                console.log(response.data)
                 //fecha_creacion: moment(response.data.fecha_creacion, 'DD/MM/YYYY'),
                 this.setState({
-                    descripcion: respuesta.descripcion, options_estado_sel: respuesta.estado,
+                    codigo: respuesta.id, descripcion: respuesta.descripcion, options_estado_sel: respuesta.estado,
                     options_tipo_sel: respuesta.tipo, options_depen_sel: respuesta.dependencia,
                     fecha_creacion: moment(response.data.fecha_creacion, 'DD/MM/YYYY'),
                 });
